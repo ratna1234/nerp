@@ -82,62 +82,6 @@ def subtract(value, arg):
     return value - arg
 
 
-# def ifusergroup(parser, token):
-#     """ Check to see if the currently logged in user belongs to a specific
-#     group. Requires the Django authentication contrib app and middleware.
-#
-#     Usage: {% ifusergroup Admins %} ... {% endifusergroup %}, or
-#            {% ifusergroup Admins %} ... {% else %} ... {% endifusergroup %}, or
-#            {% ifusergroup 'Store Keeper' %} ... {% endifusergroup %}
-#
-#     """
-#     try:
-#         tag, group = token.split_contents()
-#     except ValueError:
-#         raise template.TemplateSyntaxError("Tag 'ifusergroup' requires 1 argument.")
-#
-#     nodelist_true = parser.parse(('else', 'endifusergroup'))
-#     token = parser.next_token()
-#
-#     if token.contents == 'else':
-#         nodelist_false = parser.parse(('endifusergroup',))
-#         parser.delete_first_token()
-#     else:
-#         nodelist_false = NodeList()
-#
-#     return GroupCheckNode(group, nodelist_true, nodelist_false)
-#
-#
-# class GroupCheckNode(template.Node):
-#     def __init__(self, group, nodelist_true, nodelist_false):
-#         self.group = group
-#         self.nodelist_true = nodelist_true
-#         self.nodelist_false = nodelist_false
-#
-#     def render(self, context):
-#
-#         user = resolve_variable('user', context)
-#         group_name = self.group
-#
-#         if group_name.startswith('"') and group_name.endswith('"'):
-#             group_name = group_name[1:-1]
-#
-#         if group_name.startswith("'") and group_name.endswith("'"):
-#             group_name = group_name[1:-1]
-#
-#         if not user.is_authenticated():
-#             return self.nodelist_false.render(context)
-#
-#         try:
-#             group = Group.objects.get(name=group_name)
-#         except Group.DoesNotExist:
-#             return self.nodelist_false.render(context)
-#
-#         if group in user.groups.all():
-#             return self.nodelist_true.render(context)
-#         else:
-#             return self.nodelist_false.render(context)
-
 @register.tag()
 def ifusergroup(parser, token):
     """ Check to see if the currently logged in user belongs to one or more groups

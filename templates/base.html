@@ -43,9 +43,7 @@
                 {% endif %}
             </ul>
         </div>
-        <h1>App Title
-            <small>Slogan</small>
-        </h1>
+        <h3>App Title </h3>
         <hr/>
     </div>
 </div>
@@ -56,10 +54,15 @@
 <!-- Main Page Content and Sidebar -->
 <div class="row">
 
-    <!-- Sidebar -->
-    <aside class="large-4 columns">
+    <div class="large-13 columns right" role="content">
+        {% block content %}
+        {% endblock %}
+    </div>
 
-        <h5>Categories</h5>
+    <!-- Sidebar -->
+    <aside class="large-3 columns left-sidebar left">
+
+        <h5>Sidebar</h5>
         <ul class="side-nav">
             <li><a href="#">News</a></li>
             <li><a href="#">Code</a></li>
@@ -68,21 +71,11 @@
             <li><a href="#">Weasels</a></li>
         </ul>
 
-        <div class="panel">
-            <h5>Featured</h5>
-
-            <p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon
-                nulla pork belly cupidatat meatloaf cow.</p>
-            <a href="#">Read More &rarr;</a>
-        </div>
 
     </aside>
     <!-- End Sidebar -->
 
-    <div class="large-12 columns" role="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+
     <!-- End Main Content -->
 </div>
 <!-- End Main Content and Sidebar -->

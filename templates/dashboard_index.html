@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 
 {% block title %}Dashboard{% endblock %}
-
+{% load filters %}
+{% load i18n %}
 {% block content %}
-    Hi
+
+
+    <div class="panel">
+        <h3 class="center">{% trans 'Inventory' %}</h3>
+        {% ifusergroup 'Store Keeper' %}
+            {% trans 'Demand Form' %}
+        {% endifusergroup %}
+    </div>
+
 {% endblock %}
