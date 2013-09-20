@@ -8,9 +8,9 @@ from django.template import Library
 from django.utils.safestring import mark_safe
 from django.db.models import Model
 from django import template
-from django.template import resolve_variable, NodeList
 from django.contrib.auth.models import Group
 
+from app import settings
 
 register = Library()
 
@@ -92,9 +92,9 @@ def ifusergroup(parser, token):
 
     """
     try:
-        tokensp = token.split_contents()
+        tokens = token.split_contents()
         groups = []
-        groups += tokensp[1:]
+        groups += tokens[1:]
     except ValueError:
         raise template.TemplateSyntaxError("Tag 'ifusergroup' requires at least 1 argument.")
 
@@ -105,7 +105,7 @@ def ifusergroup(parser, token):
         nodelist_false = parser.parse(('endifusergroup',))
         parser.delete_first_token()
     else:
-        nodelist_false = NodeList()
+        nodelist_false = template.NodeList()
 
     return GroupCheckNode(groups, nodelist_true, nodelist_false)
 
@@ -117,7 +117,7 @@ class GroupCheckNode(template.Node):
         self.nodelist_false = nodelist_false
 
     def render(self, context):
-        user = resolve_variable('user', context)
+        user = template.resolve_variable('user', context)
 
         if not user.is_authenticated():
             return self.nodelist_false.render(context)
@@ -149,3 +149,57 @@ class GroupCheckNode(template.Node):
 @register.filter
 def setting(group, key):
     return config_value(group, key)
+
+
+@register.tag
+def ifappexists(parser, token):
+    """ Conditional Django template tag to check if one or more apps exist.
+
+    Usage: {% ifappexists tag %} ... {% endifappexists %}, or
+           {% ifappexists tag inventory %} ... {% else %} ... {% endifappexists %}
+
+    """
+    try:
+        tokens = token.split_contents()
+        apps = []
+        apps += tokens[1:]
+    except ValueError:
+        raise template.TemplateSyntaxError("Tag 'ifappexists' requires at least 1 argument.")
+
+    nodelist_true = parser.parse(('else', 'endifappexists'))
+    token = parser.next_token()
+
+    if token.contents == 'else':
+        nodelist_false = parser.parse(('endifappexists',))
+        parser.delete_first_token()
+    else:
+        nodelist_false = template.NodeList()
+
+    return AppCheckNode(apps, nodelist_true, nodelist_false)
+
+
+class AppCheckNode(template.Node):
+    def __init__(self, apps, nodelist_true, nodelist_false):
+        self.apps = apps
+        self.nodelist_true = nodelist_true
+        self.nodelist_false = nodelist_false
+
+    def render(self, context):
+        allowed = False
+        for app in self.apps:
+
+            if app.startswith('"') and app.endswith('"'):
+                app = app[1:-1]
+
+            if app.startswith("'") and app.endswith("'"):
+                app = app[1:-1]
+
+            if app in settings.INSTALLED_APPS:
+                allowed = True
+            else:
+                break
+
+        if allowed:
+            return self.nodelist_true.render(context)
+        else:
+            return self.nodelist_false.render(context)
