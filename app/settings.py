@@ -107,6 +107,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'south',
+    'livesettings',
+    'keyedcache',
 
     'users',
 
@@ -153,3 +155,19 @@ except ImportError:
 AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/user/login/'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 5,
+        # It is high recommended to configure a global cache for multiprocess
+        # servers, because other processes would not be notified about new
+        # values with LocMemCache. !!
+        # For debug server (manage.py runserver) is the default configuration safe.
+        #
+        #'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        #'LOCATION': '127.0.0.1:11211',
+        #'TIMEOUT': 300,
+        #'KEY_PREFIX': 'T',
+    }
+}

@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import Group
-
+import config
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, full_name=''):
@@ -66,6 +66,9 @@ class User(AbstractBaseUser):
 
     def email_user(self, subject, message, from_email):
         pass
+
+    def is_superuser(self):
+        return self.is_admin
 
     objects = UserManager()
 
