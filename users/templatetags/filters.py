@@ -1,12 +1,12 @@
 import json
 from datetime import date, timedelta
 
+from livesettings import config_value
 from django.core import serializers
 from django.db.models.query import QuerySet
 from django.template import Library
 from django.utils.safestring import mark_safe
 from django.db.models import Model
-
 from django import template
 from django.template import resolve_variable, NodeList
 from django.contrib.auth.models import Group
@@ -144,3 +144,8 @@ class GroupCheckNode(template.Node):
             return self.nodelist_true.render(context)
         else:
             return self.nodelist_false.render(context)
+
+
+@register.filter
+def setting(group, key):
+    return config_value(group, key)
