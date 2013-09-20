@@ -1,0 +1,11 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load filters %}
+
+{% block title %}{{ title }} | {{ 'app'|setting:'title' }}{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">{{ 'app'|setting:'title' }}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

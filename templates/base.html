@@ -19,6 +19,7 @@
     <script src="{{ STATIC_URL }}js/vendor/custom.modernizr.js"></script>
 
     {% block head_end %}{% endblock %}
+    {% load filters %}
 
 </head>
 <body>
@@ -43,7 +44,7 @@
                 {% endif %}
             </ul>
         </div>
-        <h3>App Title </h3>
+        <h3>{{ 'app'|setting:'title' }}</h3>
         <hr/>
     </div>
 </div>
