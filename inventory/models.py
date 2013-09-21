@@ -20,7 +20,6 @@ class Category(MPTTModel):
 
     class Meta:
         verbose_name_plural = u' Inventory Categories'
-        unique_together = (('company', 'name'),)
 
 
 class InventoryAccount(models.Model):
@@ -46,7 +45,7 @@ class InventoryAccount(models.Model):
 
 
     def add_category(self, category):
-        category_instance, created = Category.objects.get_or_create(name=category, company=self.company)
+        category_instance, created = Category.objects.get_or_create(name=category)
         self.category = category_instance
 
     def get_all_categories(self):
@@ -81,7 +80,6 @@ class Item(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None:
             account = InventoryAccount(code=self.code, name=self.name)
-            account.company = self.company
             account.save()
             self.account = account
         super(Item, self).save(*args, **kwargs)
