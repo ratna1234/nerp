@@ -111,6 +111,7 @@ INSTALLED_APPS = (
     'keyedcache',
 
     'users',
+    'inventory',
 
 
     'django.contrib.admin',
