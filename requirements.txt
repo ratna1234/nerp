@@ -4,4 +4,5 @@ psycopg2
 south
 django-debug-toolbar
 bpython
+pymongo
 -e hg+http://bitbucket.org/bkroeze/django-livesettings/#egg=django-livesettings

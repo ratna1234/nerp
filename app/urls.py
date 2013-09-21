@@ -11,6 +11,7 @@ urlpatterns = patterns('',
                        (r'^user/', include('users.urls')),
                        # url(r'^app/', include('app.foo.urls')),
 
+                       (r'^inventory/', include('inventory.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^settings/', include('livesettings.urls')),
 )
