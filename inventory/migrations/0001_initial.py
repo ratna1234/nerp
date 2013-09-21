@@ -11,10 +11,13 @@ class Migration(SchemaMigration):
         # Adding model 'Category'
         db.create_table(u'inventory_category', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('code', self.gf('django.db.models.fields.CharField')(max_length=10, null=True, blank=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=254)),
-            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('company', self.gf('django.db.models.fields.related.ForeignKey')(related_name='inventory_categories', to=orm['users.Company'])),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=254, null=True, blank=True)),
+            ('parent', self.gf('mptt.fields.TreeForeignKey')(blank=True, related_name='children', null=True, to=orm['inventory.Category'])),
+            (u'lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
+            (u'rght', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
+            (u'tree_id', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
+            (u'level', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
         ))
         db.send_create_signal(u'inventory', ['Category'])
 
@@ -23,7 +26,6 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('code', self.gf('django.db.models.fields.CharField')(max_length=10)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('company', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['users.Company'])),
             ('current_dr', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
             ('current_cr', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
             ('opening_balance', self.gf('django.db.models.fields.FloatField')(default=0)),
@@ -36,14 +38,8 @@ class Migration(SchemaMigration):
             ('code', self.gf('django.db.models.fields.CharField')(max_length=10)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=254)),
             ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('purchase_price', self.gf('django.db.models.fields.FloatField')()),
-            ('purchase_account', self.gf('django.db.models.fields.related.ForeignKey')(related_name='purchase_items', to=orm['ledger.Account'])),
-            ('purchase_tax_scheme', self.gf('django.db.models.fields.related.ForeignKey')(related_name='purchase_items', to=orm['tax.TaxScheme'])),
-            ('sales_price', self.gf('django.db.models.fields.FloatField')()),
-            ('sales_account', self.gf('django.db.models.fields.related.ForeignKey')(related_name='sales_items', to=orm['ledger.Account'])),
-            ('sales_tax_scheme', self.gf('django.db.models.fields.related.ForeignKey')(related_name='sales_items', to=orm['tax.TaxScheme'])),
-            ('company', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['users.Company'])),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['inventory.Category'])),
+            ('purchase_price', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['inventory.Category'], null=True, blank=True)),
             ('account', self.gf('django.db.models.fields.related.OneToOneField')(related_name='item', unique=True, to=orm['inventory.InventoryAccount'])),
         ))
         db.send_create_signal(u'inventory', ['Item'])
@@ -97,16 +93,18 @@ class Migration(SchemaMigration):
         },
         u'inventory.category': {
             'Meta': {'object_name': 'Category'},
-            'code': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
-            'company': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'inventory_categories'", 'to': u"orm['users.Company']"}),
-            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '254', 'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '254'})
+            u'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            u'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': u"orm['inventory.Category']"}),
+            u'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            u'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
         },
         u'inventory.inventoryaccount': {
             'Meta': {'object_name': 'InventoryAccount'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['users.Company']"}),
             'current_cr': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'current_dr': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -116,18 +114,12 @@ class Migration(SchemaMigration):
         u'inventory.item': {
             'Meta': {'object_name': 'Item'},
             'account': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'item'", 'unique': 'True', 'to': u"orm['inventory.InventoryAccount']"}),
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['inventory.Category']"}),
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['inventory.Category']", 'null': 'True', 'blank': 'True'}),
             'code': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['users.Company']"}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '254'}),
-            'purchase_account': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'purchase_items'", 'to': u"orm['ledger.Account']"}),
-            'purchase_price': ('django.db.models.fields.FloatField', [], {}),
-            'purchase_tax_scheme': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'purchase_items'", 'to': u"orm['tax.TaxScheme']"}),
-            'sales_account': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'sales_items'", 'to': u"orm['ledger.Account']"}),
-            'sales_price': ('django.db.models.fields.FloatField', [], {}),
-            'sales_tax_scheme': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'sales_items'", 'to': u"orm['tax.TaxScheme']"})
+            'purchase_price': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'})
         },
         u'inventory.journalentry': {
             'Meta': {'object_name': 'JournalEntry'},
@@ -145,46 +137,6 @@ class Migration(SchemaMigration):
             'dr_amount': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'journal_entry': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'transactions'", 'to': u"orm['inventory.JournalEntry']"})
-        },
-        u'ledger.account': {
-            'Meta': {'unique_together': "(('company', 'name'), ('company', 'code'))", 'object_name': 'Account'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'accounts'", 'blank': 'True', 'to': u"orm['ledger.Category']"}),
-            'code': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['users.Company']"}),
-            'current_cr': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            'current_dr': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'opening_cr': ('django.db.models.fields.FloatField', [], {'default': '0'}),
-            'opening_dr': ('django.db.models.fields.FloatField', [], {'default': '0'}),
-            'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': u"orm['ledger.Account']"}),
-            'tax_rate': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'})
-        },
-        u'ledger.category': {
-            'Meta': {'unique_together': "(('company', 'name'),)", 'object_name': 'Category'},
-            'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['users.Company']"}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '254', 'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            u'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            u'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': u"orm['ledger.Category']"}),
-            u'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            u'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
-        },
-        u'tax.taxscheme': {
-            'Meta': {'object_name': 'TaxScheme'},
-            'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['users.Company']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'percent': ('django.db.models.fields.FloatField', [], {})
-        },
-        u'users.company': {
-            'Meta': {'object_name': 'Company', 'db_table': "u'company'"},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'location': ('django.db.models.fields.TextField', [], {}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '254'}),
-            'type_of_business': ('django.db.models.fields.CharField', [], {'max_length': '254'})
         }
     }
 
