@@ -109,6 +109,7 @@ INSTALLED_APPS = (
     'south',
     'livesettings',
     'keyedcache',
+    'mptt',
 
     'users',
     'inventory',

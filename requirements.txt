@@ -7,3 +7,4 @@ bpython
 pymongo
 django-mptt
 -e hg+http://bitbucket.org/bkroeze/django-livesettings/#egg=django-livesettings
+django-filter
