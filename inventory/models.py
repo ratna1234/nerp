@@ -246,3 +246,4 @@ class DemandRow(models.Model):
     unit = models.CharField(max_length=50)
     release_quantity = models.FloatField()
     remarks = models.CharField(max_length=254)
+    demand = models.ForeignKey(Demand, related_name='rows')
