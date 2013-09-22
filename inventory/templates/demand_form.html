@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ scenario }} Demand Form{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <span>Demand Form</span>
+{% endblock %}
+
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/base.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
+    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
+    <script src="{{ STATIC_URL }}js/demand_form.js"></script>
+    <script>
+        $(document).ready(function () {
+            {% load filters %}
+            ko.applyBindings(new DemandViewModel({{data|jsonify}}));
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <h1>
+        {{ scenario }} Demand Form
+    </h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="small secondary button">Save</button>
+        {% if scenario = 'Update' %}
+            <a class="small secondary button" href="{% url 'delete_demand_form' form.instance.id %}">Delete!</a>
+        {% endif %}
+    </form>
+
+
+{% endblock %}
