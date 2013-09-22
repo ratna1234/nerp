@@ -114,6 +114,7 @@ INSTALLED_APPS = (
     'mptt',
     'pagination',
     'django_sorting',
+    'rest_framework',
 
     'users',
     'inventory',
