@@ -12,5 +12,7 @@ urlpatterns = patterns('',
                        url(r'^category/(?P<id>[0-9]+)/$', views.update_category, name='update_inventory_category'),
                        url(r'^category/(?P<id>[0-9]+)/delete$', views.delete_category,
                            name='delete_inventory_category'),
+
+
 )
 

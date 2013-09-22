@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from datetime import timedelta
 
 from django.db import models
@@ -78,6 +80,8 @@ class Item(models.Model):
     account = models.OneToOneField(InventoryAccount, related_name='item')
     type_choices = [('consumable', 'Consumable'), ('non-consumable', 'Non Consumable')]
     type = models.CharField(choices=type_choices, max_length=15, default='consumable')
+    unit = models.CharField(max_length=50, default=u'थान')
+    vattable = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
         if self.pk is None:
