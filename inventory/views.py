@@ -44,10 +44,10 @@ def delete_inventory_item(request, id):
 
 
 @login_required
-def list_all_items(request):
+def list_inventory_items(request):
     objects = Item.objects.filter()
     filtered_items = InventoryItemFilter(request.GET, queryset=objects)
-    return render(request, 'list_all_items.html', {'objects': filtered_items})
+    return render(request, 'list_inventory_items.html', {'objects': filtered_items})
 
 
 @login_required

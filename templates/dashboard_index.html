@@ -8,11 +8,11 @@
     <div class="section-container accordion" data-section="accordion">
         {% ifappexists inventory %}
             <section>
-                <p class="title" data-section-title><a href="#">{% trans 'Accounting' %}</a></p>
+                <p class="title" data-section-title><a href="#">{% trans 'Inventory' %}</a></p>
 
                 <div class="content" data-section-content>
                     {% ifusergroup 'Store Keeper' %}
-                        {% trans 'Demand Form' %}
+                        <a href="{% url 'list_inventory_items' %}">{% trans 'Demand Form' %}</a>
                     {% endifusergroup %}
                 </div>
             </section>

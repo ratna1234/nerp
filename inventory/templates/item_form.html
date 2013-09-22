@@ -4,7 +4,8 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <li class="active" xmlns="http://www.w3.org/1999/html"><a href="{% url "list_all_items" %}">Inventory Items</a></li>
+    <li class="active" xmlns="http://www.w3.org/1999/html"><a href="{% url "list_inventory_items" %}">Inventory
+        Items</a></li>
     <span class="divider"><i class="icon-angle-right"></i></span>
     <li class="active">{{ scenario }} Inventory Item</li>
 {% endblock %}
@@ -20,40 +21,7 @@
     {{ form.errors }}
     <form method="post">
         {% csrf_token %}
-        {#        <div class="row">#}
-        {#            <div class="span3">#}
-        {#                {% csrf_token %}#}
-        {#                {{ form.code.label_tag }}#}
-        {#                {{ form.code }}#}
-        {#                {{ form.name.label_tag }}#}
-        {#                {{ form.name }}#}
-        {#                {{ form.description.label_tag }}#}
-        {#                {{ form.description }}#}
-        {#            </div>#}
-        {#            <div class="span3">#}
-        {#                {{ form.sales_price.label_tag }}#}
-        {#                {{ form.sales_price }}#}
-        {#                {{ form.sales_account.label_tag }}#}
-        {#                {{ form.sales_account }}#}
-        {#                {{ form.sales_tax_scheme.label_tag }}#}
-        {#                {{ form.sales_tax_scheme }}#}
-        {#            </div>#}
-        {#            <div class="span3">#}
-        {#                {{ form.purchase_price.label_tag }}#}
-        {#                {{ form.purchase_price }}#}
-        {#                {{ form.purchase_tax_scheme.label_tag }}#}
-        {#                {{ form.purchase_tax_scheme }}#}
-        {#            </div>#}
-        {#            <div>#}
-        {#                {{ form.purchase_account.label_tag }}#}
-        {#                {{ form.purchase_account }}#}
-        {#                {{ form.category.label_tag }}#}
-        {#                {{ form.category }}#}
-        {#            </div>#}
-        {#        </div>#}
-
         {{ form.as_p }}
-
         <div class="row">
             <div class="span12">
                 <button type="submit" value="Submit" class="small secondary button"/>
