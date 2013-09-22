@@ -85,6 +85,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'pagination.middleware.PaginationMiddleware',
+    'django_sorting.middleware.SortingMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -110,6 +112,8 @@ INSTALLED_APPS = (
     'livesettings',
     'keyedcache',
     'mptt',
+    'pagination',
+    'django_sorting',
 
     'users',
     'inventory',
@@ -173,3 +177,10 @@ CACHES = {
         #'KEY_PREFIX': 'T',
     }
 }
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    'django.core.context_processors.media',
+)
