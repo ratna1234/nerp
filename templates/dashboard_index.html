@@ -3,6 +3,11 @@
 {% block title %}Dashboard{% endblock %}
 {% load filters %}
 {% load i18n %}
+
+{% block breadcrumbs %}
+    <a href="#">Dashboard</a>
+{% endblock %}
+
 {% block content %}
 
     <div class="section-container accordion" data-section="accordion">
@@ -12,7 +17,7 @@
 
                 <div class="content" data-section-content>
                     {% ifusergroup 'Store Keeper' %}
-                        <a href="{% url 'list_inventory_items' %}">{% trans 'Demand Form' %}</a>
+                        <a href="{% url 'list_inventory_items' %}">{% trans 'Inventory Items' %}</a>
                     {% endifusergroup %}
                 </div>
             </section>

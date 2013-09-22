@@ -46,12 +46,17 @@
                 {% endif %}
             </ul>
         </div>
-        <h3>{{ 'app'|setting:'title' }}</h3>
-        <hr/>
+        <a href="/"><h3>{{ 'app'|setting:'title' }}</h3></a>
     </div>
 </div>
 
 <!-- End Nav -->
+
+<nav class="breadcrumbs">
+    {% block breadcrumbs %}
+        <a href="#">Dashboard</a>
+    {% endblock %}
+</nav>
 
 
 <!-- Main Page Content and Sidebar -->
