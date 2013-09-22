@@ -10,6 +10,7 @@ from django.db.models import F
 from mptt.models import MPTTModel, TreeForeignKey
 
 from app.lib import zero_for_none, none_for_zero
+from users.models import User
 
 
 class Category(MPTTModel):
@@ -227,3 +228,21 @@ def _transaction_delete(sender, instance, **kwargs):
           float(zero_for_none(transaction.cr_amount)) * -1)
 
     transaction.account.save()
+
+
+class Demand(models.Model):
+    release_no = models.IntegerField()
+    fiscal_year = models.CharField(max_length=5)
+    demandee = models.ForeignKey(User)
+    date = models.DateField()
+    purpose = models.TextField()
+
+
+class DemandRow(models.Model):
+    sn = models.IntegerField()
+    item = models.ForeignKey(Item)
+    specification = models.CharField(max_length=254)
+    quantity = models.FloatField()
+    unit = models.CharField(max_length=50)
+    release_quantity = models.FloatField()
+    remarks = models.CharField(max_length=254)
