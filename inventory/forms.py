@@ -1,7 +1,7 @@
 from mptt.forms import TreeNodeChoiceField
 
 from app.lib import KOModelForm
-from models import Item, Category
+from models import Item, Category, Demand
 
 
 class ItemForm(KOModelForm):
@@ -27,3 +27,8 @@ class CategoryForm(KOModelForm):
         #
         #     # Always return the full collection of cleaned data.
         #     return cleaned_data
+
+
+class DemandForm(KOModelForm):
+    class Meta:
+        model = Demand
