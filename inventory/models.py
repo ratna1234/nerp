@@ -76,6 +76,8 @@ class Item(models.Model):
     purchase_price = models.FloatField(blank=True, null=True)
     category = models.ForeignKey(Category, null=True, blank=True)
     account = models.OneToOneField(InventoryAccount, related_name='item')
+    type_choices = [('consumable', 'Consumable'), ('non-consumable', 'Non Consumable')]
+    type = models.CharField(choices=type_choices, max_length=15, default='consumable')
 
     def save(self, *args, **kwargs):
         if self.pk is None:

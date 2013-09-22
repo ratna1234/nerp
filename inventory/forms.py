@@ -1,4 +1,3 @@
-from django import forms
 from mptt.forms import TreeNodeChoiceField
 
 from app.lib import KOModelForm
@@ -17,14 +16,14 @@ class CategoryForm(KOModelForm):
     class Meta:
         model = Category
 
-    # def clean(self):
-    #     """ This is the form's clean method, not a particular field's clean method """
-    #     cleaned_data = self.cleaned_data
-    #
-    #     name = cleaned_data.get('name')
-    #
-    #     if Category.objects.filter(name=name, company=self.company).count() > 0:
-    #         raise forms.ValidationError("Category name already exists.")
-    #
-    #     # Always return the full collection of cleaned data.
-    #     return cleaned_data
+        # def clean(self):
+        #     """ This is the form's clean method, not a particular field's clean method """
+        #     cleaned_data = self.cleaned_data
+        #
+        #     name = cleaned_data.get('name')
+        #
+        #     if Category.objects.filter(name=name, company=self.company).count() > 0:
+        #         raise forms.ValidationError("Category name already exists.")
+        #
+        #     # Always return the full collection of cleaned data.
+        #     return cleaned_data
