@@ -18,6 +18,13 @@
                 <div class="content" data-section-content>
                     {% ifusergroup 'Store Keeper' %}
                         <a href="{% url 'list_inventory_items' %}">{% trans 'Inventory Items' %}</a>
+                        <br/>
+                        <a href="{% url 'create_inventory_item' %}">{% trans 'Create Inventory Item' %}</a>
+                        <br/>
+                        <a href="{% url 'list_inventory_categories' %}">{% trans 'Inventory Categories' %}</a>
+                        <br/>
+                        <a href="{% url 'create_inventory_item' %}">{% trans 'Create Inventory Item' %}</a>
+                        <br/>
                     {% endifusergroup %}
                 </div>
             </section>

@@ -4,9 +4,8 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <li class="active"><a href="{% url "list_inventory_category" %}">Inventory Categories</a></li>
-    <span class="divider"><i class="icon-angle-right"></i></span>
-    <li class="active">Create Inventory Category</li>
+    <a href="{% url "list_inventory_categories" %}">Inventory Categories</a>
+    <span>Create Inventory Category</span>
 {% endblock %}
 
 {% block content %}
@@ -22,7 +21,7 @@
 
         <div class="row">
             <div class="span12">
-                <input type="submit" value="Submit" class="btn"/>
+                <input type="submit" value="Submit" class="small secondary button"/>
             </div>
         </div>
     </form>

@@ -4,9 +4,8 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <li class="active"><a href="{% url "list_inventory_category" %}">Inventory Categories</a></li>
-    <span class="divider"><i class="icon-angle-right"></i></span>
-    <li class="active">Update Inventory Category</li>
+    <a href="{% url "list_inventory_categories" %}">Inventory Categories</a>
+    <span>Update Inventory Category</span>
 {% endblock %}
 
 {% block content %}
@@ -22,8 +21,9 @@
 
         <div class="row">
 
-            <input type="submit" value="Submit" class="btn"/>
-            <a class="btn" href="{% url 'delete_inventory_category' form.instance.id %}">Delete this category!</a>
+            <input type="submit" value="Submit" class="small secondary button"/>
+            <a class="small secondary button" href="{% url 'delete_inventory_category' form.instance.id %}">Delete this
+                category!</a>
 
         </div>
 

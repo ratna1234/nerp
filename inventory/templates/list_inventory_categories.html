@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <li class="active"><a href="{% url "list_inventory_category" %}">Inventory Categories</a></li>
+    <li class="active"><a href="{% url "list_inventory_categories" %}">Inventory Categories</a></li>
 {% endblock %}
 
 {% block content %}
@@ -29,6 +29,6 @@
         {% endrecursetree %}
     </ul>
 
-    <a class="btn" href="{% url 'create_inventory_category' %}">Create New Category</a>
+    <a class="small secondary button" href="{% url 'create_inventory_category' %}">Create New Category</a>
 
 {% endblock %}

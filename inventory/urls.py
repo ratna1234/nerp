@@ -7,7 +7,7 @@ urlpatterns = patterns('',
                        url(r'^item/delete/(?P<id>[0-9]+)$', views.delete_inventory_item, name='delete_inventory_item'),
                        url(r'^(?P<id>[0-9]+)/$', views.item_form, name='update_inventory_item'),
 
-                       url(r'^categories/$', views.list_categories, name='list_inventory_category'),
+                       url(r'^categories/$', views.list_categories, name='list_inventory_categories'),
                        url(r'^category/create/$', views.create_category, name='create_inventory_category'),
                        url(r'^category/(?P<id>[0-9]+)/$', views.update_category, name='update_inventory_category'),
                        url(r'^category/(?P<id>[0-9]+)/delete$', views.delete_category,
