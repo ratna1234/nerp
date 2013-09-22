@@ -10,6 +10,7 @@ class ItemForm(KOModelForm):
 
     class Meta:
         model = Item
+        exclude = ['account']
 
 
 class CategoryForm(KOModelForm):

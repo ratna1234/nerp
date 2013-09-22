@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <li class="active"><a href="{% url "list_all_items" %}">Inventory Items</a></li>
+    <li class="active" xmlns="http://www.w3.org/1999/html"><a href="{% url "list_all_items" %}">Inventory Items</a></li>
     <span class="divider"><i class="icon-angle-right"></i></span>
     <li class="active">{{ scenario }} Inventory Item</li>
 {% endblock %}
@@ -56,11 +56,14 @@
 
         <div class="row">
             <div class="span12">
-                <input type="submit" value="Submit" class="btn"/>
+                <button type="submit" value="Submit" class="small secondary button"/>
+                Submit</button>
                 {% if scenario = 'Update' %}
-                    <a class="btn" href="{% url 'delete_inventory_item' form.instance.id %}">Delete!</a>
+                    <a class="small secondary button"
+                       href="{% url 'delete_inventory_item' form.instance.id %}">Delete!</a>
                 {% endif %}
-                <a class="btn" target="_blank" href="{% url 'create_inventory_category' %}">New Inventory Category</a>
+                <a class="small secondary button" target="_blank" href="{% url 'create_inventory_category' %}">New
+                    Inventory Category</a>
             </div>
         </div>
     </form>

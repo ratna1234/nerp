@@ -20,52 +20,54 @@
 
     <div class="widget-box collapsed">
         <div class="widget-header">
-            <div class="widget-toolbar" >
+            <div class="widget-toolbar">
                 <a href="#" data-action="collapse">
                     <i class="icon-chevron-up"></i>
                 </a>
             </div>
             <h4>Search</h4>
         </div>
-        <div class="widget-body"><div class="widget-body-inner">
-            <div class="widget-main">
-                <br>
-                <form action="" method="get">
-                    {{ objects.form.as_p }}
-                    <input type="submit" value="Search" class="btn"/>
-                </form>
-            </div><!-- /widget-main -->
-        </div></div><!-- /widget-body -->
-    </div>    
+        <div class="widget-body">
+            <div class="widget-body-inner">
+                <div class="widget-main">
+                    <br>
+
+                    <form action="" method="get">
+                        {{ objects.form.as_p }}
+                        <input type="submit" value="Search" class="btn"/>
+                    </form>
+                </div>
+                <!-- /widget-main -->
+            </div>
+        </div>
+        <!-- /widget-body -->
+    </div>
     <br>
 
     {% autosort objects.qs as sorted_objects %}
-    {% autopaginate sorted_objects 25 as paginated_objects %}
+    {% autopaginate objects.qs 25 as paginated_objects %}
 
-    <table class="table table-bordered table-striped table-sortable">
+    <table class="table-bordered">
         <thead>
         <th>{% anchor code 'Code' %}</th>
         <th>{% anchor name 'Name' %}</th>
         <th>{% anchor category 'Category' %}</th>
-{#        <th>{% anchor purchase_price 'Purchase Price' %}</th>#}
-{#        <th>{% anchor sales_price 'Sales Price' %}</th>#}
-        <th>{% anchor sales_tax_scheme 'Sales Tax Scheme' %}</th>
-        <th>Actions</th>
+        <th>{% anchor purchase_price 'Purchase Price' %}</th>
         </thead>
         <tbody>
         {% for item in paginated_objects %}
             <tr>
                 <td>
-                    {{ item.code }}
+                    <a href="{% url 'update_inventory_item' item.id %}">{{ item.code }}</a>
                 </td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.category }}</td>
-{#                <td>{{ item.purchase_price }}</td>#}
-{#                <td>{{ item.sales_price }}</td>#}
-                <td>{{ item.sales_tax_scheme }}</td>
                 <td>
-                    <a href="{% url 'update_inventory_item' item.id %}">Edit</a>
+                    <a href="{% url 'update_inventory_item' item.id %}">{{ item.name }}</a>
                 </td>
+
+                <td>
+                    <a href="{% url 'update_inventory_category' item.category.id %}">{{ item.category.name }}</a>
+                </td>
+                <td>{{ item.purchase_price }}</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -73,6 +75,6 @@
 
     {% paginate %}
 
-    <a class="btn" href="{% url 'create_inventory_item' %}">New Inventory Item</a>
+    <a class="small secondary button" href="{% url 'create_inventory_item' %}">New Inventory Item</a>
 
 {% endblock %}
