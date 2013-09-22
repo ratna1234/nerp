@@ -9,12 +9,12 @@
     <meta name="viewport" content="width=device-width"/>
 
     <title>{% block title %}{% endblock %}</title>
-    {#    <script src="{{ STATIC_URL }}js/vendors/jquery.min.js"></script>#}
+    <script src="{{ STATIC_URL }}js/vendors/jquery.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/foundation.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css">
 
-    <script src="{{ STATIC_URL }}js/vendor/custom.modernizr.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/custom.modernizr.js"></script>
 
     {% block head_end %}{% endblock %}
     {% load filters %}
@@ -98,11 +98,11 @@
     </div>
 </footer>
 
-<script>
-    document.write('<script src={{ STATIC_URL }}js/vendor/' +
-            ('__proto__' in {} ? 'zepto' : 'jquery') +
-            '.js><\/script>')
-</script>
+{#<script>#}
+{#    document.write('<script src={{ STATIC_URL }}js/vendor/' +#}
+{#            ('__proto__' in {} ? 'zepto' : 'jquery') +#}
+{#            '.js><\/script>')#}
+{#</script>#}
 <script src="{{ STATIC_URL }}js/foundation.min.js"></script>
 <script>
     $(document).foundation();

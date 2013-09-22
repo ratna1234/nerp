@@ -5,14 +5,36 @@
 {% load i18n %}
 {% block content %}
 
-    {% ifappexists inventory %}
-        <div class="panel">
-        <h3 class="center">{% trans 'Inventory' %}</h3>
-        {% ifusergroup 'Store Keeper' %}
-            {% trans 'Demand Form' %}
-        {% endifusergroup %}
-    {% endifappexists %}
+    <div class="section-container accordion" data-section="accordion">
+        {% ifappexists inventory %}
+            <section>
+                <p class="title" data-section-title><a href="#">{% trans 'Accounting' %}</a></p>
 
-</div>
+                <div class="content" data-section-content>
+                    {% ifusergroup 'Store Keeper' %}
+                        {% trans 'Demand Form' %}
+                    {% endifusergroup %}
+                </div>
+            </section>
+        {% endifappexists %}
+        {% ifappexists inventory %}
+            <section>
+                <p class="title" data-section-title><a href="#">{% trans 'Inventory' %}</a></p>
+
+                <div class="content" data-section-content>
+                    {% ifusergroup 'Store Keeper' %}
+                        {% trans 'Demand Form' %}
+                    {% endifusergroup %}
+                </div>
+            </section>
+        {% endifappexists %}
+    </div>
+
+
+
+
+
+
+
 
 {% endblock %}
