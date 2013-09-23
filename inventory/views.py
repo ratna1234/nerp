@@ -1,5 +1,6 @@
 import json
 from datetime import date
+from django.http import HttpResponse
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
@@ -9,7 +10,7 @@ from forms import ItemForm, CategoryForm, DemandForm
 from inventory.filters import InventoryItemFilter
 from inventory.models import Demand, DemandRow, delete_rows
 from app.lib import invalid, save_model
-from inventory.serializers import DemandSerializer
+from inventory.serializers import DemandSerializer, ItemSerializer
 
 
 @login_required
@@ -51,6 +52,13 @@ def list_inventory_items(request):
     objects = Item.objects.filter()
     filtered_items = InventoryItemFilter(request.GET, queryset=objects)
     return render(request, 'list_inventory_items.html', {'objects': filtered_items})
+
+
+@login_required
+def items_as_json(request):
+    items = Item.objects.all()
+    items_data = ItemSerializer(items).data
+    return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
 @login_required
