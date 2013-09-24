@@ -8,8 +8,11 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class DemandRowSerializer(serializers.ModelSerializer):
+    item_id = serializers.Field(source='item.id')
+
     class Meta:
         model = DemandRow
+        exclude = ['item']
 
 
 class DemandSerializer(serializers.ModelSerializer):
