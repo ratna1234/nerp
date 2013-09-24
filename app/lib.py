@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import os
+import re
+
 from django import forms
-# from ledger.models import Transaction
 
 
 class ExtFileField(forms.FileField):
@@ -114,3 +117,25 @@ def add(*args):
             arg = 0
         total += float(arg)
     return total
+
+
+def digitize(n):
+    print n
+    d = {
+        '०': '0',
+        '१': '1',
+        '२': '2',
+        '३': '3',
+        '४': '4',
+        '५': '5',
+        '६': '6',
+        '७': '7',
+        '८': '8',
+        '९': '9'
+    }
+    pattern = re.compile('|'.join(d.keys()))
+    result = pattern.sub(lambda x: d[x.group()], unicode(n))
+    print result
+    return float(result)
+    # devanagari_nums = ('०','१','२','३','४','५','६','७','८','९')
+    # return ''.join(devanagari_nums[int(digit)] for digit in str(n))

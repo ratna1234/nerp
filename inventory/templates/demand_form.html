@@ -4,7 +4,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <span>Demand Form</span>
+    <span>{{ scenario }} Demand Form</span>
 {% endblock %}
 
 {% block head_end %}
@@ -22,12 +22,6 @@
 {% endblock %}
 
 {% block content %}
-
-    {{ data|jsonify }}
-
-    <h1>
-        {{ scenario }} Demand Form
-    </h1>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}

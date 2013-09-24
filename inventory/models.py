@@ -9,7 +9,7 @@ from django.dispatch.dispatcher import receiver
 from django.db.models import F
 from mptt.models import MPTTModel, TreeForeignKey
 
-from app.lib import zero_for_none, none_for_zero
+from app.lib import zero_for_none, none_for_zero, digitize
 from users.models import User
 
 
@@ -247,3 +247,10 @@ class DemandRow(models.Model):
     release_quantity = models.FloatField()
     remarks = models.CharField(max_length=254, blank=True, null=True)
     demand = models.ForeignKey(Demand, related_name='rows')
+
+    def save(self, *args, **kwargs):
+        self.quantity = digitize(self.quantity)
+        super(DemandRow, self).save(*args, **kwargs)
+
+
+
