@@ -241,9 +241,9 @@ class Demand(models.Model):
 class DemandRow(models.Model):
     sn = models.IntegerField()
     item = models.ForeignKey(Item)
-    specification = models.CharField(max_length=254)
+    specification = models.CharField(max_length=254, blank=True, null=True)
     quantity = models.FloatField()
     unit = models.CharField(max_length=50)
     release_quantity = models.FloatField()
-    remarks = models.CharField(max_length=254)
+    remarks = models.CharField(max_length=254, blank=True, null=True)
     demand = models.ForeignKey(Demand, related_name='rows')
