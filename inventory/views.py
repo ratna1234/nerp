@@ -1,9 +1,10 @@
 import json
 from datetime import date
-from django.http import HttpResponse
 
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
 from models import Item, Category
 from forms import ItemForm, CategoryForm, DemandForm
@@ -116,6 +117,7 @@ def delete_category(request, id):
     return redirect('/inventory/categories/')
 
 
+@login_required
 def demand_form(request, id=None):
     if id:
         object = get_object_or_404(Demand, id=id)
@@ -125,23 +127,21 @@ def demand_form(request, id=None):
         scenario = 'Create'
     if request.POST:
         form = DemandForm(request.POST, instance=object)
-        import pdb
-        # pdb.set_trace()
-        print form['release_no'].errors.as_text()
+        table = json.loads(request.POST['table_model'])
         if form.is_valid():
             object = form.save(commit=False)
             object.save()
         if id or form.is_valid():
-            table = json.loads(request.POST['table_model'])
-
             model = DemandRow
             for index, row in enumerate(table.get('rows')):
-                if invalid(row, ['amount']):
+                print row
+                if invalid(row, ['item_id', 'quantity', 'unit', 'release_quantity']):
                     continue
-                values = {'sn': index + 1, 'cheque_number': row.get('cheque_number'),
-                          'cheque_date': row.get('cheque_date'),
-                          'drawee_bank': row.get('drawee_bank'), 'drawee_bank_address': row.get('drawee_bank_address'),
-                          'amount': row.get('amount'), 'cheque_deposit': object}
+                values = {'sn': index + 1, 'item_id': row.get('item_id'),
+                          'specification': row.get('specification'),
+                          'quantity': row.get('quantity'), 'unit': row.get('unit'),
+                          'release_quantity': row.get('release_quantity'), 'remarks': row.get('remarks'),
+                          'demand': object}
                 submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
                 # set_transactions(submodel, request.POST.get('date'),
                 #                  ['dr', bank_account, row.get('amount')],
@@ -150,8 +150,50 @@ def demand_form(request, id=None):
                 if not created:
                     submodel = save_model(submodel, values)
             delete_rows(table.get('deleted_rows'), model)
-            return redirect('/bank/cheque-deposits/')
+            return redirect(reverse('list_inventory_items'))
     else:
         form = DemandForm(instance=object)
     object_data = DemandSerializer(object).data
     return render(request, 'demand_form.html', {'form': form, 'data': object_data, 'scenario': scenario})
+
+
+@login_required
+def save_demand(request):
+    params = json.loads(request.body)
+    dct = {'rows': {}}
+    object_values = {'release_no': params.get('release_no'), 'fiscal_year': params.get('fiscal_year'),
+                     'date': params.get('date'), 'purpose': params.get('purpose'),
+                     'demandee_id': params.get('demandee')}
+    if params.get('id'):
+        object = Demand.objects.get(id=params.get('id'))
+    else:
+        object = Demand()
+    object = save_model(object, object_values)
+    dct['id'] = object.id
+    model = DemandRow
+    for index, row in enumerate(params.get('table_view').get('rows')):
+        print row
+        if invalid(row, ['item_id', 'quantity', 'unit', 'release_quantity']):
+            continue
+        values = {'sn': index + 1, 'item_id': row.get('item_id'),
+                  'specification': row.get('specification'),
+                  'quantity': row.get('quantity'), 'unit': row.get('unit'),
+                  'release_quantity': row.get('release_quantity'), 'remarks': row.get('remarks'),
+                  'demand': object}
+        submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
+        # set_transactions(submodel, request.POST.get('date'),
+        #                  ['dr', bank_account, row.get('amount')],
+        #                  ['cr', benefactor, row.get('amount')],
+        # )
+        if not created:
+            submodel = save_model(submodel, values)
+        dct['rows'][index] = submodel.id
+    delete_rows(params.get('table_view').get('deleted_rows'), model)
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+
+@login_required
+def delete_demand(request, id):
+    object = get_object_or_404(Demand, id=id)
+    object.delete()
+    return redirect(reverse('list_inventory_items'))
