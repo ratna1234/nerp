@@ -235,7 +235,7 @@ class Demand(models.Model):
     fiscal_year = models.CharField(max_length=10)
     demandee = models.ForeignKey(User)
     date = models.DateField()
-    purpose = models.TextField()
+    purpose = models.CharField(max_length=254)
 
 
 class DemandRow(models.Model):
