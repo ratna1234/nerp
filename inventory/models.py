@@ -232,7 +232,7 @@ def _transaction_delete(sender, instance, **kwargs):
 
 class Demand(models.Model):
     release_no = models.IntegerField()
-    fiscal_year = models.CharField(max_length=5)
+    fiscal_year = models.CharField(max_length=10)
     demandee = models.ForeignKey(User)
     date = models.DateField()
     purpose = models.TextField()

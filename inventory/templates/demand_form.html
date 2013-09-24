@@ -15,6 +15,7 @@
     <script>
         $(document).ready(function () {
             {% load filters %}
+            {% load i18n %}
             ko.applyBindings(new DemandViewModel({{data|jsonify}}));
         });
     </script>
@@ -23,50 +24,6 @@
 {% block content %}
 
     {{ data|jsonify }}
-    <div data-bind="with:demand_rows">
-
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th class="span1">SN</th>
-                <th class="span2">Item Name</th>
-                <th class="span2">Specification</th>
-                <th class="span3">Item Quantity</th>
-                <th class="span3">Unit</th>
-                <th class="span2">Released Item Quantity</th>
-                <th class="span2">Inventory Account No.</th>
-                <th class="span2">Remarks</th>
-                <th class="span1"></th>
-            </tr>
-            </thead>
-
-            <tbody id="particulars-body">
-            <!-- ko foreach: rows -->
-            <tr>
-                <td>
-                    <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
-                </td>
-                <td>
-                    <select class="span12 item-selector"
-                            data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: 'Choose an item...', select2: {},  event: {change: $root.item_changed}"></select>
-                </td>
-                <td data-bind="editableText: specification"></td>
-                <td data-bind="editableText: quantity, numeric: true"></td>
-                <td data-bind="editableText: unit"></td>
-                <td data-bind="editableText: release_quantity, numeric: true"></td>
-                <td data-bind="text: inventory_account_id">2</td>
-                <td data-bind="editableText: remarks"></td>
-                <td>
-                    <button class="close small secondary" data-bind="click: $parent.removeRow">x</button>
-                </td>
-            </tr>
-            <!-- /ko -->
-            </tbody>
-        </table>
-        <a class="small secondary button" data-bind="click: addRow">
-            <i class="icon-plus-sign"></i> Add New Row
-        </a>
-    </div>
 
     <h1>
         {{ scenario }} Demand Form
@@ -75,12 +32,75 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        {{ form.as_p }}
+        <div class="one-line row">
+    <span class="column large-8">
+        &nbsp;
+    </span>
+    <span class="column large-4">
+        {% trans 'Release No.' %}:
+        {{ form.release_no }}
 
-        <button type="submit" class="small secondary button">Save</button>
-        {% if scenario = 'Update' %}
-            <a class="small secondary button" href="{% url 'delete_demand_form' form.instance.id %}">Delete!</a>
-        {% endif %}
+    </span>
+
+    <span class="right column large-4">
+        {% trans 'Fiscal Year' %}:
+        {{ form.fiscal_year }}
+    </span>
+
+
+        </div>
+
+
+        <div data-bind="with:demand_rows">
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="span1">SN</th>
+                    <th class="span2">Item Name</th>
+                    <th class="span2">Specification</th>
+                    <th class="span3">Item Quantity</th>
+                    <th class="span3">Unit</th>
+                    <th class="span2">Released Item Quantity</th>
+                    <th class="span2">Inventory Account No.</th>
+                    <th class="span2">Remarks</th>
+                    <th class="span1"></th>
+                </tr>
+                </thead>
+
+                <tbody id="particulars-body">
+                <!-- ko foreach: rows -->
+                <tr>
+                    <td>
+                        <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
+                    </td>
+                    <td>
+                        <select class="span12 item-selector"
+                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: 'Choose an item...', select2: {},  event: {change: $root.item_changed}"></select>
+                    </td>
+                    <td data-bind="editableText: specification"></td>
+                    <td data-bind="editableText: quantity, numeric: true"></td>
+                    <td data-bind="editableText: unit"></td>
+                    <td data-bind="editableText: release_quantity, numeric: true"></td>
+                    <td data-bind="text: inventory_account_id">2</td>
+                    <td data-bind="editableText: remarks"></td>
+                    <td>
+                        <button class="close tiny secondary" data-bind="click: $parent.removeRow">x</button>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                </tbody>
+            </table>
+            <a class="small secondary button" data-bind="click: addRow">
+                Add New Row
+            </a>
+            <button type="submit" class="small secondary button">Save</button>
+            {% if scenario = 'Update' %}
+                <a class="small secondary button" href="{% url 'delete_demand_form' form.instance.id %}">Delete!</a>
+            {% endif %}
+        </div>
+
+
     </form>
 
 
