@@ -55,7 +55,7 @@
         </div>
 
 
-        <div data-bind="with:demand_rows">
+        <div data-bind="with:table_view">
 
             <table class="table table-bordered">
                 <thead>
@@ -72,7 +72,7 @@
                 </tr>
                 </thead>
 
-                <tbody id="particulars-body">
+                <tbody id="tbody">
                 <!-- ko foreach: rows -->
                 <tr>
                     <td>
@@ -121,7 +121,7 @@
         </div>
 
 
-        <button type="submit" class="small secondary button">Save</button>
+        <button type="submit" class="small secondary button" data-bind="click: save">Save</button>
         {% if scenario = 'Update' %}
             <a class="small secondary button" href="{% url 'delete_demand_form' form.instance.id %}">Delete!</a>
         {% endif %}

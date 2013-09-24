@@ -15,6 +15,10 @@ urlpatterns = patterns('',
                            name='delete_inventory_category'),
 
                        url(r'^demand/$', views.demand_form, name='create_demand_form'),
+                       url(r'^demand/(?P<id>[0-9]+)/$', views.demand_form, name='update_demand_form'),
+                       url(r'^save/demand_form/$', views.save_demand, name='save_demand_form'),
+                       url(r'^demand/(?P<id>[0-9]+)/delete$', views.delete_demand,
+                           name='delete_demand_form'),
 
 )
 
