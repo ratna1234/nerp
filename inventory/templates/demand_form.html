@@ -23,15 +23,15 @@
 
 {% block content %}
 
-{#    <form action="/i18n/setlang/" method="post">#}
-{#        <input name="next" type="hidden" value="."/>#}
-{#        <select name="language">#}
-{#            {% for lang in LANGUAGES %}#}
-{#                <option value="{{ lang.0 }}">{{ lang.1 }}</option>#}
-{#            {% endfor %}#}
-{#        </select>#}
-{#        <input type="submit" value="Go"/>#}
-{#    </form>#}
+    <form action="/i18n/setlang/" method="post">
+        <input name="next" type="hidden" value="."/>
+        <select name="language">
+            {% for lang in LANGUAGES %}
+                <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Go"/>
+    </form>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
