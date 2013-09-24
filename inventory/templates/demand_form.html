@@ -32,6 +32,8 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
+        <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
+
         <div class="one-line row">
     <span class="column large-8">
         &nbsp;
@@ -39,12 +41,14 @@
     <span class="column large-4">
         {% trans 'Release No.' %}:
         {{ form.release_no }}
+        {{ form.release_no.errors }}
 
     </span>
 
     <span class="right column large-4">
         {% trans 'Fiscal Year' %}:
         {{ form.fiscal_year }}
+        {{ form.fiscal_year.errors }}
     </span>
 
 
@@ -85,7 +89,7 @@
                     <td data-bind="text: inventory_account_id">2</td>
                     <td data-bind="editableText: remarks"></td>
                     <td>
-                        <button class="close tiny secondary" data-bind="click: $parent.removeRow">x</button>
+                        <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
                     </td>
                 </tr>
                 <!-- /ko -->
@@ -94,11 +98,33 @@
             <a class="small secondary button" data-bind="click: addRow">
                 Add New Row
             </a>
-            <button type="submit" class="small secondary button">Save</button>
-            {% if scenario = 'Update' %}
-                <a class="small secondary button" href="{% url 'delete_demand_form' form.instance.id %}">Delete!</a>
-            {% endif %}
         </div>
+
+        <div class="row inline-fields">
+            <div class="column large-8">
+                <div>{% trans "Demandee's Signature" %}:-</div>
+                <div>{% trans "Name" %}:-{{ form.demandee }}</div>
+                <div>{% trans "Date" %}:- {{ form.date }}</div>
+                <div>{% trans "Purpose" %}:-{{ form.purpose }}</div>
+                <div>{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
+                <div>{% trans "Date" %}:-</div>
+            </div>
+
+            <div class="column large-8">
+                <div>{% trans "(a)" %} {% trans "Buy from market" %}</div>
+                <div>{% trans "(b)" %} {% trans "Lend from store" %}</div>
+                <div>{% trans "Signature of the orderer" %}:-</div>
+                <div>{% trans "Date" %}:-</div>
+                <div>{% trans "Signature of the receiver" %}:-</div>
+                <div>{% trans "Date" %}:-</div>
+            </div>
+        </div>
+
+
+        <button type="submit" class="small secondary button">Save</button>
+        {% if scenario = 'Update' %}
+            <a class="small secondary button" href="{% url 'delete_demand_form' form.instance.id %}">Delete!</a>
+        {% endif %}
 
 
     </form>

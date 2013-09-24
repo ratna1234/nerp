@@ -125,13 +125,17 @@ def demand_form(request, id=None):
         scenario = 'Create'
     if request.POST:
         form = DemandForm(request.POST, instance=object)
+        import pdb
+        # pdb.set_trace()
+        print form['release_no'].errors.as_text()
         if form.is_valid():
             object = form.save(commit=False)
             object.save()
         if id or form.is_valid():
-            rows = json.loads(request.POST['rows'])
+            table = json.loads(request.POST['table_model'])
+
             model = DemandRow
-            for index, row in enumerate(rows.get('rows')):
+            for index, row in enumerate(table.get('rows')):
                 if invalid(row, ['amount']):
                     continue
                 values = {'sn': index + 1, 'cheque_number': row.get('cheque_number'),
@@ -145,8 +149,9 @@ def demand_form(request, id=None):
                 # )
                 if not created:
                     submodel = save_model(submodel, values)
-            delete_rows(rows.get('deleted_rows'), model)
+            delete_rows(table.get('deleted_rows'), model)
             return redirect('/bank/cheque-deposits/')
-    form = DemandForm(instance=object)
+    else:
+        form = DemandForm(instance=object)
     object_data = DemandSerializer(object).data
     return render(request, 'demand_form.html', {'form': form, 'data': object_data, 'scenario': scenario})
