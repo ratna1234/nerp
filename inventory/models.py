@@ -8,6 +8,7 @@ from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 from django.db.models import F
 from mptt.models import MPTTModel, TreeForeignKey
+from django.utils.translation import ugettext as _
 
 from app.lib import zero_for_none, none_for_zero, digitize
 from users.models import User
@@ -81,7 +82,7 @@ class Item(models.Model):
     account = models.OneToOneField(InventoryAccount, related_name='item')
     type_choices = [('consumable', 'Consumable'), ('non-consumable', 'Non Consumable')]
     type = models.CharField(choices=type_choices, max_length=15, default='consumable')
-    unit = models.CharField(max_length=50, default=u'थान')
+    unit = models.CharField(max_length=50, default=_('pieces'))
     vattable = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
@@ -250,6 +251,7 @@ class DemandRow(models.Model):
 
     def save(self, *args, **kwargs):
         self.quantity = digitize(self.quantity)
+        self.release_quantity = digitize(self.release_quantity)
         super(DemandRow, self).save(*args, **kwargs)
 
 

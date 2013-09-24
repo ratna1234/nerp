@@ -1,21 +1,15 @@
 {% extends base_template %}
+{% load i18n %}
 
-{% block title %}{{ scenario }} Inventory Item {% endblock %}
+{% block title %}{{ scenario }} {% trans 'Inventory' %} {% trans 'Item' %} {% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <li class="active" xmlns="http://www.w3.org/1999/html"><a href="{% url "list_inventory_items" %}">Inventory
-        Items</a></li>
-    <span class="divider"><i class="icon-angle-right"></i></span>
-    <li class="active">{{ scenario }} Inventory Item</li>
+    <a href="{% url "list_inventory_items" %}">{% trans 'Inventory' %} {% trans 'Items' %}</a>
+    <span>{% trans scenario %} {% trans 'Inventory' %} {% trans 'Item' %}</span>
 {% endblock %}
 
 {% block content %}
-    <div class="page-header position-relative">
-        <h1>
-            {{ scenario }} Inventory Item
-        </h1>
-    </div>
 
     {{ form.non_field_errors }}
     {{ form.errors }}
@@ -24,14 +18,15 @@
         {{ form.as_p }}
         <div class="row">
             <div class="span12">
-                <button type="submit" value="Submit" class="small secondary button"/>
-                Submit</button>
+                <button type="submit" value="Submit" class="small secondary button">
+                    {% trans 'Submit' %}</button>
                 {% if scenario = 'Update' %}
                     <a class="small secondary button"
-                       href="{% url 'delete_inventory_item' form.instance.id %}">Delete!</a>
+                       href="{% url 'delete_inventory_item' form.instance.id %}">{% trans 'Delete' %}!</a>
                 {% endif %}
-                <a class="small secondary button" target="_blank" href="{% url 'create_inventory_category' %}">New
-                    Inventory Category</a>
+                <a class="small secondary button" target="_blank"
+                   href="{% url 'create_inventory_category' %}">{% trans 'New' %}
+                    {% trans 'Inventory' %} {% trans 'Category' %}</a>
             </div>
         </div>
     </form>

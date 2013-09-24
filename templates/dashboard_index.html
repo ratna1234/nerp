@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-
-{% block title %}Dashboard{% endblock %}
-{% load filters %}
 {% load i18n %}
 
+{% block title %}{% trans 'Dashboard' %}{% endblock %}
+{% load filters %}
+
 {% block breadcrumbs %}
-    <a href="#">Dashboard</a>
+    <a href="#">{% trans 'Dashboard' %}</a>
 {% endblock %}
 
 {% block content %}

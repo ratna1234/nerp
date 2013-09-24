@@ -1,19 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Inventory Categories{% endblock %}
+{% block title %}{% trans 'Inventory' %} {% trans 'Categories' %}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <li class="active"><a href="{% url "list_inventory_categories" %}">Inventory Categories</a></li>
+    <a href="{% url "list_inventory_categories" %}">{% trans 'Inventory' %} {% trans 'Categories' %}</a>
 {% endblock %}
 
 {% block content %}
-
-    <div class="page-header position-relative">
-        <h1>
-            Inventory Categories
-        </h1>
-    </div>
 
     {% load mptt_tags %}
     <ul>
@@ -29,6 +24,7 @@
         {% endrecursetree %}
     </ul>
 
-    <a class="small secondary button" href="{% url 'create_inventory_category' %}">Create New Category</a>
+    <a class="small secondary button"
+       href="{% url 'create_inventory_category' %}">{% trans 'New' %} {% trans 'Category' %}</a>
 
 {% endblock %}

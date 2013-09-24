@@ -119,6 +119,7 @@ def delete_category(request, id):
 
 @login_required
 def demand_form(request, id=None):
+    print request.LANGUAGE_CODE
     if id:
         object = get_object_or_404(Demand, id=id)
         scenario = 'Update'
@@ -154,7 +155,10 @@ def demand_form(request, id=None):
     else:
         form = DemandForm(instance=object)
     object_data = DemandSerializer(object).data
-    return render(request, 'demand_form.html', {'form': form, 'data': object_data, 'scenario': scenario})
+    from app import settings
+
+    return render(request, 'demand_form.html',
+                  {'form': form, 'data': object_data, 'scenario': scenario, 'LANGUAGES': settings.LANGUAGES})
 
 
 @login_required

@@ -1,19 +1,16 @@
 {% extends base_template %}
+{% load i18n %}
 
-{% block title %} Create Inventory Category {% endblock %}
+{% block title %} {% trans 'New' %} {% trans 'Inventory' %} {% trans 'Category' %} {% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <a href="{% url "list_inventory_categories" %}">Inventory Categories</a>
-    <span>Create Inventory Category</span>
+    <a href="{% url "list_inventory_categories" %}">{% trans 'Inventory' %} {% trans 'Categories' %}</a>
+    <span>{% trans 'New' %} {% trans 'Inventory' %} {% trans 'Category' %}</span>
 {% endblock %}
 
 {% block content %}
-    <div class="page-header position-relative">
-        <h1>
-            Create Inventory Category
-        </h1>
-    </div>
+
     <form method="post">
         {% csrf_token %}
 
@@ -21,7 +18,7 @@
 
         <div class="row">
             <div class="span12">
-                <input type="submit" value="Submit" class="small secondary button"/>
+                <input type="submit" value="{% trans 'Submit' %}" class="small secondary button"/>
             </div>
         </div>
     </form>

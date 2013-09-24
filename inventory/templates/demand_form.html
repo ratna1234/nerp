@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}{{ scenario }} Demand Form{% endblock %}
+{% block title %}{% trans scenario %} {% trans 'Demand Form' %}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <span>{{ scenario }} Demand Form</span>
+    <span> {% trans scenario %} {% trans 'Demand Form' %}</span>
 {% endblock %}
 
 {% block head_end %}
@@ -15,13 +16,22 @@
     <script>
         $(document).ready(function () {
             {% load filters %}
-            {% load i18n %}
             ko.applyBindings(new DemandViewModel({{data|jsonify}}));
         });
     </script>
 {% endblock %}
 
 {% block content %}
+
+{#    <form action="/i18n/setlang/" method="post">#}
+{#        <input name="next" type="hidden" value="."/>#}
+{#        <select name="language">#}
+{#            {% for lang in LANGUAGES %}#}
+{#                <option value="{{ lang.0 }}">{{ lang.1 }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#        <input type="submit" value="Go"/>#}
+{#    </form>#}
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -55,13 +65,13 @@
                 <thead>
                 <tr>
                     <th class="span1">SN</th>
-                    <th class="span2">Item Name</th>
-                    <th class="span2">Specification</th>
-                    <th class="span3">Item Quantity</th>
-                    <th class="span3">Unit</th>
-                    <th class="span2">Released Item Quantity</th>
-                    <th class="span2">Inventory Account No.</th>
-                    <th class="span2">Remarks</th>
+                    <th class="span2">{% trans 'Item Name' %}</th>
+                    <th class="span2">{% trans 'Specification' %}</th>
+                    <th class="span3">{% trans 'Item Quantity' %}</th>
+                    <th class="span3">{% trans 'Unit' %}</th>
+                    <th class="span2">{% trans 'Released Item Quantity' %}</th>
+                    <th class="span2">{% trans 'Inventory Account No.' %}</th>
+                    <th class="span2">{% trans 'Remarks' %}</th>
                     <th class="span1"></th>
                 </tr>
                 </thead>
@@ -90,7 +100,7 @@
                 </tbody>
             </table>
             <a class="small secondary button" data-bind="click: addRow">
-                Add New Row
+                {% trans 'Add New Row' %}
             </a>
         </div>
 
@@ -115,13 +125,12 @@
         </div>
 
 
-        <button type="submit" class="small secondary button" data-bind="click: save">Save</button>
+        <button type="submit" class="small secondary button" data-bind="click: save">{% trans 'Save' %}</button>
         {% if scenario = 'Update' %}
-            <a class="small secondary button" href="{% url 'delete_demand_form' form.instance.id %}">Delete!</a>
+            <a class="small secondary button"
+               href="{% url 'delete_demand_form' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}
 
-
     </form>
-
 
 {% endblock %}

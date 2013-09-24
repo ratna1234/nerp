@@ -1,19 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Inventory Items{% endblock %}
+{% block title %}{% trans 'Inventory' %} {% trans 'Items' %}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <a href="{% url "list_inventory_items" %}">Inventory Items</a>
+    <a href="{% url "list_inventory_items" %}">{% trans 'Inventory' %} {% trans 'Items' %}</a>
 {% endblock %}
 
 {% block content %}
-
-    <div class="page-header position-relative">
-        <h1>
-            Inventory Items
-        </h1>
-    </div>
 
     {% load pagination_tags %}
     {% load sorting_tags %}
@@ -24,7 +19,7 @@
                 <a href="#" data-action="collapse">
                 </a>
             </div>
-            <h4>Search</h4>
+            <h4>{% trans 'Search' %}</h4>
         </div>
         <div class="widget-body">
             <div class="widget-body-inner">
@@ -33,7 +28,7 @@
 
                     <form action="" method="get">
                         {{ objects.form.as_p }}
-                        <input type="submit" value="Search" class="btn"/>
+                        <input type="submit" value="{% trans 'Search' %}" class="btn"/>
                     </form>
                 </div>
                 <!-- /widget-main -->
@@ -48,7 +43,7 @@
 
     <table class="table-bordered">
         <thead>
-        <th>{% anchor code 'Code' %}</th>
+        <th>{% anchor code {% trans 'Code' %} %}</th>
         <th>{% anchor name 'Name' %}</th>
         <th>{% anchor category 'Category' %}</th>
         <th>{% anchor purchase_price 'Purchase Price' %}</th>
@@ -76,6 +71,7 @@
 
     {% paginate %}
 
-    <a class="small secondary button" href="{% url 'create_inventory_item' %}">New Inventory Item</a>
+    <a class="small secondary button"
+       href="{% url 'create_inventory_item' %}">{% trans 'New' %} {% trans 'Inventory' %} {% trans 'Item' %}</a>
 
 {% endblock %}
