@@ -12,7 +12,7 @@ from forms import ItemForm, CategoryForm, DemandForm, PartyForm
 from inventory.filters import InventoryItemFilter
 from inventory.models import Demand, DemandRow, delete_rows
 from app.lib import invalid, save_model
-from inventory.serializers import DemandSerializer, ItemSerializer
+from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer
 
 
 @login_required
@@ -256,3 +256,10 @@ def delete_party(request, id):
     object = get_object_or_404(Party, id=id)
     object.delete()
     return redirect(reverse('list_inventory_items'))
+
+
+@login_required
+def parties_as_json(request):
+    objects = Party.objects.all()
+    objects_data = PartySerializer(objects).data
+    return HttpResponse(json.dumps(objects_data), mimetype="application/json")

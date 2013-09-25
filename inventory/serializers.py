@@ -1,10 +1,15 @@
 from rest_framework import serializers
-from inventory.models import Demand, DemandRow, Item
+from inventory.models import Demand, DemandRow, Item, Party
 
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
+
+
+class PartySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Party
 
 
 class DemandRowSerializer(serializers.ModelSerializer):
