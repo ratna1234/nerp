@@ -1,4 +1,6 @@
-from livesettings import config_register, ConfigurationGroup, StringValue
+# -*- coding: utf-8 -*-
+
+from livesettings import config_register, ConfigurationGroup, StringValue, LongStringValue
 from django.utils.translation import ugettext_lazy as _
 
 # First, setup a grup to hold all our possible configs
@@ -14,4 +16,12 @@ config_register(StringValue(
     description=_('Application Title'), # label for the value
     help_text=_("Displayed in header in all pages."), # help text
     default='Office Management System'        # value used if it have not been modified by the user interface
+))
+
+config_register(LongStringValue(
+    MYAPP_GROUP,
+    'header',
+    description=_('Header for Forms'),
+    help_text=_("Usually the name of the Office"),
+    default=''
 ))

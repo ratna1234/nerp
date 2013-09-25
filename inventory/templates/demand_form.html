@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load filters %}
+
 
 {% block title %}{% trans scenario %} {% trans 'Demand Form' %}{% endblock %}
 
@@ -15,13 +17,15 @@
     <script src="{{ STATIC_URL }}js/demand_form.js"></script>
     <script>
         $(document).ready(function () {
-            {% load filters %}
             ko.applyBindings(new DemandViewModel({{data|jsonify}}));
         });
     </script>
 {% endblock %}
 
 {% block content %}
+    <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '5' %}</span>
+    <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+    <h3 class="center">{% trans 'Demand Form' %}</h3>
 
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
