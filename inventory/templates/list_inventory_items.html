@@ -39,13 +39,13 @@
     <br>
 
     {% autosort objects.qs as sorted_objects %}
-    {% autopaginate objects.qs 25 as paginated_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
 
     <table class="table-bordered">
         <thead>
-        <th>{% anchor code {% trans 'Code' %} %}</th>
-        <th>{% anchor name 'Name' %}</th>
-        <th>{% anchor category 'Category' %}</th>
+        <th>{% anchor code %}</th>
+        <th>{% anchor name %}</th>
+        <th>{% anchor category %}</th>
         <th>{% anchor purchase_price 'Purchase Price' %}</th>
         </thead>
         <tbody>

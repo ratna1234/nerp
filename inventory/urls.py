@@ -19,6 +19,7 @@ urlpatterns = patterns('',
                        url(r'^save/demand_form/$', views.save_demand, name='save_demand_form'),
                        url(r'^demand/(?P<id>[0-9]+)/delete$', views.delete_demand,
                            name='delete_demand_form'),
+                       url(r'^demand-forms/$', views.list_demand_forms, name='list_demand_forms'),
 
 )
 

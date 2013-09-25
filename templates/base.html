@@ -43,9 +43,9 @@
                 {% endif %}
 
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}" class="secondary small button">{% trans 'Logout' %}</a></li>
+                    <li><a href="{% url 'logout' %}" class="secondary small button">{% trans 'Log out' %}</a></li>
                 {% else %}
-                    <li><a href="{% url 'login' %}" class="secondary small button">{% trans 'Login' %}</a></li>
+                    <li><a href="{% url 'login' %}" class="secondary small button">{% trans 'Log in' %}</a></li>
                 {% endif %}
                 <form action="/i18n/setlang/" method="post">
                     {% csrf_token %}

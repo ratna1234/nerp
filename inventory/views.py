@@ -51,9 +51,15 @@ def delete_inventory_item(request, id):
 
 @login_required
 def list_inventory_items(request):
-    objects = Item.objects.filter()
+    objects = Item.objects.all()
     filtered_items = InventoryItemFilter(request.GET, queryset=objects)
     return render(request, 'list_inventory_items.html', {'objects': filtered_items})
+
+
+@login_required
+def list_demand_forms(request):
+    objects = Demand.objects.all()
+    return render(request, 'list_demand_forms.html', {'objects': objects})
 
 
 @login_required

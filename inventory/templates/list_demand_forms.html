@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Demand' %} {% trans 'Forms' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load pagination_tags %}
+    {% load sorting_tags %}
+
+    {% autosort objects as sorted_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor release_no 'Release No.' %}</th>
+        <th>{% anchor demandee %}</th>
+        <th>{% anchor date %}</th>
+        <th>{% anchor purpose %}</th>
+        </thead>
+        <tbody>
+        {% for item in paginated_objects %}
+            <tr>
+                <td>
+                    <a href="{% url 'update_demand_form' item.id %}">{{ item.release_no }}</a>
+                </td>
+                <td>
+                    {{ item.demandee }}
+                </td>
+
+                <td>
+                    {{ item.date }}
+                </td>
+                <td>{{ item.purpose }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% paginate %}
+
+    <a class="small secondary button"
+       href="{% url 'create_inventory_item' %}">{% trans 'New' %} {% trans 'Inventory' %} {% trans 'Item' %}</a>
+
+{% endblock %}
