@@ -39,17 +39,31 @@
                 <li><a href="#" class="secondary small button">Link 2</a></li>
                 <li><a href="#" class="secondary small button">Link 3</a></li>
                 {% if user.is_admin %}
-                    <li><a href="/admin" class="secondary small button">Admin Panel</a></li>
+                    <li><a href="/admin" class="secondary small button">{% trans 'Admin Panel' %}</a></li>
                 {% endif %}
 
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}" class="secondary small button">Logout</a></li>
+                    <li><a href="{% url 'logout' %}" class="secondary small button">{% trans 'Logout' %}</a></li>
                 {% else %}
-                    <li><a href="{% url 'login' %}" class="secondary small button">Login</a></li>
+                    <li><a href="{% url 'login' %}" class="secondary small button">{% trans 'Login' %}</a></li>
                 {% endif %}
+                <form action="/i18n/setlang/" method="post">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="."/>
+                    <select name="language" onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}"
+                                    {% if LANGUAGE_CODE == lang.0 %}selected{% endif %}>{{ lang.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
             </ul>
+
         </div>
         <a href="/"><h3>{{ 'app'|setting:'title' }}</h3></a>
+
+
     </div>
 </div>
 

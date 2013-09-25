@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-24 17:40+0545\n"
+"POT-Creation-Date: 2013-09-25 12:56+0545\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,108 +19,112 @@ msgstr ""
 
 #: inventory/models.py:85
 msgid "pieces"
-msgstr ""
+msgstr "थान"
 
 #: inventory/templates/demand_form.html:4
-#: inventory/templates/demand_form.html:8 templates/dashboard_index.html:38
+#: inventory/templates/demand_form.html:8 templates/dashboard_index.html:40
 msgid "Demand Form"
-msgstr ""
+msgstr "माग फारम"
 
-#: inventory/templates/demand_form.html:36
+#: inventory/templates/demand_form.html:46
 msgid "Release No."
-msgstr ""
+msgstr "निकासी न."
 
-#: inventory/templates/demand_form.html:43
+#: inventory/templates/demand_form.html:53
 msgid "Fiscal Year"
-msgstr ""
+msgstr "आर्थिक बर्ष"
 
-#: inventory/templates/demand_form.html:58
+#: inventory/templates/demand_form.html:67
+msgid "SN"
+msgstr "क. स."
+
+#: inventory/templates/demand_form.html:68
 msgid "Item Name"
-msgstr ""
+msgstr "सामानको नाम"
 
-#: inventory/templates/demand_form.html:59
+#: inventory/templates/demand_form.html:69
 msgid "Specification"
-msgstr ""
+msgstr "स्पेसिफिकशन"
 
-#: inventory/templates/demand_form.html:60
+#: inventory/templates/demand_form.html:70
 msgid "Item Quantity"
-msgstr ""
+msgstr "सामानको परिमाण"
 
-#: inventory/templates/demand_form.html:61
+#: inventory/templates/demand_form.html:71
 msgid "Unit"
-msgstr ""
+msgstr "इकाई"
 
-#: inventory/templates/demand_form.html:62
+#: inventory/templates/demand_form.html:72
 msgid "Released Item Quantity"
-msgstr ""
+msgstr "निकासी सामानको परिमाण"
 
-#: inventory/templates/demand_form.html:63
+#: inventory/templates/demand_form.html:73
 msgid "Inventory Account No."
-msgstr ""
+msgstr "जिन्सी खाता न."
 
-#: inventory/templates/demand_form.html:64
+#: inventory/templates/demand_form.html:74
 msgid "Remarks"
-msgstr ""
-
-#: inventory/templates/demand_form.html:93
-msgid "Add New Row"
-msgstr ""
-
-#: inventory/templates/demand_form.html:99
-msgid "Demandee's Signature"
-msgstr ""
-
-#: inventory/templates/demand_form.html:100
-msgid "Name"
-msgstr "naam"
-
-#: inventory/templates/demand_form.html:101
-#: inventory/templates/demand_form.html:104
-#: inventory/templates/demand_form.html:111
-#: inventory/templates/demand_form.html:113
-msgid "Date"
-msgstr ""
-
-#: inventory/templates/demand_form.html:102
-msgid "Purpose"
-msgstr ""
+msgstr "कैफियत"
 
 #: inventory/templates/demand_form.html:103
-msgid "Signature of the one who enters in Inventory Account"
-msgstr ""
-
-#: inventory/templates/demand_form.html:108
-msgid "(a)"
-msgstr ""
-
-#: inventory/templates/demand_form.html:108
-msgid "Buy from market"
-msgstr ""
+msgid "Add New Row"
+msgstr "नया लाइन"
 
 #: inventory/templates/demand_form.html:109
-msgid "(b)"
-msgstr ""
-
-#: inventory/templates/demand_form.html:109
-msgid "Lend from store"
-msgstr ""
+msgid "Demandee's Signature"
+msgstr "माग गर्नेको दस्तखत"
 
 #: inventory/templates/demand_form.html:110
-msgid "Signature of the orderer"
-msgstr ""
+msgid "Name"
+msgstr "नाम"
+
+#: inventory/templates/demand_form.html:111
+#: inventory/templates/demand_form.html:114
+#: inventory/templates/demand_form.html:121
+#: inventory/templates/demand_form.html:123
+msgid "Date"
+msgstr "मिति"
 
 #: inventory/templates/demand_form.html:112
-msgid "Signature of the receiver"
-msgstr ""
+msgid "Purpose"
+msgstr "प्रयोजन"
+
+#: inventory/templates/demand_form.html:113
+msgid "Signature of the one who enters in Inventory Account"
+msgstr "जिन्सी खातामा चढाउनेको दस्तखत"
 
 #: inventory/templates/demand_form.html:118
-msgid "Save"
-msgstr ""
+msgid "(a)"
+msgstr "(क)"
 
-#: inventory/templates/demand_form.html:121
+#: inventory/templates/demand_form.html:118
+msgid "Buy from market"
+msgstr "बजारबाट खरिद गरिदिनु"
+
+#: inventory/templates/demand_form.html:119
+msgid "(b)"
+msgstr "(ख)"
+
+#: inventory/templates/demand_form.html:119
+msgid "Lend from store"
+msgstr "मौज्दातबाट दिनु"
+
+#: inventory/templates/demand_form.html:120
+msgid "Signature of the orderer"
+msgstr "आदेश दिनेको दस्तखत"
+
+#: inventory/templates/demand_form.html:122
+msgid "Signature of the receiver"
+msgstr "मालसामान बुझिलेनेको दस्तखत"
+
+#: inventory/templates/demand_form.html:128
+msgid "Save"
+msgstr "बचत गर्नुहोस्"
+
+#: inventory/templates/demand_form.html:131
 #: inventory/templates/inventory_category_update_form.html:22
 msgid "Delete!"
-msgstr ""
+msgstr "मेट्नुहोस!"
 
 #: inventory/templates/inventory_category_create_form.html:4
 #: inventory/templates/inventory_category_create_form.html:9
@@ -128,7 +132,7 @@ msgstr ""
 #: inventory/templates/list_inventory_categories.html:28
 #: inventory/templates/list_inventory_items.html:75
 msgid "New"
-msgstr ""
+msgstr "नया"
 
 #: inventory/templates/inventory_category_create_form.html:4
 #: inventory/templates/inventory_category_create_form.html:8
@@ -143,9 +147,9 @@ msgstr ""
 #: inventory/templates/list_inventory_items.html:4
 #: inventory/templates/list_inventory_items.html:8
 #: inventory/templates/list_inventory_items.html:75
-#: templates/dashboard_index.html:16 templates/dashboard_index.html.py:34
+#: templates/dashboard_index.html:16 templates/dashboard_index.html.py:36
 msgid "Inventory"
-msgstr ""
+msgstr "जिन्सी"
 
 #: inventory/templates/inventory_category_create_form.html:4
 #: inventory/templates/inventory_category_create_form.html:9
@@ -154,14 +158,14 @@ msgstr ""
 #: inventory/templates/item_form.html:29
 #: inventory/templates/list_inventory_categories.html:28
 msgid "Category"
-msgstr ""
+msgstr "वर्ग"
 
 #: inventory/templates/inventory_category_create_form.html:8
 #: inventory/templates/inventory_category_update_form.html:8
 #: inventory/templates/list_inventory_categories.html:4
 #: inventory/templates/list_inventory_categories.html:8
 msgid "Categories"
-msgstr ""
+msgstr "वर्गहरु"
 
 #: inventory/templates/inventory_category_create_form.html:21
 #: inventory/templates/item_form.html:22
@@ -171,26 +175,38 @@ msgstr ""
 #: inventory/templates/inventory_category_update_form.html:4
 #: inventory/templates/inventory_category_update_form.html:9
 msgid "Update"
-msgstr ""
+msgstr "अपडेट"
 
 #: inventory/templates/item_form.html:4 inventory/templates/item_form.html:9
 #: inventory/templates/list_inventory_items.html:75
 msgid "Item"
-msgstr ""
+msgstr "सामान"
 
 #: inventory/templates/item_form.html:8
 #: inventory/templates/list_inventory_items.html:4
 #: inventory/templates/list_inventory_items.html:8
 msgid "Items"
-msgstr ""
+msgstr "सामानहरु"
 
 #: inventory/templates/item_form.html:25
 msgid "Delete"
-msgstr ""
+msgstr "मेट्नुहोस"
 
 #: inventory/templates/list_inventory_items.html:22
 #: inventory/templates/list_inventory_items.html:31
 msgid "Search"
+msgstr "खोज्नुहोस्"
+
+#: templates/base.html:42
+msgid "Admin Panel"
+msgstr ""
+
+#: templates/base.html:46
+msgid "Logout"
+msgstr ""
+
+#: templates/base.html:48
+msgid "Login"
 msgstr ""
 
 #: templates/dashboard_index.html:4 templates/dashboard_index.html.py:8
@@ -199,24 +215,31 @@ msgstr ""
 
 #: templates/dashboard_index.html:20
 msgid "Inventory Items"
-msgstr ""
+msgstr "जिन्सी सामानहरु"
 
 #: templates/dashboard_index.html:22 templates/dashboard_index.html.py:26
 msgid "Create Inventory Item"
-msgstr ""
+msgstr "नया जिन्सी सामान"
 
 #: templates/dashboard_index.html:24
 msgid "Inventory Categories"
-msgstr ""
+msgstr "जिन्सी वर्गहरु"
+
+#: templates/dashboard_index.html:28
+msgid "New Demand Form"
+msgstr "नया माग फारम"
 
 #: users/config.py:7
 msgid "Application Settings"
-msgstr ""
+msgstr "एप्लिकेसन  सेट्टिङ्ग्स"
 
 #: users/config.py:14
 msgid "Application Title"
-msgstr ""
+msgstr "एप्लिकेसनको नाम"
 
 #: users/config.py:15
 msgid "Displayed in header in all pages."
 msgstr ""
+
+msgid "Create"
+msgstr "नया"

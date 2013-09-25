@@ -35,7 +35,6 @@ LANGUAGES = (
 
 LOCALE_PATHS = (os.path.join(APP_ROOT, '..', 'locale'),)
 
-
 SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
