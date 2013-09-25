@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+
+
+{% block title %}{% trans scenario %} {% trans 'Purchase Order' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <span> {% trans scenario %} {% trans 'Purchase Order' %}</span>
+{% endblock %}
+
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/base.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
+    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
+    <script src="{{ STATIC_URL }}js/purchase_order.js"></script>
+    <script>
+        $(document).ready(function () {
+            ko.applyBindings(new PurchaseOrderViewModel({{data|jsonify}}));
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    {{ data|jsonify }}
+
+    <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '5' %}</span>
+    <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+    <h3 class="center">{% trans 'Purchase Order' %}</h3>
+
+    <form method="post" data-bind="submit: save">
+        {% csrf_token %}
+
+        <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
+
+        <select class="item-selector"
+                data-bind="options: $root.parties, optionsText: 'name', optionsValue: 'id', value: party, optionsCaption: 'Choose a party...', select2: {},  event: {change: $root.party_changed}"></select>
+        <br/>
+        {% trans 'Address' %}: <span data-bind="text:party_address"></span>
+        <br/>
+        VAT/PAN: <span data-bind="text:party_pan_no"></span>
+        <br/>
+        {% trans 'Purchase Order' %} {% trans 'No.' %}: {{ form.order_no }}
+        {{ form.order_no.errors }}
+        {% trans 'Date' %}: {{ form.date }}
+        {{ form.date.errors }}
+
+        <div class="centre">
+            देहाय बमोजिमका सामानहरु
+            {{ form.due_days }}{{ form.due_days.errors }}
+            दिन भित्र यस कार्यालयमा दाखिला गरि विल / इन्भ्वाईस प्रस्तुत गर्नु होला ।
+        </div>
+
+        <div class="row">
+            <span>
+
+            </span>
+
+        </div>
+
+
+        <div data-bind="with:table_view">
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th rowspan="2" class="span1">{% trans 'SN' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Budget Title No.' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Particular' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Specification' %}</th>
+                    <th rowspan="2" class="span3">{% trans 'Item Quantity' %}</th>
+                    <th rowspan="2" class="span3">{% trans 'Unit' %}</th>
+                    <th colspan="2" class="span2">{% trans 'Price' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Remarks' %}</th>
+                    <th rowspan="2" class="span1"></th>
+                </tr>
+                <tr>
+                    <th>{% trans 'Rate' %}</th>
+                    <th>{% trans 'Total Amount' %}</th>
+                </tr>
+                </thead>
+
+                <tbody id="tbody">
+                <!-- ko foreach: rows -->
+                <tr>
+                    <td>
+                        <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
+                    </td>
+                    <td data-bind="editableText: budget_title_no, numeric: true"></td>
+                    <td>
+                        <select class="span12 item-selector"
+                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: 'Choose an item...', select2: {},  event: {change: $root.item_changed}"></select>
+                    </td>
+                    <td data-bind="editableText: specification"></td>
+                    <td data-bind="editableText: quantity, numeric: true"></td>
+                    <td data-bind="editableText: unit"></td>
+                    <td data-bind="editableText: rate, numeric: true"></td>
+                    <td data-bind="text: total_amount()"></td>
+                    <td data-bind="editableText: remarks"></td>
+                    <td>
+                        <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                </tbody>
+            </table>
+            <a class="small secondary button" data-bind="click: addRow">
+                {% trans 'Add New Row' %}
+            </a>
+        </div>
+
+        <div class="row inline-fields">
+            <div class="column large-8">
+                <div>{% trans "Demandee's Signature" %}:-</div>
+                <div>{% trans "Name" %}:-{{ form.demandee }}</div>
+                <div>{% trans "Date" %}:- {{ form.date }}</div>
+                <div>{% trans "Purpose" %}:-{{ form.purpose }}</div>
+                <div>{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
+                <div>{% trans "Date" %}:-</div>
+            </div>
+
+            <div class="column large-8">
+                <div>{% trans "(a)" %} {% trans "Buy from market" %}</div>
+                <div>{% trans "(b)" %} {% trans "Lend from store" %}</div>
+                <div>{% trans "Signature of the orderer" %}:-</div>
+                <div>{% trans "Date" %}:-</div>
+                <div>{% trans "Signature of the receiver" %}:-</div>
+                <div>{% trans "Date" %}:-</div>
+            </div>
+        </div>
+
+
+        <input type="submit" class="small secondary button" value="{% trans 'Save' %}">
+        <span data-bind="text: msg, css: status"></span>
+
+        {% if scenario = 'Update' %}
+            <a class="small secondary button"
+               href="{% url 'delete_demand_form' form.instance.id %}">{% trans 'Delete!' %}</a>
+        {% endif %}
+
+
+    </form>
+
+    {% trans "Firm's Name" %}: <span data-bind="text:party_name"></span>
+
+{% endblock %}
