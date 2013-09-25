@@ -171,7 +171,15 @@ def save_demand(request):
         object = Demand.objects.get(id=params.get('id'))
     else:
         object = Demand()
-    object = save_model(object, object_values)
+    try:
+        object = save_model(object, object_values)
+    except Exception as e:
+        import pdb
+        pdb.set_trace()
+        if hasattr(e, 'messages'):
+            dct['error_message'] = '; '.join(e.messages)
+        elif str(e) != '':
+            dct['error_message'] = str(e)
     dct['id'] = object.id
     model = DemandRow
     for index, row in enumerate(params.get('table_view').get('rows')):
