@@ -98,12 +98,47 @@
                     <td data-bind="editableText: unit"></td>
                     <td data-bind="editableText: rate, numeric: true"></td>
                     <td data-bind="text: total_amount()"></td>
-                    <td data-bind="editableText: remarks"></td>
+                    <td class="remarks-cell" data-bind="editableText: remarks"></td>
                     <td>
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
                     </td>
                 </tr>
                 <!-- /ko -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="right">{% trans 'Total' %}</span></td>
+                    <td data-bind="text: $root.sub_total()"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td colspan="3"><span class="right">13% {% trans 'VAT' %}</span></td>
+                    <td data-bind="text: $root.vat_amount()"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><span class="right">{% trans 'Grand Total' %}</span></td>
+                    <td data-bind="text: $root.grand_total()"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
                 </tbody>
             </table>
             <a class="small secondary button" data-bind="click: addRow">
