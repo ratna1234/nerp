@@ -1,5 +1,6 @@
 import json
 from datetime import date
+from django.utils.translation import ugettext as _
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -18,10 +19,10 @@ from inventory.serializers import DemandSerializer, ItemSerializer
 def item_form(request, id=None):
     if id:
         item = get_object_or_404(Item, id=id)
-        scenario = 'Update'
+        scenario = _('Update')
     else:
         item = Item()
-        scenario = 'Create'
+        scenario = _('Create')
     if request.POST:
         form = ItemForm(data=request.POST, instance=item)
         if form.is_valid():
@@ -122,10 +123,10 @@ def demand_form(request, id=None):
     print request.LANGUAGE_CODE
     if id:
         object = get_object_or_404(Demand, id=id)
-        scenario = 'Update'
+        scenario = _('Update')
     else:
         object = Demand(date=date.today())
-        scenario = 'Create'
+        scenario = _('Create')
     if request.POST:
         form = DemandForm(request.POST, instance=object)
         table = json.loads(request.POST['table_model'])
