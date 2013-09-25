@@ -7,12 +7,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-from models import Item, Category, Party
-from forms import ItemForm, CategoryForm, DemandForm, PartyForm
+from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow
 from app.lib import invalid, save_model
-from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer
+from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer
 
 
 @login_required
@@ -133,36 +132,8 @@ def demand_form(request, id=None):
     else:
         object = Demand(date=date.today())
         scenario = _('Create')
-    if request.POST:
-        form = DemandForm(request.POST, instance=object)
-        table = json.loads(request.POST['table_model'])
-        if form.is_valid():
-            object = form.save(commit=False)
-            object.save()
-        if id or form.is_valid():
-            model = DemandRow
-            for index, row in enumerate(table.get('rows')):
-                print row
-                if invalid(row, ['item_id', 'quantity', 'unit', 'release_quantity']):
-                    continue
-                values = {'sn': index + 1, 'item_id': row.get('item_id'),
-                          'specification': row.get('specification'),
-                          'quantity': row.get('quantity'), 'unit': row.get('unit'),
-                          'release_quantity': row.get('release_quantity'), 'remarks': row.get('remarks'),
-                          'demand': object}
-                submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
-                # set_transactions(submodel, request.POST.get('date'),
-                #                  ['dr', bank_account, row.get('amount')],
-                #                  ['cr', benefactor, row.get('amount')],
-                # )
-                if not created:
-                    submodel = save_model(submodel, values)
-            delete_rows(table.get('deleted_rows'), model)
-            return redirect(reverse('list_inventory_items'))
-    else:
-        form = DemandForm(instance=object)
+    form = DemandForm(instance=object)
     object_data = DemandSerializer(object).data
-
     return render(request, 'demand_form.html',
                   {'form': form, 'data': object_data, 'scenario': scenario})
 
@@ -188,6 +159,8 @@ def save_demand(request):
             dct['error_message'] = '; '.join(e.messages)
         elif str(e) != '':
             dct['error_message'] = str(e)
+        else:
+            dct['error_message'] = 'Error in form data!'
     dct['id'] = object.id
     model = DemandRow
     for index, row in enumerate(params.get('table_view').get('rows')):
@@ -263,3 +236,60 @@ def parties_as_json(request):
     objects = Party.objects.all()
     objects_data = PartySerializer(objects).data
     return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+
+
+@login_required
+def purchase_order(request, id=None):
+    if id:
+        object = get_object_or_404(PurchaseOrder, id=id)
+        scenario = _('Update')
+    else:
+        object = PurchaseOrder(date=date.today())
+        scenario = _('Create')
+    form = PurchaseOrderForm(instance=object)
+    object_data = PurchaseOrderSerializer(object).data
+    return render(request, 'purchase_order.html',
+                  {'form': form, 'data': object_data, 'scenario': scenario})
+
+
+@login_required
+def save_purchase_order(request):
+    params = json.loads(request.body)
+    dct = {'rows': {}}
+    object_values = {'release_no': params.get('release_no'), 'fiscal_year': params.get('fiscal_year'),
+                     'date': params.get('date'), 'purpose': params.get('purpose'),
+                     'demandee_id': params.get('demandee')}
+    if params.get('id'):
+        object = PurchaseOrder.objects.get(id=params.get('id'))
+    else:
+        object = PurchaseOrder()
+    try:
+        object = save_model(object, object_values)
+    except Exception as e:
+        if hasattr(e, 'messages'):
+            dct['error_message'] = '; '.join(e.messages)
+        elif str(e) != '':
+            dct['error_message'] = str(e)
+        else:
+            dct['error_message'] = 'Error in form data!'
+    dct['id'] = object.id
+    model = PurchaseOrderRow
+    for index, row in enumerate(params.get('table_view').get('rows')):
+        print row
+        if invalid(row, ['item_id', 'quantity', 'unit', 'release_quantity']):
+            continue
+        values = {'sn': index + 1, 'item_id': row.get('item_id'),
+                  'specification': row.get('specification'),
+                  'quantity': row.get('quantity'), 'unit': row.get('unit'),
+                  'release_quantity': row.get('release_quantity'), 'remarks': row.get('remarks'),
+                  'demand': object}
+        submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
+        # set_transactions(submodel, request.POST.get('date'),
+        #                  ['dr', bank_account, row.get('amount')],
+        #                  ['cr', benefactor, row.get('amount')],
+        # )
+        if not created:
+            submodel = save_model(submodel, values)
+        dct['rows'][index] = submodel.id
+    delete_rows(params.get('table_view').get('deleted_rows'), model)
+    return HttpResponse(json.dumps(dct), mimetype="application/json")

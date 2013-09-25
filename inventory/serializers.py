@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from inventory.models import Demand, DemandRow, Item, Party
+from inventory.models import Demand, DemandRow, Item, Party, PurchaseOrder, PurchaseOrderRow
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -25,3 +25,17 @@ class DemandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Demand
+
+
+class PurchaseOrderRowSerializer(serializers.ModelSerializer):
+    item_id = serializers.Field(source='item.id')
+
+    class Meta:
+        model = PurchaseOrderRow
+
+
+class PurchaseOrderSerializer(serializers.ModelSerializer):
+    rows = PurchaseOrderRowSerializer()
+
+    class Meta:
+        model = PurchaseOrder
