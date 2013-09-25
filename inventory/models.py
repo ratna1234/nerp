@@ -255,4 +255,8 @@ class DemandRow(models.Model):
         super(DemandRow, self).save(*args, **kwargs)
 
 
-
+class Party(models.Model):
+    name = models.CharField(max_length=254)
+    address = models.CharField(max_length=254, blank=True, null=True)
+    phone_no = models.CharField(max_length=100, blank=True, null=True)
+    pan_no = models.CharField(max_length=50, blank=True, null=True)
