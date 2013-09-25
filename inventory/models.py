@@ -260,3 +260,22 @@ class Party(models.Model):
     address = models.CharField(max_length=254, blank=True, null=True)
     phone_no = models.CharField(max_length=100, blank=True, null=True)
     pan_no = models.CharField(max_length=50, blank=True, null=True)
+
+
+class PurchaseOrder(models.Model):
+    party = models.ForeignKey(Party)
+    order_no = models.IntegerField()
+    date = models.DateField()
+    due_days = models.IntegerField(default=3)
+
+
+class PurchaseOrderRow(models.Model):
+    sn = models.IntegerField()
+    budget_title_no = models.IntegerField()
+    item = models.ForeignKey(Item)
+    specification = models.CharField(max_length=254, blank=True, null=True)
+    quantity = models.FloatField()
+    unit = models.CharField(max_length=50)
+    rate = models.FloatField()
+    remarks = models.CharField(max_length=254, blank=True, null=True)
+    purchase_order = models.ForeignKey(PurchaseOrder, related_name='rows')
