@@ -148,7 +148,7 @@ class GroupCheckNode(template.Node):
 
 @register.filter
 def setting(group, key):
-    return config_value(group, key)
+    return mark_safe(config_value(group, key).replace("\n", "<br/>"))
 
 
 @register.tag
