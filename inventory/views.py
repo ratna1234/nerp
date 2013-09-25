@@ -7,8 +7,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-from models import Item, Category
-from forms import ItemForm, CategoryForm, DemandForm
+from models import Item, Category, Party
+from forms import ItemForm, CategoryForm, DemandForm, PartyForm
 from inventory.filters import InventoryItemFilter
 from inventory.models import Demand, DemandRow, delete_rows
 from app.lib import invalid, save_model
@@ -182,6 +182,7 @@ def save_demand(request):
         object = save_model(object, object_values)
     except Exception as e:
         import pdb
+
         pdb.set_trace()
         if hasattr(e, 'messages'):
             dct['error_message'] = '; '.join(e.messages)
@@ -213,5 +214,45 @@ def save_demand(request):
 @login_required
 def delete_demand(request, id):
     object = get_object_or_404(Demand, id=id)
+    object.delete()
+    return redirect(reverse('list_inventory_items'))
+
+
+@login_required
+def list_parties(request):
+    objects = Party.objects.all()
+    return render(request, 'list_parties.html', {'objects': objects})
+
+
+@login_required
+def party_form(request, id=None):
+    if id:
+        object = get_object_or_404(Party, id=id)
+        scenario = _('Update')
+    else:
+        object = Party()
+        scenario = _('Create')
+    if request.POST:
+        form = PartyForm(data=request.POST, instance=object)
+        if form.is_valid():
+            object = form.save(commit=False)
+            object.save()
+            return redirect(reverse('list_parties'))
+    else:
+        form = PartyForm(instance=object)
+    if request.is_ajax():
+        base_template = 'modal.html'
+    else:
+        base_template = 'base.html'
+    return render(request, 'party_form.html', {
+        'scenario': scenario,
+        'form': form,
+        'base_template': base_template,
+    })
+
+
+@login_required
+def delete_party(request, id):
+    object = get_object_or_404(Party, id=id)
     object.delete()
     return redirect(reverse('list_inventory_items'))

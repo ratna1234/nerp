@@ -1,7 +1,7 @@
 from mptt.forms import TreeNodeChoiceField
 
 from app.lib import KOModelForm
-from models import Item, Category, Demand
+from models import Item, Category, Demand, Party
 
 
 class ItemForm(KOModelForm):
@@ -33,6 +33,11 @@ class DemandForm(KOModelForm):
     class Meta:
         model = Demand
 
-    # def clean(self):
-    #     import pdb
-    #     pdb.set_trace()
+        # def clean(self):
+        #     import pdb
+        #     pdb.set_trace()
+
+
+class PartyForm(KOModelForm):
+    class Meta:
+        model = Party

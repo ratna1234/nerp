@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Parties' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_parties" %}">{% trans 'Parties' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load pagination_tags %}
+    {% load sorting_tags %}
+
+    {% autosort objects as sorted_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor name %}</th>
+        <th>{% anchor address %}</th>
+        <th>{% anchor phone_no 'Phone No.' %}</th>
+        <th>{% anchor pan_no 'PAN No.' %}</th>
+        </thead>
+        <tbody>
+        {% for item in paginated_objects %}
+            <tr>
+                <td>
+                    <a href="{% url 'update_party' item.id %}">{{ item.name }}</a>
+                </td>
+                <td>
+                    {{ item.address }}
+                </td>
+                <td>
+                    {{ item.phone_no }}
+                </td>
+                <td>
+                    {{ item.pan_no }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% paginate %}
+
+    <a class="small secondary button"
+       href="{% url 'create_party' %}">{% trans 'New' %} {% trans 'Party' %}</a>
+
+{% endblock %}
