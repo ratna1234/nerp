@@ -13,6 +13,7 @@ from inventory.filters import InventoryItemFilter
 from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow
 from app.lib import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer
+from app.nepdate import BSUtil
 
 
 @login_required
@@ -131,7 +132,7 @@ def demand_form(request, id=None):
         object = get_object_or_404(Demand, id=id)
         scenario = _('Update')
     else:
-        object = Demand(date=date.today())
+        object = Demand(date=BSUtil().today())
         scenario = _('Create')
     form = DemandForm(instance=object)
     object_data = DemandSerializer(object).data
