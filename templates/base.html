@@ -12,9 +12,11 @@
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css">
+
     <link rel="stylesheet" href="{{ STATIC_URL }}css/foundation.css">
     <link href="{{ STATIC_URL }}css/vendors/select2.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/print.css" media="print">
 
     <script src="{{ STATIC_URL }}js/vendors/jquery.js"></script>
     <script src="{{ STATIC_URL }}js/foundation/foundation.min.js"></script>
@@ -31,7 +33,7 @@
 
 <!-- Nav Bar -->
 
-<div class="row">
+<div class="header row">
     <div class="large-16 columns">
         <div class="nav-bar right">
             <ul class="button-group">

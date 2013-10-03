@@ -1,11 +1,12 @@
 import json
 from datetime import date
-from django.utils.translation import ugettext as _
 
+from django.utils.translation import ugettext as _
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from livesettings import config_value
 
 from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm
 from inventory.filters import InventoryItemFilter
@@ -142,7 +143,7 @@ def demand_form(request, id=None):
 def save_demand(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
-    object_values = {'release_no': params.get('release_no'), 'fiscal_year': params.get('fiscal_year'),
+    object_values = {'release_no': params.get('release_no'), 'fiscal_year': config_value('app', 'fiscal_year'),
                      'date': params.get('date'), 'purpose': params.get('purpose'),
                      'demandee_id': params.get('demandee')}
     if params.get('id'):

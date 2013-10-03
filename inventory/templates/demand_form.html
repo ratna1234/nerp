@@ -23,9 +23,13 @@
 {% endblock %}
 
 {% block content %}
-    <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '5' %}</span>
-    <h3 class="center">{{ 'app'|setting:'header' }}</h3>
-    <h3 class="center">{% trans 'Demand Form' %}</h3>
+    <div class="print-only">
+        <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '5' %}</span>
+
+        <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+
+        <h3 class="center">{% trans 'Demand Form' %}</h3>
+    </div>
 
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
@@ -45,8 +49,7 @@
 
     <span class="right column large-4">
         {% trans 'Fiscal Year' %}:
-        {{ form.fiscal_year }}
-        {{ form.fiscal_year.errors }}
+        {{ 'app'|setting:'fiscal_year' }}
     </span>
 
 
@@ -66,7 +69,7 @@
                     <th class="span2">{% trans 'Released Item Quantity' %}</th>
                     <th class="span2">{% trans 'Inventory Account No.' %}</th>
                     <th class="span2">{% trans 'Remarks' %}</th>
-                    <th class="span1"></th>
+                    <th class="span1 hide-on-print"></th>
                 </tr>
                 </thead>
 
@@ -86,7 +89,7 @@
                     <td data-bind="editableText: release_quantity, numeric: true"></td>
                     <td data-bind="text: inventory_account_id">2</td>
                     <td data-bind="editableText: remarks"></td>
-                    <td>
+                    <td class="hide-on-print">
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
                     </td>
                 </tr>
