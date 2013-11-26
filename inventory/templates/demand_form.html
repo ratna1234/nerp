@@ -47,7 +47,7 @@
 
     </span>
 
-    <span class="right column large-4">
+    <span class="right column large-4 print-only">
         {% trans 'Fiscal Year' %}:
         {{ 'app'|setting:'fiscal_year' }}
     </span>
@@ -81,7 +81,7 @@
                     </td>
                     <td>
                         <select class="span12 item-selector"
-                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: 'Choose an item...', select2: {},  event: {change: $root.item_changed}"></select>
+                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: ' ', select2: {},  event: {change: $root.item_changed}"></select>
                     </td>
                     <td data-bind="editableText: specification"></td>
                     <td data-bind="editableText: quantity, numeric: true"></td>
@@ -103,21 +103,21 @@
 
         <div class="row inline-fields">
             <div class="column large-8">
-                <div>{% trans "Demandee's Signature" %}:-</div>
-                <div>{% trans "Name" %}:-{{ form.demandee }}</div>
-                <div>{% trans "Date" %}:- {{ form.date }}</div>
-                <div>{% trans "Purpose" %}:-{{ form.purpose }}</div>
-                <div>{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
-                <div>{% trans "Date" %}:-</div>
+                <div class="print-only">{% trans "Demandee's Signature" %}:-</div>
+                <div>{% trans "Name" %}:- {{ form.instance.demandee }}</div>
+                <div>{% trans "Date" %}:- {{ form.instance.date|date:"Y-m-d" }}</div>
+                <div>{% trans "Purpose" %}:- {{ form.purpose }}</div>
+                <div class="print-only">{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
+                <div class="print-only">{% trans "Date" %}:-</div>
             </div>
 
             <div class="column large-8">
                 <div>{% trans "(a)" %} {% trans "Buy from market" %}</div>
                 <div>{% trans "(b)" %} {% trans "Lend from store" %}</div>
-                <div>{% trans "Signature of the orderer" %}:-</div>
-                <div>{% trans "Date" %}:-</div>
-                <div>{% trans "Signature of the receiver" %}:-</div>
-                <div>{% trans "Date" %}:-</div>
+                <div class="print-only">{% trans "Signature of the orderer" %}:-</div>
+                <div class="print-only">{% trans "Date" %}:-</div>
+                <div class="print-only">{% trans "Signature of the receiver" %}:-</div>
+                <div class="print-only">{% trans "Date" %}:-</div>
             </div>
         </div>
 
