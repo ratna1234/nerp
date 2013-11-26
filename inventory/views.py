@@ -29,6 +29,8 @@ def item_form(request, id=None):
         if form.is_valid():
             item = form.save(commit=False)
             item.save()
+            if request.is_ajax():
+                return render(request, 'callback.html', {'obj': ItemSerializer(item).data})
             return redirect('/inventory/items/')
     else:
         form = ItemForm(instance=item)
