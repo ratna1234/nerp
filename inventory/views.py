@@ -210,6 +210,8 @@ def party_form(request, id=None):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
+            if request.is_ajax():
+                return render(request, 'callback.html', {'obj': PartySerializer(obj).data})
             return redirect(reverse('list_parties'))
     else:
         form = PartyForm(instance=obj)
