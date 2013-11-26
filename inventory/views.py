@@ -127,15 +127,14 @@ def delete_category(request, id):
 
 @login_required
 def demand_form(request, id=None):
-    print request.LANGUAGE_CODE
     if id:
-        object = get_object_or_404(Demand, id=id)
+        obj = get_object_or_404(Demand, id=id)
         scenario = _('Update')
     else:
-        object = Demand(date=BSUtil().today())
+        obj = Demand(date=BSUtil().today(), demandee=request.user)
         scenario = _('Create')
-    form = DemandForm(instance=object)
-    object_data = DemandSerializer(object).data
+    form = DemandForm(instance=obj)
+    object_data = DemandSerializer(obj).data
     return render(request, 'demand_form.html',
                   {'form': form, 'data': object_data, 'scenario': scenario})
 
@@ -145,14 +144,14 @@ def save_demand(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
     object_values = {'release_no': params.get('release_no'), 'fiscal_year': config_value('app', 'fiscal_year'),
-                     'date': params.get('date'), 'purpose': params.get('purpose'),
-                     'demandee_id': params.get('demandee')}
+                     'date': params.get('date'), 'purpose': params.get('purpose')}
     if params.get('id'):
-        object = Demand.objects.get(id=params.get('id'))
+        obj = Demand.objects.get(id=params.get('id'))
     else:
-        object = Demand()
+        obj = Demand()
+        object_values['demandee_id'] = params.get('demandee')
     try:
-        object = save_model(object, object_values)
+        obj = save_model(obj, object_values)
     except Exception as e:
         import pdb
 
@@ -163,7 +162,7 @@ def save_demand(request):
             dct['error_message'] = str(e)
         else:
             dct['error_message'] = 'Error in form data!'
-    dct['id'] = object.id
+    dct['id'] = obj.id
     model = DemandRow
     for index, row in enumerate(params.get('table_view').get('rows')):
         print row
@@ -173,7 +172,7 @@ def save_demand(request):
                   'specification': row.get('specification'),
                   'quantity': row.get('quantity'), 'unit': row.get('unit'),
                   'release_quantity': row.get('release_quantity'), 'remarks': row.get('remarks'),
-                  'demand': object}
+                  'demand': obj}
         submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
         # set_transactions(submodel, request.POST.get('date'),
         #                  ['dr', bank_account, row.get('amount')],
@@ -188,8 +187,8 @@ def save_demand(request):
 
 @login_required
 def delete_demand(request, id):
-    object = get_object_or_404(Demand, id=id)
-    object.delete()
+    obj = get_object_or_404(Demand, id=id)
+    obj.delete()
     return redirect(reverse('list_inventory_items'))
 
 
@@ -202,19 +201,19 @@ def list_parties(request):
 @login_required
 def party_form(request, id=None):
     if id:
-        object = get_object_or_404(Party, id=id)
+        obj = get_object_or_404(Party, id=id)
         scenario = _('Update')
     else:
-        object = Party()
+        obj = Party()
         scenario = _('Create')
     if request.POST:
-        form = PartyForm(data=request.POST, instance=object)
+        form = PartyForm(data=request.POST, instance=obj)
         if form.is_valid():
-            object = form.save(commit=False)
-            object.save()
+            obj = form.save(commit=False)
+            obj.save()
             return redirect(reverse('list_parties'))
     else:
-        form = PartyForm(instance=object)
+        form = PartyForm(instance=obj)
     if request.is_ajax():
         base_template = 'modal.html'
     else:
@@ -228,8 +227,8 @@ def party_form(request, id=None):
 
 @login_required
 def delete_party(request, id):
-    object = get_object_or_404(Party, id=id)
-    object.delete()
+    obj = get_object_or_404(Party, id=id)
+    obj.delete()
     return redirect(reverse('list_inventory_items'))
 
 
@@ -243,13 +242,13 @@ def parties_as_json(request):
 @login_required
 def purchase_order(request, id=None):
     if id:
-        object = get_object_or_404(PurchaseOrder, id=id)
+        obj = get_object_or_404(PurchaseOrder, id=id)
         scenario = _('Update')
     else:
-        object = PurchaseOrder(date=date.today())
+        obj = PurchaseOrder(date=date.today())
         scenario = _('Create')
-    form = PurchaseOrderForm(instance=object)
-    object_data = PurchaseOrderSerializer(object).data
+    form = PurchaseOrderForm(instance=obj)
+    object_data = PurchaseOrderSerializer(obj).data
     return render(request, 'purchase_order.html',
                   {'form': form, 'data': object_data, 'scenario': scenario})
 
@@ -262,11 +261,11 @@ def save_purchase_order(request):
                      'date': params.get('date'), 'purpose': params.get('purpose'),
                      'demandee_id': params.get('demandee')}
     if params.get('id'):
-        object = PurchaseOrder.objects.get(id=params.get('id'))
+        obj = PurchaseOrder.objects.get(id=params.get('id'))
     else:
-        object = PurchaseOrder()
+        obj = PurchaseOrder()
     try:
-        object = save_model(object, object_values)
+        obj = save_model(obj, object_values)
     except Exception as e:
         if hasattr(e, 'messages'):
             dct['error_message'] = '; '.join(e.messages)
@@ -274,7 +273,7 @@ def save_purchase_order(request):
             dct['error_message'] = str(e)
         else:
             dct['error_message'] = 'Error in form data!'
-    dct['id'] = object.id
+    dct['id'] = obj.id
     model = PurchaseOrderRow
     for index, row in enumerate(params.get('table_view').get('rows')):
         print row
@@ -284,7 +283,7 @@ def save_purchase_order(request):
                   'specification': row.get('specification'),
                   'quantity': row.get('quantity'), 'unit': row.get('unit'),
                   'release_quantity': row.get('release_quantity'), 'remarks': row.get('remarks'),
-                  'demand': object}
+                  'demand': obj}
         submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
         # set_transactions(submodel, request.POST.get('date'),
         #                  ['dr', bank_account, row.get('amount')],
