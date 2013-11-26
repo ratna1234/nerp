@@ -36,8 +36,11 @@
 
         <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
 
-        <select class="item-selector"
-                data-bind="options: $root.parties, optionsText: 'name', optionsValue: 'id', value: party, optionsCaption: 'Choose a party...', select2: {},  event: {change: $root.party_changed}"></select>
+        {#        <select class="item-selector"#}
+        {#                data-bind="options: $root.parties, optionsText: 'name', optionsValue: 'id', value: party, optionsCaption: 'Choose a party...', select2: {},  event: {change: $root.party_changed}"></select>#}
+        <input type="hidden" data-url="{% url 'create_party' %}"
+               data-bind="value: party, select2: $root.parties, event: {change: $root.party_changed}">
+
         <br/>
         {% trans 'Address' %}: <span data-bind="text:party_address"></span>
         <br/>
@@ -91,8 +94,10 @@
                     </td>
                     <td data-bind="editableText: budget_title_no, numeric: true"></td>
                     <td>
-                        <select class="span12 item-selector"
-                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: 'Choose an item...', select2: {},  event: {change: $root.item_changed}"></select>
+{#                        <select class="span12 item-selector"#}
+{#                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: 'Choose an item...', select2: {},  event: {change: $root.item_changed}"></select>#}
+                        <input type="hidden" data-url="{% url 'create_inventory_item' %}"
+                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">
                     </td>
                     <td data-bind="editableText: specification"></td>
                     <td data-bind="editableText: quantity, numeric: true"></td>
