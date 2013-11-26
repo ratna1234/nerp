@@ -155,9 +155,6 @@ def save_demand(request):
     try:
         obj = save_model(obj, object_values)
     except Exception as e:
-        import pdb
-
-        pdb.set_trace()
         if hasattr(e, 'messages'):
             dct['error_message'] = '; '.join(e.messages)
         elif str(e) != '':
