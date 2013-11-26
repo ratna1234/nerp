@@ -16,9 +16,7 @@
     <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
     <script src="{{ STATIC_URL }}js/demand_form.js"></script>
     <script>
-        $(document).ready(function () {
-            ko.applyBindings(new DemandViewModel({{data|jsonify}}));
-        });
+        ko_data = {{data|jsonify}};
     </script>
 {% endblock %}
 
@@ -125,7 +123,7 @@
         <input type="submit" class="small secondary button" value="{% trans 'Save' %}">
         <span data-bind="text: msg, css: status"></span>
 
-        {% if scenario = 'Update' %}
+        {% if scenario == 'Update' %}
             <a class="small secondary button"
                href="{% url 'delete_demand_form' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}
