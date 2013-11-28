@@ -44,14 +44,19 @@
     <table class="table-bordered">
         <thead>
         <th>{% anchor name %}</th>
+        <th>{% anchor account__account_no 'Account No.' %}</th>
         <th>{% anchor purchase_price 'Purchase Price' %}</th>
-
         </thead>
         <tbody>
         {% for item in paginated_objects %}
             <tr>
                 <td>
                     <a href="{% url 'update_inventory_item' item.id %}">{{ item.name }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'view_inventory_account' item.account.id %}">
+                    {{ item.account.account_no }}
+                    </a>
                 </td>
                 <td>{{ item.purchase_price }}</td>
             </tr>
