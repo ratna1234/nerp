@@ -3,6 +3,8 @@ from inventory.models import Demand, DemandRow, Item, Party, PurchaseOrder, Purc
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    account_no = serializers.Field(source='account.account_no')
+
     class Meta:
         model = Item
 
