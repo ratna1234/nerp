@@ -30,7 +30,7 @@
                     <a href="{% url 'update_demand_form' item.id %}">{{ item.release_no }}</a>
                 </td>
                 <td>
-                    {{ item.demandee }}
+                    {{ item.demandee.full_name }}
                 </td>
 
                 <td>

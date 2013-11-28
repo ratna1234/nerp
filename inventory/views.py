@@ -47,8 +47,8 @@ def item_form(request, id=None):
 
 @login_required
 def delete_inventory_item(request, id):
-    object = get_object_or_404(Item, id=id)
-    object.delete()
+    obj = get_object_or_404(Item, id=id)
+    obj.delete()
     return redirect('/inventory/items/')
 
 
@@ -188,7 +188,7 @@ def save_demand(request):
 def delete_demand(request, id):
     obj = get_object_or_404(Demand, id=id)
     obj.delete()
-    return redirect(reverse('list_inventory_items'))
+    return redirect(reverse('list_demand_forms'))
 
 
 @login_required
@@ -230,7 +230,7 @@ def party_form(request, id=None):
 def delete_party(request, id):
     obj = get_object_or_404(Party, id=id)
     obj.delete()
-    return redirect(reverse('list_inventory_items'))
+    return redirect(reverse('list_parties'))
 
 
 @login_required
@@ -302,6 +302,8 @@ def list_inventory_accounts(request):
     objects = InventoryAccount.objects.all()
     return render(request, 'list_inventory_accounts.html', {'objects': objects})
 
+
+@login_required
 def view_inventory_account(request, id):
     obj = get_object_or_404(InventoryAccount, id=id)
     return render(request, 'view_inventory_account.html', {'obj': obj})
