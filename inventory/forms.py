@@ -5,11 +5,11 @@ from models import Item, Category, Demand, Party, PurchaseOrder
 
 
 class ItemForm(KOModelForm):
-    category = TreeNodeChoiceField(queryset=Category.objects.all(), required=False)
+    #category = TreeNodeChoiceField(queryset=Category.objects.all(), required=False)
 
     class Meta:
         model = Item
-        exclude = ['account']
+        exclude = ['account', 'code', 'category']
 
 
 class CategoryForm(KOModelForm):
