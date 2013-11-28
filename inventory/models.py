@@ -30,8 +30,8 @@ class InventoryAccount(models.Model):
     code = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=100)
     account_no = models.PositiveIntegerField()
-    current_dr = models.FloatField(null=True, blank=True)
-    current_cr = models.FloatField(null=True, blank=True)
+    current_balance = models.FloatField(default=0)
+    #current_cr = models.FloatField(null=True, blank=True)
     opening_balance = models.FloatField(default=0)
 
     def get_absolute_url(self):
@@ -69,20 +69,20 @@ class InventoryAccount(models.Model):
 
     categories = property(get_all_categories)
 
-    def get_cr_amount(self, day):
-        transactions = Transaction.objects.filter(journal_entry__date__lt=day, account=self).order_by(
-            '-journal_entry__id', '-journal_entry__date')[:1]
-        if len(transactions) > 0:
-            return transactions[0].current_cr
-        return 0
-
-    def get_dr_amount(self, day):
-        #journal_entry= JournalEntry.objects.filter(date__lt=day,transactions__account=self).order_by('-id','-date')[:1]
-        transactions = Transaction.objects.filter(journal_entry__date__lt=day, account=self).order_by(
-            '-journal_entry__id', '-journal_entry__date')[:1]
-        if len(transactions) > 0:
-            return transactions[0].current_dr
-        return 0
+    #def get_cr_amount(self, day):
+    #    transactions = Transaction.objects.filter(journal_entry__date__lt=day, account=self).order_by(
+    #        '-journal_entry__id', '-journal_entry__date')[:1]
+    #    if len(transactions) > 0:
+    #        return transactions[0].current_cr
+    #    return 0
+    #
+    #def get_dr_amount(self, day):
+    #    #journal_entry= JournalEntry.objects.filter(date__lt=day,transactions__account=self).order_by('-id','-date')[:1]
+    #    transactions = Transaction.objects.filter(journal_entry__date__lt=day, account=self).order_by(
+    #        '-journal_entry__id', '-journal_entry__date')[:1]
+    #    if len(transactions) > 0:
+    #        return transactions[0].current_dr
+    #    return 0
 
 
 class Item(models.Model):

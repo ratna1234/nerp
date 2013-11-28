@@ -22,6 +22,7 @@
         <th>{% anchor demandee %}</th>
         <th>{% anchor date %}</th>
         <th>{% anchor purpose %}</th>
+        <th>{% anchor status %}</th>
         </thead>
         <tbody>
         {% for item in paginated_objects %}
@@ -37,6 +38,7 @@
                     {{ item.date }}
                 </td>
                 <td>{{ item.purpose }}</td>
+                <td>{{ item.status }}</td>
             </tr>
         {% endfor %}
         </tbody>
