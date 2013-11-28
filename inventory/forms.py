@@ -13,6 +13,16 @@ class ItemForm(KOModelForm):
         super(ItemForm, self).__init__(*args, **kwargs)
         self.fields['account_no'].initial = InventoryAccount.get_next_account_no()
 
+    def clean_account_no(self):
+        try:
+            existing = InventoryAccount.objects.get(account_no=self.cleaned_data['account_no'])
+            if self.instance.id is not existing.id:
+                raise forms.ValidationError("The account no. " + str(
+                    self.cleaned_data['account_no']) + " is already in use.")
+            return self.cleaned_data['account_no']
+        except InventoryAccount.DoesNotExist:
+            return self.cleaned_data['account_no']
+
     class Meta:
         model = Item
         exclude = ['account', 'code', 'category']
