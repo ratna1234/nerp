@@ -258,9 +258,9 @@ def purchase_order(request, id=None):
 def save_purchase_order(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
-    object_values = {'release_no': params.get('release_no'), 'fiscal_year': params.get('fiscal_year'),
-                     'date': params.get('date'), 'purpose': params.get('purpose'),
-                     'demandee_id': params.get('demandee')}
+    object_values = {'order_no': params.get('order_no'), 'fiscal_year': config_value('app', 'fiscal_year'),
+                     'date': params.get('date'), 'party_id': params.get('party'),
+                     'due_days': params.get('due_days')}
     if params.get('id'):
         obj = PurchaseOrder.objects.get(id=params.get('id'))
     else:

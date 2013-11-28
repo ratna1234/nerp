@@ -107,7 +107,7 @@
                     </td>
                 </tr>
                 <!-- /ko -->
-                <tr>
+                <tr class="dont-validate">
                     <td></td>
                     <td></td>
                     <td></td>
@@ -119,7 +119,7 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr class="dont-validate">
                     <td></td>
                     <td></td>
                     <td></td>
@@ -129,7 +129,7 @@
                     <td></td>
                     <td></td>
                 </tr>
-                <tr>
+                <tr class="dont-validate">
                     <td></td>
                     <td></td>
                     <td></td>
@@ -147,26 +147,6 @@
             <a class="small secondary button" data-bind="click: addRow">
                 {% trans 'Add New Row' %}
             </a>
-        </div>
-
-        <div class="row inline-fields">
-            <div class="column large-8">
-                <div>{% trans "Demandee's Signature" %}:-</div>
-                <div>{% trans "Name" %}:-{{ form.demandee }}</div>
-                <div>{% trans "Date" %}:- {{ form.date }}</div>
-                <div>{% trans "Purpose" %}:-{{ form.purpose }}</div>
-                <div>{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
-                <div>{% trans "Date" %}:-</div>
-            </div>
-
-            <div class="column large-8">
-                <div>{% trans "(a)" %} {% trans "Buy from market" %}</div>
-                <div>{% trans "(b)" %} {% trans "Lend from store" %}</div>
-                <div>{% trans "Signature of the orderer" %}:-</div>
-                <div>{% trans "Date" %}:-</div>
-                <div>{% trans "Signature of the receiver" %}:-</div>
-                <div>{% trans "Date" %}:-</div>
-            </div>
         </div>
 
 
