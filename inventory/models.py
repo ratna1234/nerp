@@ -255,6 +255,8 @@ class Demand(models.Model):
     demandee = models.ForeignKey(User)
     date = models.DateField()
     purpose = models.CharField(max_length=254)
+    statuses = [('Requested', 'Requested'), ('Approved', 'Approved'), ('Fulfilled', 'Fulfilled')]
+    status = models.CharField(max_length=9, choices=statuses, default='Requested')
 
 
 class DemandRow(models.Model):
