@@ -31,7 +31,7 @@ urlpatterns = patterns('',
                        url(r'^parties.json$', views.parties_as_json, name='parties_as_json'),
 
                        url(r'^purchase-order/$', views.purchase_order, name='create_purchase_order'),
-                       # url(r'^demand/(?P<id>[0-9]+)/$', views.demand_form, name='update_demand_form'),
+                       url(r'^purchase-order/(?P<id>[0-9]+)/$', views.purchase_order, name='update_purchase_order'),
                        url(r'^save/purchase_order/$', views.save_purchase_order, name='save_purchase_order'),
                        # url(r'^demand/(?P<id>[0-9]+)/delete$', views.delete_demand,
                        #     name='delete_demand_form'),

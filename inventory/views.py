@@ -278,13 +278,13 @@ def save_purchase_order(request):
     model = PurchaseOrderRow
     for index, row in enumerate(params.get('table_view').get('rows')):
         print row
-        if invalid(row, ['item_id', 'quantity', 'unit', 'release_quantity']):
+        if invalid(row, ['quantity', 'unit', 'rate', 'item_id']):
             continue
         values = {'sn': index + 1, 'item_id': row.get('item_id'),
-                  'specification': row.get('specification'),
+                  'specification': row.get('specification'), 'rate': row.get('rate'),
                   'quantity': row.get('quantity'), 'unit': row.get('unit'),
-                  'release_quantity': row.get('release_quantity'), 'remarks': row.get('remarks'),
-                  'demand': obj}
+                  'budget_title_no': row.get('budget_title_no'), 'remarks': row.get('remarks'),
+                  'purchase_order': obj}
         submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
         # set_transactions(submodel, request.POST.get('date'),
         #                  ['dr', bank_account, row.get('amount')],
