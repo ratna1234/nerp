@@ -301,3 +301,7 @@ def save_purchase_order(request):
 def list_inventory_accounts(request):
     objects = InventoryAccount.objects.all()
     return render(request, 'list_inventory_accounts.html', {'objects': objects})
+
+def view_inventory_account(request, id):
+    obj = get_object_or_404(InventoryAccount, id=id)
+    return render(request, 'view_inventory_account.html', {'obj': obj})

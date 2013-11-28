@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ obj.name }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_inventory_accounts" %}">{% trans 'Inventory' %} {% trans 'Accounts' %}</a>
+    <span>{{ obj.name }}</span>
+{% endblock %}
+
+{% block content %}
+Hi
+
+{% endblock %}

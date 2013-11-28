@@ -43,25 +43,15 @@
 
     <table class="table-bordered">
         <thead>
-        <th>{% anchor code %}</th>
         <th>{% anchor name %}</th>
-        <th>{% anchor category %}</th>
         <th>{% anchor purchase_price 'Purchase Price' %}</th>
+
         </thead>
         <tbody>
         {% for item in paginated_objects %}
             <tr>
                 <td>
-                    <a href="{% url 'update_inventory_item' item.id %}">{{ item.code }}</a>
-                </td>
-                <td>
                     <a href="{% url 'update_inventory_item' item.id %}">{{ item.name }}</a>
-                </td>
-
-                <td>
-                    {% if item.category.id %}
-                        <a href="{% url 'update_inventory_category' item.category.id %}">{{ item.category.name }}</a>
-                    {% endif %}
                 </td>
                 <td>{{ item.purchase_price }}</td>
             </tr>

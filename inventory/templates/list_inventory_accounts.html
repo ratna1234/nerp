@@ -30,10 +30,14 @@
         {% for obj in paginated_objects %}
             <tr>
                 <td>
+                    <a href="{% url 'view_inventory_account' obj.id %}">
                     {{ obj.account_no }}
+                    </a>
                 </td>
                 <td>
+                    <a href="{% url 'view_inventory_account' obj.id %}">
                     {{ obj.item.name }}
+                    </a>
                 </td>
                 <td>
                     {{ obj.item.type }}
