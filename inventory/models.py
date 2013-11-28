@@ -37,6 +37,16 @@ class InventoryAccount(models.Model):
     def get_absolute_url(self):
         return '/inventory_account/' + str(self.id)
 
+    @staticmethod
+    def get_next_account_no():
+        from django.db.models import Max
+        max_voucher_no = InventoryAccount.objects.all().aggregate(Max('account_no'))['account_no__max']
+        if max_voucher_no:
+            return max_voucher_no + 1
+        else:
+            return 1
+
+
     def get_category(self):
         try:
             item = self.item
@@ -89,7 +99,7 @@ class Item(models.Model):
     size = models.CharField(max_length=100, blank=True, null=True)
     expected_life = models.CharField(max_length=100, blank=True, null=True)
     source = models.CharField(max_length=100, blank=True, null=True)
-    property_identification_reference_number = models.CharField(max_length=20)
+    property_identification_reference_number = models.CharField(max_length=20, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.pk is None:
