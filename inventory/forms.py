@@ -1,11 +1,17 @@
 from mptt.forms import TreeNodeChoiceField
 
-from app.lib import KOModelForm
-from models import Item, Category, Demand, Party, PurchaseOrder
+from app.libr import KOModelForm
+from django import forms
+from models import Item, Category, Demand, Party, PurchaseOrder, InventoryAccount
 
 
 class ItemForm(KOModelForm):
     #category = TreeNodeChoiceField(queryset=Category.objects.all(), required=False)
+    account_no = forms.Field(widget=forms.TextInput())
+
+    def __init__(self, *args, **kwargs):
+        super(ItemForm, self).__init__(*args, **kwargs)
+        self.fields['account_no'].initial = InventoryAccount.get_next_account_no()
 
     class Meta:
         model = Item

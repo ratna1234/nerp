@@ -28,7 +28,7 @@ def item_form(request, id=None):
         form = ItemForm(data=request.POST, instance=item)
         if form.is_valid():
             item = form.save(commit=False)
-            item.save()
+            item.save(account_no=form.cleaned_data['account_no'])
             if request.is_ajax():
                 return render(request, 'callback.html', {'obj': ItemSerializer(item).data})
             return redirect('/inventory/items/')

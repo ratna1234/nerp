@@ -40,6 +40,7 @@ class InventoryAccount(models.Model):
     @staticmethod
     def get_next_account_no():
         from django.db.models import Max
+
         max_voucher_no = InventoryAccount.objects.all().aggregate(Max('account_no'))['account_no__max']
         if max_voucher_no:
             return max_voucher_no + 1
@@ -102,8 +103,9 @@ class Item(models.Model):
     property_identification_reference_number = models.CharField(max_length=20, blank=True, null=True)
 
     def save(self, *args, **kwargs):
+        account_no = kwargs.pop('account_no')
         if self.pk is None:
-            account = InventoryAccount(code=self.code, name=self.name)
+            account = InventoryAccount(code=self.code, name=self.name, account_no=account_no)
             account.save()
             self.account = account
         super(Item, self).save(*args, **kwargs)

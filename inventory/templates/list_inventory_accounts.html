@@ -21,6 +21,7 @@
 
     <table class="table-bordered">
         <thead>
+        <th>{% anchor account_no 'Account No.' %}</th>
         <th>{% anchor name %}</th>
         <th>{% anchor item__type 'Type' %}</th>
         <th>{% anchor item__unit 'Unit' %}</th>
@@ -29,9 +30,11 @@
         {% for obj in paginated_objects %}
             <tr>
                 <td>
+                    {{ obj.account_no }}
+                </td>
+                <td>
                     {{ obj.item.name }}
                 </td>
-
                 <td>
                     {{ obj.item.type }}
                 </td>
