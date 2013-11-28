@@ -10,8 +10,8 @@ from livesettings import config_value
 
 from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow
-from app.lib import invalid, save_model
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount
+from app.libr import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer
 from app.nepdate import BSUtil
 
@@ -295,3 +295,9 @@ def save_purchase_order(request):
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+
+@login_required
+def list_inventory_accounts(request):
+    objects = InventoryAccount.objects.all()
+    return render(request, 'list_inventory_accounts.html', {'objects': objects})
