@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Purchase' %} {% trans 'Orders' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_purchase_orders" %}">{% trans 'Purchase' %} {% trans 'Orders' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load pagination_tags %}
+    {% load sorting_tags %}
+
+    {% autosort objects as sorted_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor order_no 'Release No.' %}</th>
+        <th>{% anchor party %}</th>
+        <th>{% anchor date %}</th>
+{#        <th>{% anchor status %}</th>#}
+        </thead>
+        <tbody>
+        {% for item in paginated_objects %}
+            <tr>
+                <td>
+                    <a href="{% url 'update_purchase_order' item.id %}">{{ item.order_no }}</a>
+                </td>
+                <td>
+                    {{ item.party }}
+                </td>
+
+                <td>
+                    {{ item.date }}
+                </td>
+{#                <td>{{ item.purpose }}</td>#}
+{#                <td>{{ item.status }}</td>#}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% paginate %}
+
+    <a class="small secondary button"
+       href="{% url 'create_purchase_order' %}">{% trans 'New' %} {% trans 'Purchase Order' %}</a>
+
+{% endblock %}

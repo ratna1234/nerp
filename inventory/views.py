@@ -298,6 +298,19 @@ def save_purchase_order(request):
 
 
 @login_required
+def list_purchase_orders(request):
+    objects = PurchaseOrder.objects.all()
+    return render(request, 'list_purchase_orders.html', {'objects': objects})
+
+
+@login_required
+def delete_purchase_order(request, id):
+    obj = get_object_or_404(PurchaseOrder, id=id)
+    obj.delete()
+    return redirect(reverse('list_purchase_orders'))
+
+
+@login_required
 def list_inventory_accounts(request):
     objects = InventoryAccount.objects.all()
     return render(request, 'list_inventory_accounts.html', {'objects': objects})

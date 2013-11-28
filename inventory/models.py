@@ -280,14 +280,16 @@ class Party(models.Model):
     address = models.CharField(max_length=254, blank=True, null=True)
     phone_no = models.CharField(max_length=100, blank=True, null=True)
     pan_no = models.CharField(max_length=50, blank=True, null=True)
-    fiscal_year = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.name
 
 class PurchaseOrder(models.Model):
     party = models.ForeignKey(Party)
     order_no = models.IntegerField()
     date = models.DateField()
     due_days = models.IntegerField(default=3)
+    fiscal_year = models.CharField(max_length=10)
 
 
 class PurchaseOrderRow(models.Model):
