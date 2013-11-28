@@ -88,6 +88,7 @@ class Item(models.Model):
     size = models.CharField(max_length=100, blank=True, null=True)
     expected_life = models.CharField(max_length=100, blank=True, null=True)
     source = models.CharField(max_length=100, blank=True, null=True)
+    property_identification_reference_number = models.CharField(max_length=20)
 
     def save(self, *args, **kwargs):
         if self.pk is None:
