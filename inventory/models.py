@@ -23,12 +23,13 @@ class Category(MPTTModel):
         return self.name
 
     class Meta:
-        verbose_name_plural = u' Inventory Categories'
+        verbose_name_plural = u'Inventory Categories'
 
 
 class InventoryAccount(models.Model):
     code = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=100)
+    account_no = models.PositiveIntegerField()
     current_dr = models.FloatField(null=True, blank=True)
     current_cr = models.FloatField(null=True, blank=True)
     opening_balance = models.FloatField(default=0)
