@@ -2,7 +2,7 @@ from mptt.forms import TreeNodeChoiceField
 
 from app.libr import KOModelForm
 from django import forms
-from models import Item, Category, Demand, Party, PurchaseOrder, InventoryAccount
+from models import Item, Category, Demand, Party, PurchaseOrder, InventoryAccount, Handover
 
 
 class ItemForm(KOModelForm):
@@ -62,3 +62,7 @@ class PartyForm(KOModelForm):
 class PurchaseOrderForm(KOModelForm):
     class Meta:
         model = PurchaseOrder
+
+class HandoverForm(KOModelForm):
+    class Meta:
+        model = Handover

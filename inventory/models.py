@@ -313,7 +313,7 @@ class Handover(models.Model):
     due_days = models.PositiveIntegerField(default=7)
     fiscal_year = models.CharField(max_length=10)
 
-class HandoverRows(models.Model):
+class HandoverRow(models.Model):
     sn = models.IntegerField()
     item = models.ForeignKey(Item)
     specification = models.CharField(max_length=254, blank=True, null=True)
@@ -322,3 +322,4 @@ class HandoverRows(models.Model):
     total_amount = models.FloatField()
     received_date = models.DateField()
     condition = models.TextField()
+    handover = models.ForeignKey(Handover, related_name='rows')

@@ -30,6 +30,8 @@ urlpatterns = patterns('',
                        url(r'^party/(?P<id>[0-9]+)/$', views.party_form, name='update_party'),
                        url(r'^parties.json$', views.parties_as_json, name='parties_as_json'),
 
+                       url(r'^handover/$', views.handover, name='create_handover'),
+
                        url(r'^purchase-order/$', views.purchase_order, name='create_purchase_order'),
                        url(r'^purchase-order/(?P<id>[0-9]+)/$', views.purchase_order, name='update_purchase_order'),
                        url(r'^save/purchase_order/$', views.save_purchase_order, name='save_purchase_order'),

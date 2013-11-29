@@ -8,9 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from livesettings import config_value
 
-from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm
+from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm, HandoverForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover
 from app.libr import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer
 from app.nepdate import BSUtil
@@ -320,3 +320,16 @@ def list_inventory_accounts(request):
 def view_inventory_account(request, id):
     obj = get_object_or_404(InventoryAccount, id=id)
     return render(request, 'view_inventory_account.html', {'obj': obj})
+
+@login_required
+def handover(request, id=None):
+    if id:
+        obj = get_object_or_404(Handover, id=id)
+        scenario = _('Update')
+    else:
+        obj = Handover(date=date.today())
+        scenario = _('Create')
+    form = HandoverForm(instance=obj)
+    object_data = PurchaseOrderSerializer(obj).data
+    return render(request, 'purchase_order.html',
+                  {'form': form, 'data': object_data, 'scenario': scenario})
