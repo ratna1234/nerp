@@ -73,14 +73,14 @@
                     <td data-bind="text: account_no()"></td>
                     <td data-bind="text: inventory_classification_reference_no()"></td>
                     <td>
-                        <input type="hidden" data-url="{% url 'create_inventory_item' %}"
+                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"
                                data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">
                     </td>
                     <td data-bind="editableText: specification"></td>
                     <td data-bind="editableText: quantity, numeric: true"></td>
                     <td data-bind="editableText: unit"></td>
-                    <td data-bind="editableText: received_date"></td>
                     <td data-bind="editableText: total_amount, numeric: true"></td>
+                    <td data-bind="editableText: received_date"></td>
                     <td class="remarks-cell" data-bind="editableText: condition"></td>
                     <td>
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>

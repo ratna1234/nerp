@@ -284,6 +284,7 @@ class Party(models.Model):
     def __str__(self):
         return self.name
 
+
 class PurchaseOrder(models.Model):
     party = models.ForeignKey(Party)
     order_no = models.IntegerField()
@@ -313,6 +314,7 @@ class Handover(models.Model):
     due_days = models.PositiveIntegerField(default=7)
     fiscal_year = models.CharField(max_length=10)
 
+
 class HandoverRow(models.Model):
     sn = models.IntegerField()
     item = models.ForeignKey(Item)
@@ -320,6 +322,6 @@ class HandoverRow(models.Model):
     quantity = models.FloatField()
     unit = models.CharField(max_length=50)
     total_amount = models.FloatField()
-    received_date = models.DateField()
-    condition = models.TextField()
+    received_date = models.DateField(null=True, blank=True)
+    condition = models.TextField(null=True, blank=True)
     handover = models.ForeignKey(Handover, related_name='rows')

@@ -44,10 +44,14 @@ class PurchaseOrderSerializer(serializers.ModelSerializer):
 
 
 class HandoverRowSerializer(serializers.ModelSerializer):
+    item_id = serializers.Field(source='item.id')
+
     class Meta:
         model = HandoverRow
 
+
 class HandoverSerializer(serializers.ModelSerializer):
     rows = HandoverRowSerializer()
+
     class Meta:
         model = Handover

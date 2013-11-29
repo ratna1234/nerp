@@ -10,7 +10,7 @@ from livesettings import config_value
 
 from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm, HandoverForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow
 from app.libr import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer
 from app.nepdate import BSUtil
@@ -164,7 +164,6 @@ def save_demand(request):
     dct['id'] = obj.id
     model = DemandRow
     for index, row in enumerate(params.get('table_view').get('rows')):
-        print row
         if invalid(row, ['item_id', 'quantity', 'unit', 'release_quantity']):
             continue
         values = {'sn': index + 1, 'item_id': row.get('item_id'),
@@ -277,7 +276,6 @@ def save_purchase_order(request):
     dct['id'] = obj.id
     model = PurchaseOrderRow
     for index, row in enumerate(params.get('table_view').get('rows')):
-        print row
         if invalid(row, ['quantity', 'unit', 'rate', 'item_id']):
             continue
         values = {'sn': index + 1, 'item_id': row.get('item_id'),
@@ -321,6 +319,7 @@ def view_inventory_account(request, id):
     obj = get_object_or_404(InventoryAccount, id=id)
     return render(request, 'view_inventory_account.html', {'obj': obj})
 
+
 @login_required
 def handover(request, id=None):
     if id:
@@ -333,3 +332,43 @@ def handover(request, id=None):
     object_data = HandoverSerializer(obj).data
     return render(request, 'handover.html',
                   {'form': form, 'data': object_data, 'scenario': scenario})
+
+
+@login_required
+def save_handover(request):
+    params = json.loads(request.body)
+    dct = {'rows': {}}
+    object_values = {'addressee': params.get('addressee'), 'fiscal_year': config_value('app', 'fiscal_year'),
+                     'date': params.get('date'), 'office': params.get('office'),
+                     'designation': params.get('designation'),
+                     'due_days': params.get('due_days'), 'handed_to': params.get('handed_to')}
+    if params.get('id'):
+        obj = Handover.objects.get(id=params.get('id'))
+    else:
+        obj = Handover()
+    try:
+        obj = save_model(obj, object_values)
+    except Exception as e:
+        if hasattr(e, 'messages'):
+            dct['error_message'] = '; '.join(e.messages)
+        elif str(e) != '':
+            dct['error_message'] = str(e)
+        else:
+            dct['error_message'] = 'Error in form data!'
+    dct['id'] = obj.id
+    model = HandoverRow
+    for index, row in enumerate(params.get('table_view').get('rows')):
+        print row
+        if invalid(row, ['quantity', 'unit', 'item_id', 'total_amount']):
+            continue
+        values = {'sn': index + 1, 'item_id': row.get('item_id'),
+                  'specification': row.get('specification'),
+                  'quantity': row.get('quantity'), 'unit': row.get('unit'), 'received_date': row.get('received_date'),
+                  'total_amount': row.get('total_amount'), 'condition': row.get('condition'),
+                  'handover': obj}
+        submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
+        if not created:
+            submodel = save_model(submodel, values)
+        dct['rows'][index] = submodel.id
+    delete_rows(params.get('table_view').get('deleted_rows'), model)
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
