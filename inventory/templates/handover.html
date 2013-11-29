@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+
+
+{% block title %}{% trans scenario %} {% trans 'Handover' %} {% trans 'Form' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <span> {% trans scenario %} {% trans 'Handover' %} {% trans 'Form' %}</span>
+{% endblock %}
+
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/base.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
+    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
+    <script src="{{ STATIC_URL }}js/handover.js"></script>
+    <script>
+    ko_data = {{data|jsonify}};
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    {{ data|jsonify }}
+
+    <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '8' %}</span>
+    <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+    <h3 class="center">{% trans 'Handover' %} {% trans 'Form' %}</h3>
+
+    <form method="post" data-bind="submit: save">
+        {% csrf_token %}
+
+        <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
+
+
+    श्री {{ form.addressee }} {{ form.addressee.errors }}
+    निम्नांकित मालसामानहरु मिति {{ form.date }} को निर्णयानुसार{{ form.office }} मन्त्रालय/विभाग/कार्यालय/आयोजनाका   {{ form.designation }}श्री {{ form.handed_to }}
+    <br>
+    {{ form.addressee.errors }}
+    {{ form.date.errors }}
+    {{ form.office.errors }}
+    {{ form.designation.errors }}
+    {{ form.handed_to.errors }}
+    को हस्ते पठाएको छु । सो सामान भण्डार दाखिला गरी {{ form.due_days }} दिनभित्र दाखिला प्रतिवेदन समेत पठाईदिनुहुन अनुरोध छ ।
+    {{ form.due_days.errors }}
+
+        <div data-bind="with:table_view">
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th rowspan="2" class="span1">{% trans 'SN' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Inventory Account Page No.' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Inventory Classification Reference No.' %}</th>
+                    <th rowspan="2" class="span2">{% trans "Item's Name" %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Specification' %}</th>
+                    <th rowspan="2" class="span3">{% trans 'Item Quantity' %}</th>
+                    <th rowspan="2" class="span3">{% trans 'Unit' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Total Amount' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Start Received Date' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Physical Condition of Item' %}</th>
+                    <th rowspan="2" class="span1"></th>
+                </tr>
+                </thead>
+
+                <tbody id="tbody">
+                <!-- ko foreach: rows -->
+                <tr>
+                    <td>
+                        <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
+                    </td>
+                    <td data-bind="text: account_no()"></td>
+                    <td data-bind="text: inventory_classification_reference_no()"></td>
+                    <td>
+                        <input type="hidden" data-url="{% url 'create_inventory_item' %}"
+                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">
+                    </td>
+                    <td data-bind="editableText: specification"></td>
+                    <td data-bind="editableText: quantity, numeric: true"></td>
+                    <td data-bind="editableText: unit"></td>
+                    <td data-bind="editableText: received_date"></td>
+                    <td data-bind="editableText: total_amount, numeric: true"></td>
+                    <td class="remarks-cell" data-bind="editableText: condition"></td>
+                    <td>
+                        <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                </tbody>
+            </table>
+            <a class="small secondary button" data-bind="click: addRow">
+                {% trans 'Add New Row' %}
+            </a>
+        </div>
+
+
+        <input type="submit" class="small secondary button" value="{% trans 'Save' %}">
+        <span data-bind="text: msg, css: status"></span>
+
+        {% if scenario == 'Update' %}
+            <a class="small secondary button"
+               href="{% url 'delete_purchase_order' form.instance.id %}">{% trans 'Delete!' %}</a>
+        {% endif %}
+
+
+    </form>
+
+{% endblock %}

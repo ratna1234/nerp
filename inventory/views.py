@@ -12,7 +12,7 @@ from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, Purch
 from inventory.filters import InventoryItemFilter
 from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover
 from app.libr import invalid, save_model
-from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer
+from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer
 from app.nepdate import BSUtil
 
 
@@ -330,6 +330,6 @@ def handover(request, id=None):
         obj = Handover(date=date.today())
         scenario = _('Create')
     form = HandoverForm(instance=obj)
-    object_data = PurchaseOrderSerializer(obj).data
-    return render(request, 'purchase_order.html',
+    object_data = HandoverSerializer(obj).data
+    return render(request, 'handover.html',
                   {'form': form, 'data': object_data, 'scenario': scenario})
