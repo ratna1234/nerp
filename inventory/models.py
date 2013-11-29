@@ -302,3 +302,23 @@ class PurchaseOrderRow(models.Model):
     rate = models.FloatField()
     remarks = models.CharField(max_length=254, blank=True, null=True)
     purchase_order = models.ForeignKey(PurchaseOrder, related_name='rows')
+
+
+class Handover(models.Model):
+    addressee = models.CharField(max_length=254)
+    date = models.DateField()
+    office = models.CharField(max_length=254)
+    designation = models.CharField(max_length=254)
+    handed_to = models.CharField(max_length=254)
+    due_days = models.PositiveIntegerField(default=7)
+    fiscal_year = models.CharField(max_length=10)
+
+class HandoverRows(models.Model):
+    sn = models.IntegerField()
+    item = models.ForeignKey(Item)
+    specification = models.CharField(max_length=254, blank=True, null=True)
+    quantity = models.FloatField()
+    unit = models.CharField(max_length=50)
+    total_amount = models.FloatField()
+    received_date = models.DateField()
+    condition = models.TextField()
