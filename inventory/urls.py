@@ -33,6 +33,7 @@ urlpatterns = patterns('',
                        url(r'^handover/$', views.handover, name='create_handover'),
                        url(r'^save/handover/$', views.save_handover, name='save_handover'),
                        url(r'^handover/(?P<id>[0-9]+)/$', views.handover, name='update_handover'),
+                       url(r'^handovers/$', views.list_handovers, name='list_handovers'),
 
                        url(r'^purchase-order/$', views.purchase_order, name='create_purchase_order'),
                        url(r'^purchase-order/(?P<id>[0-9]+)/$', views.purchase_order, name='update_purchase_order'),

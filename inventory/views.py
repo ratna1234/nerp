@@ -340,7 +340,7 @@ def save_handover(request):
     dct = {'rows': {}}
     object_values = {'addressee': params.get('addressee'), 'fiscal_year': config_value('app', 'fiscal_year'),
                      'date': params.get('date'), 'office': params.get('office'),
-                     'designation': params.get('designation'),
+                     'designation': params.get('designation'), 'voucher_no': params.get('voucher_no'),
                      'due_days': params.get('due_days'), 'handed_to': params.get('handed_to')}
     if params.get('id'):
         obj = Handover.objects.get(id=params.get('id'))
@@ -372,3 +372,9 @@ def save_handover(request):
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+@login_required
+def list_handovers(request):
+    objects = Handover.objects.all()
+    return render(request, 'list_handovers.html', {'objects': objects})
+

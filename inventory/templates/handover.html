@@ -22,8 +22,6 @@
 
 {% block content %}
 
-    {{ data|jsonify }}
-
     <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '8' %}</span>
     <h3 class="center">{{ 'app'|setting:'header' }}</h3>
     <h3 class="center">{% trans 'Handover' %} {% trans 'Form' %}</h3>
@@ -32,6 +30,9 @@
         {% csrf_token %}
 
         <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
+
+    {% trans 'Handover' %} {% trans 'Form No.' %} {{ form.voucher_no }}
+    {{ form.voucher_no.as_p }}
 
 
     श्री {{ form.addressee }} {{ form.addressee.errors }}

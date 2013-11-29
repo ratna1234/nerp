@@ -226,8 +226,8 @@ def delete_rows(rows, model):
     for row in rows:
         if row.get('id'):
             instance = model.objects.get(id=row.get('id'))
-            JournalEntry.objects.get(content_type=ContentType.objects.get_for_model(model),
-                                     model_id=instance.id).delete()
+            #JournalEntry.objects.get(content_type=ContentType.objects.get_for_model(model),
+            #                         model_id=instance.id).delete()
             instance.delete()
 
 
@@ -306,6 +306,7 @@ class PurchaseOrderRow(models.Model):
 
 
 class Handover(models.Model):
+    voucher_no = models.PositiveIntegerField()
     addressee = models.CharField(max_length=254)
     date = models.DateField()
     office = models.CharField(max_length=254)
