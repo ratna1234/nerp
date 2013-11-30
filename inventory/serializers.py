@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from inventory.models import Demand, DemandRow, Item, Party, PurchaseOrder, PurchaseOrderRow, HandoverRow, Handover
+from inventory.models import Demand, DemandRow, Item, Party, PurchaseOrder, PurchaseOrderRow, HandoverRow, Handover, EntryReport, EntryReportRow
 
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -55,3 +55,17 @@ class HandoverSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Handover
+
+
+class EntryReportRowSerializer(serializers.ModelSerializer):
+    item_id = serializers.Field(source='item.id')
+
+    class Meta:
+        model = EntryReportRow
+
+
+class EntryReportSerializer(serializers.ModelSerializer):
+    rows = EntryReportRowSerializer()
+
+    class Meta:
+        model = EntryReport

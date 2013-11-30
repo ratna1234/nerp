@@ -8,11 +8,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from livesettings import config_value
 
-from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm, HandoverForm
+from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm, HandoverForm, EntryReportForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow
 from app.libr import invalid, save_model
-from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer
+from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer, EntryReportSerializer
 from app.nepdate import BSUtil
 
 
@@ -392,7 +392,56 @@ def list_incoming_handovers(request):
     objects = Handover.objects.filter(type='Incoming')
     return render(request, 'list_incoming_handovers.html', {'objects': objects})
 
+
 @login_required
 def list_outgoing_handovers(request):
     objects = Handover.objects.filter(type='Outgoing')
     return render(request, 'list_outgoing_handovers.html', {'objects': objects})
+
+
+@login_required
+def handover_entry_report(request, id=None):
+    obj = get_object_or_404(Handover, id=id, type='Incoming')
+    form = EntryReportForm(instance=obj)
+    object_data = EntryReportSerializer(obj).data
+    return render(request, 'entry_report.html',
+                  {'form': form, 'data': object_data})
+
+
+@login_required
+def save_entry_report(request):
+    params = json.loads(request.body)
+    dct = {'rows': {}}
+    object_values = {'addressee': params.get('addressee'), 'fiscal_year': config_value('app', 'fiscal_year'),
+                     'date': params.get('date'), 'office': params.get('office'), 'type': params.get('type'),
+                     'designation': params.get('designation'), 'voucher_no': params.get('voucher_no'),
+                     'due_days': params.get('due_days'), 'handed_to': params.get('handed_to')}
+    if params.get('id'):
+        obj = EntryReport.objects.get(id=params.get('id'))
+    else:
+        obj = EntryReport()
+    try:
+        obj = save_model(obj, object_values)
+    except Exception as e:
+        if hasattr(e, 'messages'):
+            dct['error_message'] = '; '.join(e.messages)
+        elif str(e) != '':
+            dct['error_message'] = str(e)
+        else:
+            dct['error_message'] = 'Error in form data!'
+    dct['id'] = obj.id
+    model = EntryReportRow
+    for index, row in enumerate(params.get('table_view').get('rows')):
+        if invalid(row, ['quantity', 'unit', 'item_id', 'total_amount']):
+            continue
+        values = {'sn': index + 1, 'item_id': row.get('item_id'),
+                  'specification': row.get('specification'),
+                  'quantity': row.get('quantity'), 'unit': row.get('unit'), 'received_date': row.get('received_date'),
+                  'total_amount': row.get('total_amount'), 'condition': row.get('condition'),
+                  'handover': obj}
+        submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
+        if not created:
+            submodel = save_model(submodel, values)
+        dct['rows'][index] = submodel.id
+    delete_rows(params.get('table_view').get('deleted_rows'), model)
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
