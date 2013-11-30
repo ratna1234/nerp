@@ -321,12 +321,26 @@ def view_inventory_account(request, id):
 
 
 @login_required
-def handover(request, id=None):
+def handover_incoming(request, id=None):
     if id:
         obj = get_object_or_404(Handover, id=id)
         scenario = _('Update')
     else:
-        obj = Handover(date=date.today())
+        obj = Handover(date=date.today(), type='Incoming')
+        scenario = _('Create')
+    form = HandoverForm(instance=obj)
+    object_data = HandoverSerializer(obj).data
+    return render(request, 'handover.html',
+                  {'form': form, 'data': object_data, 'scenario': scenario})
+
+
+@login_required
+def handover_outgoing(request, id=None):
+    if id:
+        obj = get_object_or_404(Handover, id=id)
+        scenario = _('Update')
+    else:
+        obj = Handover(date=date.today(), type='Outgoing')
         scenario = _('Create')
     form = HandoverForm(instance=obj)
     object_data = HandoverSerializer(obj).data
@@ -339,7 +353,7 @@ def save_handover(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
     object_values = {'addressee': params.get('addressee'), 'fiscal_year': config_value('app', 'fiscal_year'),
-                     'date': params.get('date'), 'office': params.get('office'),
+                     'date': params.get('date'), 'office': params.get('office'), 'type': params.get('type'),
                      'designation': params.get('designation'), 'voucher_no': params.get('voucher_no'),
                      'due_days': params.get('due_days'), 'handed_to': params.get('handed_to')}
     if params.get('id'):
@@ -358,7 +372,6 @@ def save_handover(request):
     dct['id'] = obj.id
     model = HandoverRow
     for index, row in enumerate(params.get('table_view').get('rows')):
-        print row
         if invalid(row, ['quantity', 'unit', 'item_id', 'total_amount']):
             continue
         values = {'sn': index + 1, 'item_id': row.get('item_id'),
@@ -372,6 +385,7 @@ def save_handover(request):
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
+
 
 @login_required
 def list_handovers(request):

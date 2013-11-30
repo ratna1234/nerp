@@ -30,9 +30,10 @@ urlpatterns = patterns('',
                        url(r'^party/(?P<id>[0-9]+)/$', views.party_form, name='update_party'),
                        url(r'^parties.json$', views.parties_as_json, name='parties_as_json'),
 
-                       url(r'^handover/$', views.handover, name='create_handover'),
+                       url(r'^handover/incoming/$', views.handover_incoming, name='create_incoming_handover'),
+                       url(r'^handover/outgoing/$', views.handover_outgoing, name='create_outgoing_handover'),
                        url(r'^save/handover/$', views.save_handover, name='save_handover'),
-                       url(r'^handover/(?P<id>[0-9]+)/$', views.handover, name='update_handover'),
+                       url(r'^handover/(?P<id>[0-9]+)/$', views.handover_incoming, name='update_handover'),
                        url(r'^handovers/$', views.list_handovers, name='list_handovers'),
 
                        url(r'^purchase-order/$', views.purchase_order, name='create_purchase_order'),
