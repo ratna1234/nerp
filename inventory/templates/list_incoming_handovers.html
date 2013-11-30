@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'Handovers' %}{% endblock %}
+{% block title %}{% trans 'Incoming Handovers' %}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <a href="{% url "list_handovers" %}">{% trans 'Handovers' %}</a>
+    <a href="{% url "list_incoming_handovers" %}">{% trans 'Incoming Handovers' %}</a>
 {% endblock %}
 
 {% block content %}

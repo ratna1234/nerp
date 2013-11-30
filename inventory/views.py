@@ -388,7 +388,11 @@ def save_handover(request):
 
 
 @login_required
-def list_handovers(request):
-    objects = Handover.objects.all()
-    return render(request, 'list_handovers.html', {'objects': objects})
+def list_incoming_handovers(request):
+    objects = Handover.objects.filter(type='Incoming')
+    return render(request, 'list_incoming_handovers.html', {'objects': objects})
 
+@login_required
+def list_outgoing_handovers(request):
+    objects = Handover.objects.filter(type='Outgoing')
+    return render(request, 'list_outgoing_handovers.html', {'objects': objects})
