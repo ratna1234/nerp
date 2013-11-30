@@ -314,6 +314,8 @@ class Handover(models.Model):
     handed_to = models.CharField(max_length=254)
     due_days = models.PositiveIntegerField(default=7)
     fiscal_year = models.CharField(max_length=10)
+    types = [('Incoming', 'Incoming'), ('Outgoing', 'Outgoing')]
+    type = models.CharField(max_length=9, choices=types, default='Incoming')
 
 
 class HandoverRow(models.Model):
