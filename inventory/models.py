@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import timedelta
+from django.contrib.contenttypes import generic
 
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -234,7 +235,6 @@ def delete_rows(rows, model):
 @receiver(pre_delete, sender=Transaction)
 def _transaction_delete(sender, instance, **kwargs):
     transaction = instance
-    print transaction
     # cancel out existing dr_amount and cr_amount from account's current_dr and current_cr
     if transaction.dr_amount:
         transaction.account.current_dr -= transaction.dr_amount
@@ -242,7 +242,6 @@ def _transaction_delete(sender, instance, **kwargs):
     if transaction.cr_amount:
         transaction.account.current_cr -= transaction.cr_amount
 
-    print transaction.dr_amount
     alter(transaction.account, transaction.journal_entry.date, float(zero_for_none(transaction.dr_amount)) * -1,
           float(zero_for_none(transaction.cr_amount)) * -1)
 
@@ -285,24 +284,24 @@ class Party(models.Model):
         return self.name
 
 
-class PurchaseOrder(models.Model):
-    party = models.ForeignKey(Party)
-    order_no = models.IntegerField()
-    date = models.DateField()
-    due_days = models.IntegerField(default=3)
+class EntryReport(models.Model):
+    entry_report_no = models.PositiveIntegerField()
     fiscal_year = models.CharField(max_length=10)
+    source_content_type = models.ForeignKey(ContentType)
+    source_object_id = models.PositiveIntegerField()
+    source = generic.GenericForeignKey('source_content_type', 'source_object_id')
 
 
-class PurchaseOrderRow(models.Model):
+class EntryReportRow(models.Model):
     sn = models.PositiveIntegerField()
-    budget_title_no = models.IntegerField()
     item = models.ForeignKey(Item)
     specification = models.CharField(max_length=254, blank=True, null=True)
     quantity = models.FloatField()
     unit = models.CharField(max_length=50)
     rate = models.FloatField()
+    other_expenses = models.FloatField()
     remarks = models.CharField(max_length=254, blank=True, null=True)
-    purchase_order = models.ForeignKey(PurchaseOrder, related_name='rows')
+    entry_report = models.ForeignKey(EntryReport)
 
 
 class Handover(models.Model):
@@ -316,6 +315,8 @@ class Handover(models.Model):
     fiscal_year = models.CharField(max_length=10)
     types = [('Incoming', 'Incoming'), ('Outgoing', 'Outgoing')]
     type = models.CharField(max_length=9, choices=types, default='Incoming')
+    entry_reports = generic.GenericRelation(EntryReport, content_type_field='source_content_type_id',
+                                            object_id_field='source_object_id')
 
 
 class HandoverRow(models.Model):
@@ -330,19 +331,23 @@ class HandoverRow(models.Model):
     handover = models.ForeignKey(Handover, related_name='rows')
 
 
-class EntryReport(models.Model):
-    entry_report_no = models.PositiveIntegerField()
+class PurchaseOrder(models.Model):
+    party = models.ForeignKey(Party)
+    order_no = models.IntegerField()
+    date = models.DateField()
+    due_days = models.IntegerField(default=3)
     fiscal_year = models.CharField(max_length=10)
-    
+    entry_reports = generic.GenericRelation(EntryReport, content_type_field='source_content_type_id',
+                                            object_id_field='source_object_id')
 
 
-class EntryReportRow(models.Model):
+class PurchaseOrderRow(models.Model):
     sn = models.PositiveIntegerField()
+    budget_title_no = models.IntegerField()
     item = models.ForeignKey(Item)
     specification = models.CharField(max_length=254, blank=True, null=True)
     quantity = models.FloatField()
     unit = models.CharField(max_length=50)
     rate = models.FloatField()
-    other_expenses = models.FloatField()
     remarks = models.CharField(max_length=254, blank=True, null=True)
-    entry_report = models.ForeignKey(EntryReport)
+    purchase_order = models.ForeignKey(PurchaseOrder, related_name='rows')
