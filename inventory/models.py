@@ -260,7 +260,7 @@ class Demand(models.Model):
 
 
 class DemandRow(models.Model):
-    sn = models.IntegerField()
+    sn = models.PositiveIntegerField()
     item = models.ForeignKey(Item)
     specification = models.CharField(max_length=254, blank=True, null=True)
     quantity = models.FloatField()
@@ -294,7 +294,7 @@ class PurchaseOrder(models.Model):
 
 
 class PurchaseOrderRow(models.Model):
-    sn = models.IntegerField()
+    sn = models.PositiveIntegerField()
     budget_title_no = models.IntegerField()
     item = models.ForeignKey(Item)
     specification = models.CharField(max_length=254, blank=True, null=True)
@@ -319,7 +319,7 @@ class Handover(models.Model):
 
 
 class HandoverRow(models.Model):
-    sn = models.IntegerField()
+    sn = models.PositiveIntegerField()
     item = models.ForeignKey(Item)
     specification = models.CharField(max_length=254, blank=True, null=True)
     quantity = models.FloatField()
@@ -328,3 +328,21 @@ class HandoverRow(models.Model):
     received_date = models.DateField(null=True, blank=True)
     condition = models.TextField(null=True, blank=True)
     handover = models.ForeignKey(Handover, related_name='rows')
+
+
+class EntryReport(models.Model):
+    entry_report_no = models.PositiveIntegerField()
+    fiscal_year = models.CharField(max_length=10)
+    
+
+
+class EntryReportRow(models.Model):
+    sn = models.PositiveIntegerField()
+    item = models.ForeignKey(Item)
+    specification = models.CharField(max_length=254, blank=True, null=True)
+    quantity = models.FloatField()
+    unit = models.CharField(max_length=50)
+    rate = models.FloatField()
+    other_expenses = models.FloatField()
+    remarks = models.CharField(max_length=254, blank=True, null=True)
+    entry_report = models.ForeignKey(EntryReport)
