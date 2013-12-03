@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Non-Consumable' %} {% trans 'Inventory' %} {% trans 'Accounts' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_non_consumable_inventory_accounts" %}">{% trans 'Non-Consumable' %} {% trans 'Inventory' %} {% trans 'Accounts' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load pagination_tags %}
+    {% load sorting_tags %}
+
+    <br>
+
+    {% autosort objects as sorted_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor account_no 'Account No.' %}</th>
+        <th>{% anchor name %}</th>
+        <th>{% anchor item__unit 'Unit' %}</th>
+        </thead>
+        <tbody>
+        {% for obj in paginated_objects %}
+            <tr>
+                <td>
+                    <a href="{% url 'view_inventory_account' obj.id %}">
+                    {{ obj.account_no }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'view_inventory_account' obj.id %}">
+                    {{ obj.item.name }}
+                    </a>
+                </td>
+                <td>{{ obj.item.unit }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% paginate %}
+
+    <a class="small secondary button"
+       href="{% url 'create_inventory_item' %}">{% trans 'New' %} {% trans 'Inventory' %} {% trans 'Item' %}</a>
+
+{% endblock %}

@@ -315,6 +315,18 @@ def list_inventory_accounts(request):
 
 
 @login_required
+def list_consumable_accounts(request):
+    objects = InventoryAccount.objects.filter(item__type='consumable')
+    return render(request, 'list_consumable_inventory_accounts.html', {'objects': objects})
+
+
+@login_required
+def list_non_consumable_accounts(request):
+    objects = InventoryAccount.objects.filter(item__type='non-consumable')
+    return render(request, 'list_non_consumable_inventory_accounts.html', {'objects': objects})
+
+
+@login_required
 def view_inventory_account(request, id):
     obj = get_object_or_404(InventoryAccount, id=id)
     return render(request, 'view_inventory_account.html', {'obj': obj})

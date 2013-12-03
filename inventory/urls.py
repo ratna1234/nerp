@@ -7,8 +7,11 @@ urlpatterns = patterns('',
                        url(r'^item/delete/(?P<id>[0-9]+)/$', views.delete_inventory_item, name='delete_inventory_item'),
                        url(r'^(?P<id>[0-9]+)/$', views.item_form, name='update_inventory_item'),
                        url(r'^items.json$', views.items_as_json, name='items_as_json'),
-
                        url(r'^accounts/$', views.list_inventory_accounts, name='list_inventory_accounts'),
+                       url(r'^accounts/consumable/$', views.list_consumable_accounts,
+                           name='list_consumable_inventory_accounts'),
+                       url(r'^accounts/non-consumable/$', views.list_non_consumable_accounts,
+                           name='list_non_consumable_inventory_accounts'),
                        url(r'^account/(?P<id>[0-9]+)/$', views.view_inventory_account, name='view_inventory_account'),
 
                        url(r'^categories/$', views.list_categories, name='list_inventory_categories'),

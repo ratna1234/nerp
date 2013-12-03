@@ -51,6 +51,11 @@
                         <br/>
                         <a href="{% url 'list_purchase_entry_reports' %}">{% trans 'Entry Reports for Purchase Orders' %}</a>
                         <br/>
+                        <a href="{% url 'list_inventory_accounts' %}">{% trans 'Inventory' %} {% trans 'Accounts' %}</a>
+                        <br/>
+                        <a href="{% url 'list_consumable_inventory_accounts' %}">{% trans 'Consumable' %} {% trans 'Inventory' %} {% trans 'Accounts' %}</a>
+                        <br/>
+                        <a href="{% url 'list_non_consumable_inventory_accounts' %}">{% trans 'Non-Consumable' %} {% trans 'Inventory' %} {% trans 'Accounts' %}</a>
                     {% endifusergroup %}
                 </div>
             </section>
