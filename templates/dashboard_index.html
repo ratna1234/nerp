@@ -45,6 +45,12 @@
                         <br/>
                         <a href="{% url 'list_outgoing_handovers' %}">{% trans 'Outgoing Handovers' %}</a>
                         <br/>
+                        <a href="{% url 'list_entry_reports' %}">{% trans 'Entry Reports' %}</a>
+                        <br/>
+                        <a href="{% url 'list_handover_entry_reports' %}">{% trans 'Entry Reports for Handovers' %}</a>
+                        <br/>
+                        <a href="{% url 'list_purchase_entry_reports' %}">{% trans 'Entry Reports for Purchase Orders' %}</a>
+                        <br/>
                     {% endifusergroup %}
                 </div>
             </section>

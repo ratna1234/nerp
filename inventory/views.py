@@ -513,6 +513,16 @@ def list_entry_reports(request):
     objects = EntryReport.objects.all()
     return render(request, 'list_entry_reports.html', {'objects': objects})
 
+@login_required
+def list_handover_entry_reports(request):
+    objects = EntryReport.objects.filter(source_content_type__model='handover')
+    return render(request, 'list_entry_reports.html', {'objects': objects})
+
+@login_required
+def list_purchase_entry_reports(request):
+    objects = EntryReport.objects.filter(source_content_type__model='purchaseorder')
+    return render(request, 'list_entry_reports.html', {'objects': objects})
+
 
 @login_required
 def delete_entry_report(request, id):
