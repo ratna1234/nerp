@@ -301,7 +301,7 @@ class EntryReportRow(models.Model):
     rate = models.FloatField()
     other_expenses = models.FloatField()
     remarks = models.CharField(max_length=254, blank=True, null=True)
-    entry_report = models.ForeignKey(EntryReport)
+    entry_report = models.ForeignKey(EntryReport, related_name='rows')
 
 
 class Handover(models.Model):
@@ -317,6 +317,12 @@ class Handover(models.Model):
     type = models.CharField(max_length=9, choices=types, default='Incoming')
     entry_reports = generic.GenericRelation(EntryReport, content_type_field='source_content_type_id',
                                             object_id_field='source_object_id')
+
+    def get_entry_report(self):
+        entry_reports = self.entry_reports.all()
+        if len(entry_reports):
+            return entry_reports[0]
+        return None
 
 
 class HandoverRow(models.Model):

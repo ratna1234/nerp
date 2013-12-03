@@ -12,7 +12,7 @@ from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, Purch
 from inventory.filters import InventoryItemFilter
 from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow
 from app.libr import invalid, save_model
-from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer, EntryReportSerializer
+from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer, EntryReportSerializer, EntryReportRowSerializer
 from app.nepdate import BSUtil
 
 
@@ -401,9 +401,32 @@ def list_outgoing_handovers(request):
 
 @login_required
 def handover_entry_report(request, id=None):
-    obj = get_object_or_404(Handover, id=id, type='Incoming')
-    form = EntryReportForm(instance=obj)
-    object_data = EntryReportSerializer(obj).data
+    source = get_object_or_404(Handover, id=id, type='Incoming')
+    if source.get_entry_report():
+        report = source.get_entry_report()
+        object_data = EntryReportSerializer(report).data
+    else:
+        report = EntryReport()
+        object_data = EntryReportSerializer(report).data
+        report.fiscal_year = source.fiscal_year
+        report.source = source
+        all_rows = []
+        for r in source.rows.all():
+            row = EntryReportRow()
+            row.sn = r.sn
+            row.item = r.item
+            row.specification = r.specification
+            row.quantity = r.quantity
+            row.unit = r.unit
+            row.quantity = r.total_amount/r.quantity
+            row.remarks = r.condition
+            row_data = EntryReportRowSerializer(row).data
+            all_rows.append(row_data)
+        object_data.update({'rows': all_rows})
+    import pdb
+    pdb.set_trace()
+    form = EntryReportForm(instance=report)
+
     return render(request, 'entry_report.html',
                   {'form': form, 'data': object_data})
 
