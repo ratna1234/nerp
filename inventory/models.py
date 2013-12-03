@@ -346,6 +346,12 @@ class PurchaseOrder(models.Model):
     entry_reports = generic.GenericRelation(EntryReport, content_type_field='source_content_type_id',
                                             object_id_field='source_object_id')
 
+    def get_entry_report(self):
+        entry_reports = self.entry_reports.all()
+        if len(entry_reports):
+            return entry_reports[0]
+        return None
+
 
 class PurchaseOrderRow(models.Model):
     sn = models.PositiveIntegerField()

@@ -431,6 +431,38 @@ def handover_entry_report(request, id=None):
 
 
 @login_required
+def purchase_entry_report(request, id=None):
+    source = get_object_or_404(PurchaseOrder, id=id)
+    if source.get_entry_report():
+        report = source.get_entry_report()
+        object_data = EntryReportSerializer(report).data
+    else:
+        report = EntryReport()
+        object_data = EntryReportSerializer(report).data
+        report.fiscal_year = source.fiscal_year
+        report.source = source
+        all_rows = []
+        for r in source.rows.all():
+            row = EntryReportRow()
+            row.sn = r.sn
+            row.item = r.item
+            row.specification = r.specification
+            row.quantity = r.quantity
+            row.unit = r.unit
+            row.rate = r.rate
+            row.remarks = r.remarks
+            row_data = EntryReportRowSerializer(row).data
+            all_rows.append(row_data)
+        object_data.update({'rows': all_rows})
+    form = EntryReportForm(instance=report)
+    object_data['type'] = 'purchase'
+    object_data['source_id'] = source.id
+    return render(request, 'entry_report.html',
+                  {'form': form, 'data': object_data})
+
+
+
+@login_required
 def save_entry_report(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
