@@ -512,3 +512,10 @@ def save_entry_report(request):
 def list_entry_reports(request):
     objects = EntryReport.objects.all()
     return render(request, 'list_entry_reports.html', {'objects': objects})
+
+
+@login_required
+def delete_entry_report(request, id):
+    obj = get_object_or_404(EntryReport, id=id)
+    obj.delete()
+    return redirect(reverse('list_entry_reports'))
