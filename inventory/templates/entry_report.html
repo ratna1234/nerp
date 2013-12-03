@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+
+
+{% block title %}{% trans scenario %} {% trans 'Entry Report' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <span> {% trans scenario %} {% trans 'Entry Report' %}</span>
+{% endblock %}
+
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/base.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
+    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
+    <script src="{{ STATIC_URL }}js/entry_report.js"></script>
+    <script>
+    ko_data = {{data|jsonify}};
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    {{ data|jsonify }}
+
+    <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '6' %}</span>
+    <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+    <h3 class="center">{% trans 'Entry Report' %}</h3>
+
+    <form method="post" data-bind="submit: save">
+        {% csrf_token %}
+
+        <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
+
+
+        {% trans 'Entry Report' %} {% trans 'No.' %}: {{ form.entry_report_no }}
+        {{ form.entry_report.errors }}
+
+
+        <div data-bind="with:table_view">
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th rowspan="2" class="span1">{% trans 'SN' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Inventory Account Page No.' %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Inventory Classification Reference No.' %}</th>
+                    <th rowspan="2" class="span2">{% trans "Item's Name" %}</th>
+                    <th rowspan="2" class="span2">{% trans 'Specification' %}</th>
+                    <th rowspan="2" class="span3">{% trans 'Unit' %}</th>
+                    <th rowspan="2" class="span3">{% trans 'Quantity' %}</th>
+                    <th colspan="5" class="span2">{% trans 'Price' %} ({% trans 'As per Invoice' %})</th>
+                    <th rowspan="2" class="span2">{% trans 'Remarks' %}</th>
+                    <th rowspan="2" class="span1"></th>
+                </tr>
+                <tr>
+                    <th>{% trans 'Rate per Unit' %}</th>
+                    <th>{% trans 'VAT' %} {% trans 'per' %} {% trans 'Unit' %}</th>
+                    <th>{% trans 'Unit' %} {% trans 'Price' %}</th>
+                    <th>{% trans 'Other' %} {% trans 'Expenses' %}</th>
+                    <th>{% trans 'Total' %}</th>
+                </tr>
+                </thead>
+
+                <tbody id="tbody">
+                <!-- ko foreach: rows -->
+                <tr>
+                    <td>
+                        <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
+                    </td>
+                    <td data-bind="text: account_no()"></td>
+                    <td data-bind="text: inventory_classification_reference_no()"></td>
+                    <td>
+                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"
+                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">
+                    </td>
+                    <td data-bind="editableText: specification"></td>
+                    <td data-bind="editableText: unit"></td>
+                    <td data-bind="editableText: quantity, numeric: true"></td>
+                    <td data-bind="editableText: rate, numeric: true"></td>
+                    <td data-bind="text: vat_amount()"></td>
+                    <td data-bind="text: amount()"></td>
+                    <td data-bind="editableText: other_expenses, numeric: true"></td>
+                    <td data-bind="text: total()"></td>
+                    <td class="remarks-cell" data-bind="editableText: remarks"></td>
+                    <td>
+                        <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                </tbody>
+            </table>
+            <a class="small secondary button" data-bind="click: addRow">
+                {% trans 'Add New Row' %}
+            </a>
+        </div>
+
+
+        <input type="submit" class="small secondary button" value="{% trans 'Save' %}">
+        <span data-bind="text: msg, css: status"></span>
+
+        {% if scenario == 'Update' %}
+            <a class="small secondary button"
+               href="{% url 'delete_purchase_order' form.instance.id %}">{% trans 'Delete!' %}</a>
+        {% endif %}
+
+
+    </form>
+
+{% endblock %}

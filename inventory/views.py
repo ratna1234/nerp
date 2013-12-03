@@ -418,15 +418,12 @@ def handover_entry_report(request, id=None):
             row.specification = r.specification
             row.quantity = r.quantity
             row.unit = r.unit
-            row.quantity = r.total_amount/r.quantity
+            row.rate = r.total_amount/r.quantity
             row.remarks = r.condition
             row_data = EntryReportRowSerializer(row).data
             all_rows.append(row_data)
         object_data.update({'rows': all_rows})
-    import pdb
-    pdb.set_trace()
     form = EntryReportForm(instance=report)
-
     return render(request, 'entry_report.html',
                   {'form': form, 'data': object_data})
 
