@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Entry' %} {% trans 'Reports' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_entry_reports" %}">{% trans 'Entry' %} {% trans 'Reports' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load pagination_tags %}
+    {% load sorting_tags %}
+    {% load filters %}
+
+    {% autosort objects as sorted_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor entry_report_no 'Entry Report No.' %}</th>
+        <th>{% trans 'Source' %}</th>
+        <th>{% anchor date %}</th>
+{#        <th>{% anchor status %}</th>#}
+        </thead>
+        <tbody>
+        {% for item in paginated_objects %}
+            <tr>
+                <td>
+                    <a href="{{ item.get_absolute_url }}">{{ item.entry_report_no }}</a>
+                </td>
+                <td>
+                    {{ item.source|linkify }}
+                </td>
+
+                <td>
+                    {{ item.source.date }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% paginate %}
+
+{% endblock %}

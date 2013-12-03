@@ -2,6 +2,7 @@
 
 from datetime import timedelta
 from django.contrib.contenttypes import generic
+from django.core.urlresolvers import reverse
 
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -291,6 +292,13 @@ class EntryReport(models.Model):
     source_object_id = models.PositiveIntegerField()
     source = generic.GenericForeignKey('source_content_type', 'source_object_id')
 
+    def get_absolute_url(self):
+        if self.source.__class__.__name__ == 'Handover':
+            source_type = 'handover'
+        else:
+            source_type = 'purchase'
+        return '/inventory/entry-report/' + source_type + '/' + str(self.source.id)
+
 
 class EntryReportRow(models.Model):
     sn = models.PositiveIntegerField()
@@ -324,6 +332,12 @@ class Handover(models.Model):
             return entry_reports[0]
         return None
 
+    def get_absolute_url(self):
+        return reverse('update_handover', kwargs={'id': self.id})
+
+    def __str__(self):
+        return _('Handover') + ' (' + str(self.voucher_no) + ')'
+
 
 class HandoverRow(models.Model):
     sn = models.PositiveIntegerField()
@@ -351,6 +365,12 @@ class PurchaseOrder(models.Model):
         if len(entry_reports):
             return entry_reports[0]
         return None
+
+    def get_absolute_url(self):
+        return reverse('update_purchase_order', kwargs={'id': self.id})
+
+    def __str__(self):
+        return _('Purchase Order') + ' (' + str(self.voucher_no) + ')'
 
 
 class PurchaseOrderRow(models.Model):

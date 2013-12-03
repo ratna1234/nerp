@@ -21,19 +21,29 @@
                         <br/>
                         <a href="{% url 'create_inventory_item' %}">{% trans 'Create Inventory Item' %}</a>
                         <br/>
-                        <a href="{% url 'list_inventory_categories' %}">{% trans 'Inventory Categories' %}</a>
-                        <br/>
-                        <a href="{% url 'create_inventory_category' %}">{% trans 'Create' %} {% trans 'Inventory' %} {% trans 'Category' %}</a>
-                        <br/>
-                        <a href="{% url 'create_demand_form' %}">{% trans 'New Demand Form' %}</a>
-                        <br/>
-                        <a href="{% url 'list_demand_forms' %}">{% trans 'Demand Forms' %}</a>
-                        <br/>
                         <a href="{% url 'list_parties' %}">{% trans 'Parties' %}</a>
                         <br/>
                         <a href="{% url 'create_party' %}">{% trans 'New' %} {% trans 'Party' %}</a>
                         <br/>
+{#                        <a href="{% url 'list_inventory_categories' %}">{% trans 'Inventory Categories' %}</a>#}
+{#                        <br/>#}
+{#                        <a href="{% url 'create_inventory_category' %}">{% trans 'Create' %} {% trans 'Inventory' %} {% trans 'Category' %}</a>#}
+{#                        <br/>#}
+                        <a href="{% url 'create_demand_form' %}">{% trans 'New Demand Form' %}</a>
+                        <br/>
+                        <a href="{% url 'list_demand_forms' %}">{% trans 'Demand Forms' %}</a>
+                        <br/>
                         <a href="{% url 'create_purchase_order' %}">{% trans 'New' %} {% trans 'Purchase order' %}</a>
+                        <br/>
+                        <a href="{% url 'list_purchase_orders' %}">{% trans 'Purchase Orders' %}</a>
+                        <br/>
+                        <a href="{% url 'create_incoming_handover' %}">{% trans 'New' %} {% trans 'Incoming Handover' %}</a>
+                        <br/>
+                        <a href="{% url 'create_outgoing_handover' %}">{% trans 'New' %} {% trans 'Outgoing Handover' %}</a>
+                        <br/>
+                        <a href="{% url 'list_incoming_handovers' %}">{% trans 'Incoming Handovers' %}</a>
+                        <br/>
+                        <a href="{% url 'list_outgoing_handovers' %}">{% trans 'Outgoing Handovers' %}</a>
                         <br/>
                     {% endifusergroup %}
                 </div>

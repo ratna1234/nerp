@@ -51,7 +51,7 @@ urlpatterns = patterns('',
                        url(r'^save/entry_report/$', views.save_entry_report, name='save_entry_report'),
                        #url(r'^purchase-order/(?P<id>[0-9]+)/delete$', views.delete_purchase_order,
                        #    name='delete_purchase_order'),
-                       #url(r'^purchase-orders/$', views.list_purchase_orders, name='list_purchase_orders'),
+                       url(r'^entry-reports/$', views.list_entry_reports, name='list_entry_reports'),
 
                        #url(r'^entry-report/$', views.entry_report, name='create_entry_report'),
                        #url(r'^purchase-order/(?P<id>[0-9]+)/$', views.purchase_order, name='update_purchase_order'),

@@ -506,3 +506,9 @@ def save_entry_report(request):
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+
+@login_required
+def list_entry_reports(request):
+    objects = EntryReport.objects.all()
+    return render(request, 'list_entry_reports.html', {'objects': objects})
