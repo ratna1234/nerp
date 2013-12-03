@@ -299,7 +299,7 @@ class EntryReportRow(models.Model):
     quantity = models.FloatField()
     unit = models.CharField(max_length=50)
     rate = models.FloatField()
-    other_expenses = models.FloatField()
+    other_expenses = models.FloatField(default=0)
     remarks = models.CharField(max_length=254, blank=True, null=True)
     entry_report = models.ForeignKey(EntryReport, related_name='rows')
 

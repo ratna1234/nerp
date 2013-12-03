@@ -62,6 +62,7 @@ class EntryReportRowSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EntryReportRow
+        exclude = ['item']
 
 
 class EntryReportSerializer(serializers.ModelSerializer):
@@ -69,3 +70,4 @@ class EntryReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EntryReport
+

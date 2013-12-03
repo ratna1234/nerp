@@ -418,12 +418,14 @@ def handover_entry_report(request, id=None):
             row.specification = r.specification
             row.quantity = r.quantity
             row.unit = r.unit
-            row.rate = r.total_amount/r.quantity
+            row.rate = r.total_amount / r.quantity
             row.remarks = r.condition
             row_data = EntryReportRowSerializer(row).data
             all_rows.append(row_data)
         object_data.update({'rows': all_rows})
     form = EntryReportForm(instance=report)
+    object_data['type'] = 'handover'
+    object_data['source_id'] = source.id
     return render(request, 'entry_report.html',
                   {'form': form, 'data': object_data})
 
@@ -432,10 +434,13 @@ def handover_entry_report(request, id=None):
 def save_entry_report(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
-    object_values = {'addressee': params.get('addressee'), 'fiscal_year': config_value('app', 'fiscal_year'),
-                     'date': params.get('date'), 'office': params.get('office'), 'type': params.get('type'),
-                     'designation': params.get('designation'), 'voucher_no': params.get('voucher_no'),
-                     'due_days': params.get('due_days'), 'handed_to': params.get('handed_to')}
+    if params.get('type') == 'handover':
+        source = Handover.objects.get(id=params.get('source_id'))
+    else:
+        source = PurchaseOrder.objects.get(id=params.get('source_id'))
+    object_values = {'entry_report_no': params.get('entry_report_no'),
+                     'fiscal_year': config_value('app', 'fiscal_year'),
+                     'source': source}
     if params.get('id'):
         obj = EntryReport.objects.get(id=params.get('id'))
     else:
@@ -452,13 +457,17 @@ def save_entry_report(request):
     dct['id'] = obj.id
     model = EntryReportRow
     for index, row in enumerate(params.get('table_view').get('rows')):
-        if invalid(row, ['quantity', 'unit', 'item_id', 'total_amount']):
+        if invalid(row, ['quantity', 'unit', 'item_id', 'rate']):
             continue
+        if row.get('other_expenses') == '':
+            other_expenses = 0
+        else:
+            other_expenses = row.get('other_expenses')
         values = {'sn': index + 1, 'item_id': row.get('item_id'),
                   'specification': row.get('specification'),
-                  'quantity': row.get('quantity'), 'unit': row.get('unit'), 'received_date': row.get('received_date'),
-                  'total_amount': row.get('total_amount'), 'condition': row.get('condition'),
-                  'handover': obj}
+                  'quantity': row.get('quantity'), 'unit': row.get('unit'), 'rate': row.get('rate'),
+                  'remarks': row.get('remarks'), 'other_expenses': other_expenses,
+                  'entry_report': obj}
         submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
         if not created:
             submodel = save_model(submodel, values)
