@@ -98,10 +98,6 @@ class Item(models.Model):
     type = models.CharField(choices=type_choices, max_length=15, default='consumable')
     unit = models.CharField(max_length=50, default=_('pieces'))
     vattable = models.BooleanField(default=True)
-    country_of_production = models.CharField(max_length=50, default=_('Nepal'), blank=True, null=True)
-    size = models.CharField(max_length=100, blank=True, null=True)
-    expected_life = models.CharField(max_length=100, blank=True, null=True)
-    source = models.CharField(max_length=100, blank=True, null=True)
     property_classification_reference_number = models.CharField(max_length=20, blank=True, null=True)
 
     def save(self, *args, **kwargs):
@@ -124,6 +120,10 @@ class JournalEntry(models.Model):
     date = models.DateField()
     content_type = models.ForeignKey(ContentType, related_name='inventory_journal_entries')
     model_id = models.IntegerField()
+    country_of_production = models.CharField(max_length=50, default=_('Nepal'), blank=True, null=True)
+    size = models.CharField(max_length=100, blank=True, null=True)
+    expected_life = models.CharField(max_length=100, blank=True, null=True)
+    source = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return str(self.content_type) + ': ' + str(self.model_id) + ' [' + str(self.date) + ']'
