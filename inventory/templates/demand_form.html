@@ -119,9 +119,26 @@
             </div>
         </div>
 
+        Status: <span data-bind="text: status()"></span>
+        <br/>
 
-        <input type="submit" class="small secondary button" value="{% trans 'Save' %}">
-        <span data-bind="text: msg, css: status"></span>
+        <input type="submit" class="small secondary button" value="{% trans 'Save' %}"
+               data-bind="visible: $root.status() == 'Requested'">
+
+        <button class="small secondary button"
+                data-bind="click: approve, visible: $root.id() && $root.status() == 'Requested'">Approve
+        </button>
+        <button class="small secondary button" data-bind="click: disapprove, visible: $root.status() == 'Approved'">
+            Disapprove
+        </button>
+        <button class="small secondary button" data-bind="click: fulfill, visible: $root.status() == 'Approved'">Set as
+            Fulfilled
+        </button>
+        <button class="small secondary button" data-bind="click: unfulfill, visible: $root.status() == 'Fulfilled'">Set
+            as Unfulfilled
+        </button>
+
+
 
         {% if scenario == 'Update' %}
             <a class="small secondary button"

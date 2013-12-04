@@ -146,7 +146,7 @@ def save_demand(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
     object_values = {'release_no': params.get('release_no'), 'fiscal_year': config_value('app', 'fiscal_year'),
-                     'date': params.get('date'), 'purpose': params.get('purpose')}
+                     'date': params.get('date'), 'purpose': params.get('purpose'), 'status': 'Requested'}
     if params.get('id'):
         obj = Demand.objects.get(id=params.get('id'))
     else:
@@ -541,3 +541,75 @@ def delete_entry_report(request, id):
     obj = get_object_or_404(EntryReport, id=id)
     obj.delete()
     return redirect(reverse('list_entry_reports'))
+
+@login_required
+def approve_demand(request):
+    params = json.loads(request.body)
+    dct = {}
+    if params.get('id'):
+        voucher = Demand.objects.get(id=params.get('id'))
+    else:
+        dct['error_message'] = 'Voucher needs to be saved before being approved!'
+        return HttpResponse(json.dumps(dct), mimetype="application/json")
+    voucher.status = 'Approved'
+    voucher.save()
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+@login_required
+def disapprove_demand(request):
+    params = json.loads(request.body)
+    dct = {}
+    if params.get('id'):
+        voucher = Demand.objects.get(id=params.get('id'))
+    else:
+        dct['error_message'] = 'Voucher needs to be saved before being disapproved!'
+        return HttpResponse(json.dumps(dct), mimetype="application/json")
+    voucher.status = 'Requested'
+    voucher.save()
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+@login_required
+def fulfill_demand(request):
+    params = json.loads(request.body)
+    dct = {}
+    if params.get('id'):
+        voucher = Demand.objects.get(id=params.get('id'))
+    else:
+        dct['error_message'] = 'Voucher needs to be saved before being fulfilled!'
+        return HttpResponse(json.dumps(dct), mimetype="application/json")
+    if voucher.status == 'Requested':
+        dct['error_message'] = 'Voucher needs to be approved before being fulfilled!'
+        return HttpResponse(json.dumps(dct), mimetype="application/json")
+    #bank_account = Account.objects.get(id=params.get('bank_account'))
+    #benefactor = Account.objects.get(id=params.get('benefactor'))
+    #for row in voucher.rows.all():
+    #    set_transactions(row, params.get('date'),
+    #                     ['dr', bank_account, row.amount],
+    #                     ['cr', benefactor, row.amount],
+    #    )
+    voucher.status = 'Fulfilled'
+    voucher.save()
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+@login_required
+def unfulfill_demand(request):
+    params = json.loads(request.body)
+    dct = {}
+    if params.get('id'):
+        voucher = Demand.objects.get(id=params.get('id'))
+    else:
+        dct['error_message'] = 'Voucher needs to be saved before being unfulfilled!'
+        return HttpResponse(json.dumps(dct), mimetype="application/json")
+    if voucher.status != 'Fulfilled':
+        dct['error_message'] = 'Voucher needs to be fulfilled before being unfulfilled!'
+        return HttpResponse(json.dumps(dct), mimetype="application/json")
+    #bank_account = Account.objects.get(id=params.get('bank_account'))
+    #benefactor = Account.objects.get(id=params.get('benefactor'))
+    #for row in voucher.rows.all():
+    #    set_transactions(row, params.get('date'),
+    #                     ['dr', bank_account, row.amount],
+    #                     ['cr', benefactor, row.amount],
+    #    )
+    voucher.status = 'Approved'
+    voucher.save()
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
