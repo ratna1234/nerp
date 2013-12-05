@@ -545,14 +545,25 @@ def delete_entry_report(request, id):
 @login_required
 def approve_demand(request):
     params = json.loads(request.body)
-    dct = {}
+    dct = {'rows': {}}
     if params.get('id'):
-        voucher = Demand.objects.get(id=params.get('id'))
+        row = DemandRow.objects.get(id=params.get('id'))
     else:
-        dct['error_message'] = 'Voucher needs to be saved before being approved!'
+        dct['error_message'] = 'Row needs to be saved before being approved!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    voucher.status = 'Approved'
-    voucher.save()
+    if not invalid(params, ['item_id', 'quantity', 'unit', 'release_quantity']):
+        values = {'item_id': params.get('item_id'),
+                  'specification': params.get('specification'),
+                  'quantity': params.get('quantity'), 'unit': params.get('unit'),
+                  'release_quantity': params.get('release_quantity'), 'remarks': params.get('remarks')}
+
+
+        submodel, created = DemandRow.objects.get_or_create(id=params.get('id'), defaults=values)
+        if not created:
+            submodel = save_model(submodel, values)
+    row.status = 'Approved'
+    row.save()
+    submodel.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 @login_required
@@ -560,12 +571,12 @@ def disapprove_demand(request):
     params = json.loads(request.body)
     dct = {}
     if params.get('id'):
-        voucher = Demand.objects.get(id=params.get('id'))
+        row = DemandRow.objects.get(id=params.get('id'))
     else:
         dct['error_message'] = 'Voucher needs to be saved before being disapproved!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    voucher.status = 'Requested'
-    voucher.save()
+    row.status = 'Requested'
+    row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 @login_required
@@ -573,21 +584,21 @@ def fulfill_demand(request):
     params = json.loads(request.body)
     dct = {}
     if params.get('id'):
-        voucher = Demand.objects.get(id=params.get('id'))
+        row = DemandRow.objects.get(id=params.get('id'))
     else:
-        dct['error_message'] = 'Voucher needs to be saved before being fulfilled!'
+        dct['error_message'] = 'Row needs to be saved before being fulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    if voucher.status == 'Requested':
-        dct['error_message'] = 'Voucher needs to be approved before being fulfilled!'
+    if row.status == 'Requested':
+        dct['error_message'] = 'Row needs to be approved before being fulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
     #import pdb
     #pdb.set_trace()
-    #for row in voucher.rows.all():
-    #    set_transactions(row, voucher.date,
+    #for row in row.rows.all():
+    #    set_transactions(row, row.date,
     #                     ['cr', row.item.account, row.amount],
     #    )
-    voucher.status = 'Fulfilled'
-    voucher.save()
+    row.status = 'Fulfilled'
+    row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 @login_required
@@ -595,12 +606,12 @@ def unfulfill_demand(request):
     params = json.loads(request.body)
     dct = {}
     if params.get('id'):
-        voucher = Demand.objects.get(id=params.get('id'))
+        row = DemandRow.objects.get(id=params.get('id'))
     else:
-        dct['error_message'] = 'Voucher needs to be saved before being unfulfilled!'
+        dct['error_message'] = 'Row needs to be saved before being unfulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    if voucher.status != 'Fulfilled':
-        dct['error_message'] = 'Voucher needs to be fulfilled before being unfulfilled!'
+    if row.status != 'Fulfilled':
+        dct['error_message'] = 'Row needs to be fulfilled before being unfulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
     #bank_account = Account.objects.get(id=params.get('bank_account'))
     #benefactor = Account.objects.get(id=params.get('benefactor'))
@@ -609,6 +620,6 @@ def unfulfill_demand(request):
     #                     ['dr', bank_account, row.amount],
     #                     ['cr', benefactor, row.amount],
     #    )
-    voucher.status = 'Approved'
-    voucher.save()
+    row.status = 'Approved'
+    row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")

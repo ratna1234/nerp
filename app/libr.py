@@ -120,7 +120,6 @@ def add(*args):
 
 
 def digitize(n):
-    print n
     d = {
         '०': '0',
         '१': '1',
@@ -135,7 +134,6 @@ def digitize(n):
     }
     pattern = re.compile('|'.join(d.keys()))
     result = pattern.sub(lambda x: d[x.group()], unicode(n))
-    print result
     return float(result)
     # devanagari_nums = ('०','१','२','३','४','५','६','७','८','९')
     # return ''.join(devanagari_nums[int(digit)] for digit in str(n))

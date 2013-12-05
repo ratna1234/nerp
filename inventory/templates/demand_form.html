@@ -78,17 +78,32 @@
                     <td>
                         {#                        <select class="span12 item-selector"#}
                         {#                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: ' ', select2: {},  event: {change: $root.item_changed}"></select>#}
-                        <input type="hidden" data-url="{% url 'create_inventory_item' %}"
-                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">
+                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"
+                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}, disable: true">
                     </td>
-                    <td data-bind="editableText: specification"></td>
-                    <td data-bind="editableText: quantity, numeric: true"></td>
-                    <td data-bind="editableText: unit"></td>
-                    <td data-bind="editableText: release_quantity, numeric: true"></td>
+                    <td data-bind="editableText: specification, disable_content_editable: status() != 'Requested'"></td>
+                    <td data-bind="editableText: quantity, numeric: true, disable_content_editable: status() != 'Requested'"></td>
+                    <td data-bind="editableText: unit, disable_content_editable: status() != 'Requested'"></td>
+                    <td data-bind="editableText: release_quantity, numeric: true, disable_content_editable: status() != 'Requested'"></td>
                     <td data-bind="text: inventory_account_id">2</td>
                     <td data-bind="editableText: remarks"></td>
                     <td class="hide-on-print">
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
+                        <button class="small secondary button"
+                                data-bind="click: approve, visible: $root.id() && status() == 'Requested'">Approve
+                        </button>
+                        <button class="small secondary button"
+                                data-bind="click: disapprove, visible: status() == 'Approved'">
+                            Disapprove
+                        </button>
+                        <button class="small secondary button"
+                                data-bind="click: fulfill, visible: status() == 'Approved'">Set as
+                            Fulfilled
+                        </button>
+                        <button class="small secondary button"
+                                data-bind="click: unfulfill, visible: status() == 'Fulfilled'">Set
+                            as Unfulfilled
+                        </button>
                     </td>
                 </tr>
                 <!-- /ko -->
@@ -123,22 +138,8 @@
         <br/>
 
         <input type="submit" class="small secondary button" value="{% trans 'Save' %}"
-               data-bind="visible: $root.status() == 'Requested'">
-
-        <button class="small secondary button"
-                data-bind="click: approve, visible: $root.id() && $root.status() == 'Requested'">Approve
-        </button>
-        <button class="small secondary button" data-bind="click: disapprove, visible: $root.status() == 'Approved'">
-            Disapprove
-        </button>
-        <button class="small secondary button" data-bind="click: fulfill, visible: $root.status() == 'Approved'">Set as
-            Fulfilled
-        </button>
-        <button class="small secondary button" data-bind="click: unfulfill, visible: $root.status() == 'Fulfilled'">Set
-            as Unfulfilled
-        </button>
-
-
+                {#               data-bind="visible: $root.status() == 'Requested'"#}
+                >
 
         {% if scenario == 'Update' %}
             <a class="small secondary button"
