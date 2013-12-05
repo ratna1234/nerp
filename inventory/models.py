@@ -113,7 +113,7 @@ class Item(models.Model):
         self.categories.add(category_instance)
 
     def __unicode__(self):
-        return '[' + self.code + '] ' + self.name
+        return self.name
 
 
 class JournalEntry(models.Model):
@@ -255,8 +255,6 @@ class Demand(models.Model):
     demandee = models.ForeignKey(User)
     date = models.DateField()
     purpose = models.CharField(max_length=254)
-    statuses = [('Requested', 'Requested'), ('Approved', 'Approved'), ('Fulfilled', 'Fulfilled')]
-    status = models.CharField(max_length=9, choices=statuses, default='Requested')
 
 
 class DemandRow(models.Model):
@@ -268,6 +266,8 @@ class DemandRow(models.Model):
     release_quantity = models.FloatField()
     remarks = models.CharField(max_length=254, blank=True, null=True)
     demand = models.ForeignKey(Demand, related_name='rows')
+    statuses = [('Requested', 'Requested'), ('Approved', 'Approved'), ('Fulfilled', 'Fulfilled')]
+    status = models.CharField(max_length=9, choices=statuses, default='Requested')
 
     def save(self, *args, **kwargs):
         self.quantity = digitize(self.quantity)

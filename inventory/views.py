@@ -10,7 +10,7 @@ from livesettings import config_value
 
 from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm, HandoverForm, EntryReportForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow, set_transactions
 from app.libr import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer, EntryReportSerializer, EntryReportRowSerializer
 from app.nepdate import BSUtil
@@ -580,12 +580,11 @@ def fulfill_demand(request):
     if voucher.status == 'Requested':
         dct['error_message'] = 'Voucher needs to be approved before being fulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    #bank_account = Account.objects.get(id=params.get('bank_account'))
-    #benefactor = Account.objects.get(id=params.get('benefactor'))
+    #import pdb
+    #pdb.set_trace()
     #for row in voucher.rows.all():
-    #    set_transactions(row, params.get('date'),
-    #                     ['dr', bank_account, row.amount],
-    #                     ['cr', benefactor, row.amount],
+    #    set_transactions(row, voucher.date,
+    #                     ['cr', row.item.account, row.amount],
     #    )
     voucher.status = 'Fulfilled'
     voucher.save()
