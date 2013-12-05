@@ -1,5 +1,6 @@
 import json
 from datetime import date
+from django.contrib.contenttypes.models import ContentType
 
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
@@ -10,7 +11,7 @@ from livesettings import config_value
 
 from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm, HandoverForm, EntryReportForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow, set_transactions
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow, set_transactions, JournalEntry
 from app.libr import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer, EntryReportSerializer, EntryReportRowSerializer
 from app.nepdate import BSUtil
@@ -605,13 +606,9 @@ def unfulfill_demand(request):
     if params['status'] != 'Fulfilled':
         dct['error_message'] = 'Row needs to be fulfilled before being unfulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    #bank_account = Account.objects.get(id=params.get('bank_account'))
-    #benefactor = Account.objects.get(id=params.get('benefactor'))
-    #for row in voucher.rows.all():
-    #    set_transactions(row, params.get('date'),
-    #                     ['dr', bank_account, row.amount],
-    #                     ['cr', benefactor, row.amount],
-    #    )
+    journal_entry = JournalEntry.objects.get(
+        content_type=ContentType.objects.get_for_model(model), model_id=model.id,
+        )
     row.status = 'Approved'
     row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")

@@ -118,7 +118,8 @@ class Item(models.Model):
 class JournalEntry(models.Model):
     date = models.DateField()
     content_type = models.ForeignKey(ContentType, related_name='inventory_journal_entries')
-    model_id = models.IntegerField()
+    model_id = models.PositiveIntegerField()
+    source = generic.GenericForeignKey('content_type', 'model_id')
     country_of_production = models.CharField(max_length=50, default=_('Nepal'), blank=True, null=True)
     size = models.CharField(max_length=100, blank=True, null=True)
     expected_life = models.CharField(max_length=100, blank=True, null=True)
@@ -135,12 +136,8 @@ class Transaction(models.Model):
     account = models.ForeignKey(InventoryAccount)
     dr_amount = models.FloatField(null=True, blank=True)
     cr_amount = models.FloatField(null=True, blank=True)
-    current_dr = models.FloatField(null=True, blank=True)
-    current_cr = models.FloatField(null=True, blank=True)
+    current_balance = models.FloatField(null=True, blank=True)
     journal_entry = models.ForeignKey(JournalEntry, related_name='transactions')
-
-    # def get_balance(self):
-    #     return zero_for_none(self.current_dr) - zero_for_none(self.current_cr)
 
     def __str__(self):
         return str(self.account) + ' [' + str(self.dr_amount) + ' / ' + str(self.cr_amount) + ']'
@@ -181,6 +178,9 @@ def set_transactions(model, date, *args):
             raise Exception('Transactions can only be either "dr" or "cr".')
         transaction.account = arg[1]
         transaction.account.current_balance += diff
+        transaction.current_balance = transaction.account.current_balance
+        transaction.account.save()
+        journal_entry.transactions.add(transaction)
 
 
 #def set_transactions(submodel, date, *args):
