@@ -96,7 +96,7 @@
                             Disapprove
                         </button>
                         <button class="small secondary button"
-                                data-bind="click: fulfill, visible: status() == 'Approved'">Set as
+                                data-bind="click: function(data, event) { fulfill($root, data, event) }, visible: status() == 'Approved'">Set as
                             Fulfilled
                         </button>
                         <button class="small secondary button"

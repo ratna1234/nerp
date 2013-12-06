@@ -145,6 +145,8 @@ def demand_form(request, id=None):
 def save_demand(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
+    if params.get('release_no') == '':
+        params['release_no'] = None
     object_values = {'release_no': params.get('release_no'), 'fiscal_year': config_value('app', 'fiscal_year'),
                      'date': params.get('date'), 'purpose': params.get('purpose'), 'status': 'Requested'}
     if params.get('id'):

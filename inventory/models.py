@@ -429,3 +429,14 @@ class PurchaseOrderRow(models.Model):
     rate = models.FloatField()
     remarks = models.CharField(max_length=254, blank=True, null=True)
     purchase_order = models.ForeignKey(PurchaseOrder, related_name='rows')
+
+
+class InventoryAccountRow(models.Model):
+    country_of_production_or_company_name = models.CharField(max_length=254, blank=True, null=True)
+    size = models.CharField(max_length=254, blank=True, null=True)
+    expected_life = models.CharField(max_length=254, blank=True, null=True)
+    source = models.CharField(max_length=254, blank=True, null=True)
+    expense_total_cost_price = models.FloatField(blank=True, null=True)
+    remaining_total_cost_price = models.FloatField(blank=True, null=True)
+    remarks = models.CharField(max_length=254, blank=True, null=True)
+    inventory_account = models.ForeignKey(InventoryAccount, related_name='rows')
