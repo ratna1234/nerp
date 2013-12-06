@@ -610,9 +610,7 @@ def unfulfill_demand(request):
     if params['status'] != 'Fulfilled':
         dct['error_message'] = 'Row needs to be fulfilled before being unfulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    import pdb
-    pdb.set_trace()
-    journal_entry = JournalEntry.objects.get(source=row)
+    journal_entry = JournalEntry.get_for(row)
     journal_entry.delete()
     row.status = 'Approved'
     row.save()

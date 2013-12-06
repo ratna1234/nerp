@@ -119,11 +119,15 @@ class JournalEntry(models.Model):
     date = models.DateField()
     content_type = models.ForeignKey(ContentType, related_name='inventory_journal_entries')
     model_id = models.PositiveIntegerField()
-    source = generic.GenericForeignKey('content_type', 'model_id')
+    creator = generic.GenericForeignKey('content_type', 'model_id')
     country_of_production = models.CharField(max_length=50, blank=True, null=True)
     size = models.CharField(max_length=100, blank=True, null=True)
     expected_life = models.CharField(max_length=100, blank=True, null=True)
     source = models.CharField(max_length=100, blank=True, null=True)
+
+    @staticmethod
+    def get_for(source):
+        return JournalEntry.objects.get(content_type=ContentType.objects.get_for_model(source), model_id=source.id)
 
     def __str__(self):
         return str(self.content_type) + ': ' + str(self.model_id) + ' [' + str(self.date) + ']'
@@ -268,13 +272,13 @@ def _transaction_delete(sender, instance, **kwargs):
     transaction = instance
     # cancel out existing dr_amount and cr_amount from account's current_dr and current_cr
     if transaction.dr_amount:
-        transaction.account.current_dr -= transaction.dr_amount
+        transaction.account.current_balance -= transaction.dr_amount
 
     if transaction.cr_amount:
-        transaction.account.current_cr -= transaction.cr_amount
+        transaction.account.current_balance += transaction.cr_amount
 
-    alter(transaction.account, transaction.journal_entry.date, float(zero_for_none(transaction.dr_amount)) * -1,
-          float(zero_for_none(transaction.cr_amount)) * -1)
+    #alter(transaction.account, transaction.journal_entry.date, float(zero_for_none(transaction.dr_amount)) * -1,
+    #      float(zero_for_none(transaction.cr_amount)) * -1)
 
     transaction.account.save()
 
