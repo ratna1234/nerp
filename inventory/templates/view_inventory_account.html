@@ -20,21 +20,26 @@
     Inventory Item's Property Classification Reference Number : {{ obj.item.property_classification_reference_number }}
 
     <table class="table-bordered">
+
         <tr>
             <th rowspan="2">{% trans 'Date' %}</th>
             <th rowspan="2">{% trans 'Entry No.' %}/{% trans 'Release No.' %}</th>
             <th rowspan="2">{% trans 'Specification' %}</th>
-            <th colspan="4">{% trans 'Description' %}</th>
+            {% if obj.item.type == 'non-consumable' %}
+                <th colspan="4">{% trans 'Description' %}</th>
+            {% endif %}
             <th colspan="3">{% trans 'Income' %}</th>
             <th colspan="2">{% trans 'Expense' %}</th>
             <th colspan="2">{% trans 'Remaining' %}</th>
             <th rowspan="2">{% trans 'Remarks' %}</th>
         </tr>
         <tr>
-            <th>{% trans "Country of Production or Company\'s Name" %}</th>
-            <th>{% trans "Size" %}</th>
-            <th>{% trans "Expected Life" %}</th>
-            <th>{% trans "Source of item receipt" %}</th>
+            {% if obj.item.type == 'non-consumable' %}
+                <th>{% trans "Country of Production or Company\'s Name" %}</th>
+                <th>{% trans "Size" %}</th>
+                <th>{% trans "Expected Life" %}</th>
+                <th>{% trans "Source of item receipt" %}</th>
+            {% endif %}
             <th>{% trans "Quantity" %}</th>
             <th>{% trans "Price per Unit" %}</th>
             <th>{% trans "Total Cost Price" %}</th>
@@ -48,23 +53,24 @@
                 <td>{{ entry.date }}</td>
                 <td>{{ entry.creator.get_voucher_no }}</td>
                 <td>{{ entry.creator.specification }}</td>
-
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                {% if obj.item.type == 'non-consumable' %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% endif %}
 
                 {% if entry.creator|is_demand %}
                     <td></td>
                     <td></td>
                     <td></td>
                 {% else %}
-                    <td>{{ entry.creator }}</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ entry.creator.quantity }}</td>
+                    <td>{{ entry.creator.rate }}</td>
+                    <td>{{ entry.creator.total_entry_cost }}</td>
                 {% endif %}
 
-            {% if entry.creator|is_demand %}
+                {% if entry.creator|is_demand %}
                     <td>{{ entry.creator.quantity }}</td>
                     <td></td>
                 {% else %}
@@ -75,7 +81,7 @@
                 <td></td>
                 <td></td>
 
-                <td></td>
+                <td>{{ entry.creator.remarks }}</td>
 
             </tr>
         {% endfor %}

@@ -351,6 +351,12 @@ class EntryReportRow(models.Model):
     remarks = models.CharField(max_length=254, blank=True, null=True)
     entry_report = models.ForeignKey(EntryReport, related_name='rows')
 
+    def total_entry_cost(self):
+        return self.rate * self.quantity * 1.13 + self.other_expenses
+
+    def get_voucher_no(self):
+        return self.entry_report.entry_report_no
+
 
 class Handover(models.Model):
     voucher_no = models.PositiveIntegerField()
