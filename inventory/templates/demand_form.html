@@ -7,6 +7,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
+    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %}{% trans 'Forms' %}</a>
     <span> {% trans scenario %} {% trans 'Demand Form' %}</span>
 {% endblock %}
 
@@ -48,9 +49,7 @@
         {{ 'app'|setting:'fiscal_year' }}
     </span>
 
-
         </div>
-
 
         <div data-bind="with:table_view">
 
