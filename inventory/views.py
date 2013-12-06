@@ -517,6 +517,9 @@ def save_entry_report(request):
         if not created:
             submodel = save_model(submodel, values)
         dct['rows'][index] = submodel.id
+        set_transactions(submodel, obj.source.date,
+                         ['dr', submodel.item.account, submodel.quantity],
+        )
     delete_rows(params.get('table_view').get('deleted_rows'), model)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
