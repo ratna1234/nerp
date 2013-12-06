@@ -290,6 +290,9 @@ class Demand(models.Model):
     date = models.DateField()
     purpose = models.CharField(max_length=254)
 
+    def get_voucher_no(self):
+        return self.release_no
+
 
 class DemandRow(models.Model):
     sn = models.PositiveIntegerField()
@@ -307,6 +310,9 @@ class DemandRow(models.Model):
         self.quantity = digitize(self.quantity)
         self.release_quantity = digitize(self.release_quantity)
         super(DemandRow, self).save(*args, **kwargs)
+
+    def get_voucher_no(self):
+        return self.demand.release_no
 
 
 class Party(models.Model):

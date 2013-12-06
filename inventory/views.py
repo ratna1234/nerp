@@ -329,7 +329,9 @@ def list_non_consumable_accounts(request):
 @login_required
 def view_inventory_account(request, id):
     obj = get_object_or_404(InventoryAccount, id=id)
-    return render(request, 'view_inventory_account.html', {'obj': obj})
+    journal_entries = JournalEntry.objects.filter(transactions__account_id=obj.id).order_by('id', 'date') \
+        .prefetch_related('transactions', 'content_type', 'transactions__account').select_related()
+    return render(request, 'view_inventory_account.html', {'obj': obj, 'entries': journal_entries})
 
 
 @login_required

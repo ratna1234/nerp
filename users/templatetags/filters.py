@@ -204,6 +204,14 @@ class AppCheckNode(template.Node):
         else:
             return self.nodelist_false.render(context)
 
+
 @register.filter
 def linkify(obj):
     return mark_safe('<a href="' + obj.get_absolute_url() + '">' + str(obj) + '</a>')
+
+
+@register.filter
+def is_demand(obj):
+    if obj.__class__.__name__ == 'DemandRow':
+        return True
+    return False
