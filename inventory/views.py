@@ -1,6 +1,5 @@
 import json
 from datetime import date
-from django.contrib.contenttypes.models import ContentType
 
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse
@@ -474,7 +473,6 @@ def purchase_entry_report(request, id=None):
                   {'form': form, 'data': object_data})
 
 
-
 @login_required
 def save_entry_report(request):
     params = json.loads(request.body)
@@ -526,10 +524,12 @@ def list_entry_reports(request):
     objects = EntryReport.objects.all()
     return render(request, 'list_entry_reports.html', {'objects': objects})
 
+
 @login_required
 def list_handover_entry_reports(request):
     objects = EntryReport.objects.filter(source_content_type__model='handover')
     return render(request, 'list_entry_reports.html', {'objects': objects})
+
 
 @login_required
 def list_purchase_entry_reports(request):
@@ -542,6 +542,7 @@ def delete_entry_report(request, id):
     obj = get_object_or_404(EntryReport, id=id)
     obj.delete()
     return redirect(reverse('list_entry_reports'))
+
 
 @login_required
 def approve_demand(request):
@@ -562,6 +563,7 @@ def approve_demand(request):
     row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
+
 @login_required
 def disapprove_demand(request):
     params = json.loads(request.body)
@@ -574,6 +576,7 @@ def disapprove_demand(request):
     row.status = 'Requested'
     row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")
+
 
 @login_required
 def fulfill_demand(request):
@@ -594,6 +597,7 @@ def fulfill_demand(request):
     row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
+
 @login_required
 def unfulfill_demand(request):
     params = json.loads(request.body)
@@ -606,9 +610,10 @@ def unfulfill_demand(request):
     if params['status'] != 'Fulfilled':
         dct['error_message'] = 'Row needs to be fulfilled before being unfulfilled!'
         return HttpResponse(json.dumps(dct), mimetype="application/json")
-    journal_entry = JournalEntry.objects.get(
-        content_type=ContentType.objects.get_for_model(model), model_id=model.id,
-        )
+    import pdb
+    pdb.set_trace()
+    journal_entry = JournalEntry.objects.get(source=row)
+    journal_entry.delete()
     row.status = 'Approved'
     row.save()
     return HttpResponse(json.dumps(dct), mimetype="application/json")

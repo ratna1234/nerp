@@ -120,7 +120,7 @@ class JournalEntry(models.Model):
     content_type = models.ForeignKey(ContentType, related_name='inventory_journal_entries')
     model_id = models.PositiveIntegerField()
     source = generic.GenericForeignKey('content_type', 'model_id')
-    country_of_production = models.CharField(max_length=50, default=_('Nepal'), blank=True, null=True)
+    country_of_production = models.CharField(max_length=50, blank=True, null=True)
     size = models.CharField(max_length=100, blank=True, null=True)
     expected_life = models.CharField(max_length=100, blank=True, null=True)
     source = models.CharField(max_length=100, blank=True, null=True)
