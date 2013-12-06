@@ -11,7 +11,19 @@
 
 {% load filters %}
 
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/base.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
+    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
+    <script src="{{ STATIC_URL }}js/inventory_account.js"></script>
+    <script>
+        ko_data = {{data|jsonify}};
+    </script>
+{% endblock %}
+
 {% block content %}
+
+    {{ data }}
 
     Inventory Item's Name : {{ obj.item.name }}
     <br><br>
@@ -48,43 +60,35 @@
             <th>{% trans "Quantity" %}</th>
             <th>{% trans "Total Cost Price" %}</th>
         </tr>
-        {% for entry in entries %}
-            <tr>
-                <td>{{ entry.date }}</td>
-                <td>{{ entry.creator.get_voucher_no }}</td>
-                <td>{{ entry.creator.specification }}</td>
-                {% if obj.item.type == 'non-consumable' %}
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                {% endif %}
+        <tbody data-bind="with: table_vm">
+        <!-- ko foreach:rows -->
+        <tr>
+            <td data-bind="text: date()"></td>
+            <td data-bind="text: voucher_no()"></td>
+            <td data-bind="text: specification()"></td>
+            {% if obj.item.type == 'non-consumable' %}
+                <td data-bind="editableText: country_or_company"></td>
+                <td data-bind="editableText: size"></td>
+                <td data-bind="editableText: expected_life"></td>
+                <td data-bind="editableText: source"></td>
+            {% endif %}
 
-                {% if entry.creator|is_demand %}
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                {% else %}
-                    <td>{{ entry.creator.quantity }}</td>
-                    <td>{{ entry.creator.rate }}</td>
-                    <td>{{ entry.creator.total_entry_cost }}</td>
-                {% endif %}
 
-                {% if entry.creator|is_demand %}
-                    <td>{{ entry.creator.quantity }}</td>
-                    <td></td>
-                {% else %}
-                    <td></td>
-                    <td></td>
-                {% endif %}
+            <td data-bind="text: income_quantity()"></td>
+            <td data-bind="text: income_rate()"></td>
+            <td data-bind="text: income_total()"></td>
 
-                <td></td>
-                <td></td>
 
-                <td>{{ entry.creator.remarks }}</td>
+            <td data-bind="text: expense_quantity()"></td>
+            <td data-bind="editableText: expense_total_cost_price"></td>
+            <td data-bind="text: current_balance()"></td>
+            <td data-bind="editableText: remaining_total_cost_price"></td>
+            <td data-bind="editableText: remarks"></td>
 
-            </tr>
-        {% endfor %}
+
+        </tr>
+        <!-- /ko -->
+        </tbody>
     </table>
 
 {% endblock %}

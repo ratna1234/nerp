@@ -86,6 +86,7 @@ class InventoryAccountRowSerializer(serializers.ModelSerializer):
     expense_total_cost_price = serializers.SerializerMethodField('get_expense_total_cost_price')
     remaining_total_cost_price = serializers.SerializerMethodField('get_remaining_total_cost_price')
     remarks = serializers.SerializerMethodField('get_remarks')
+    current_balance = serializers.SerializerMethodField('get_current_balance')
 
     class Meta:
         model = JournalEntry
@@ -94,63 +95,66 @@ class InventoryAccountRowSerializer(serializers.ModelSerializer):
         try:
             return obj.account_row.country_of_production_or_company_name
         except:
-            return None
+            return ''
 
     def get_size(self, obj):
         try:
             return obj.account_row.size
         except:
-            return None
+            return ''
 
     def get_expected_life(self, obj):
         try:
             return obj.account_row.expected_life
         except:
-            return None
+            return ''
 
     def get_source(self, obj):
         try:
             return obj.account_row.source
         except:
-            return None
+            return ''
 
     def get_income_quantity(self, obj):
         if obj.creator.__class__ == DemandRow:
-            return None
+            return ''
         return obj.creator.quantity
 
     def get_income_rate(self, obj):
         if obj.creator.__class__ == DemandRow:
-            return None
+            return ''
         return obj.creator.rate
 
     def get_income_total(self, obj):
         if obj.creator.__class__ == DemandRow:
-            return None
+            return ''
         import math
 
         return math.ceil(obj.creator.total_entry_cost() * 100) / 100
 
     def get_expense_quantity(self, obj):
         if obj.creator.__class__ == EntryReportRow:
-            return None
-        return obj.creator.quantity
+            return ''
+        return obj.creator.release_quantity
 
     def get_expense_total_cost_price(self, obj):
         try:
             return obj.account_row.expense_total_cost_price
         except:
-            return None
+            return ''
 
     def get_remaining_total_cost_price(self, obj):
         try:
             return obj.account_row.remaining_total_cost_price
         except:
-            return None
+            return ''
 
 
     def get_remarks(self, obj):
         try:
             return obj.account_row.remarks
         except:
-            return None
+            return ''
+
+    def get_current_balance(self, obj):
+        return obj.transactions.filter(account=obj.creator.item.account)[0].current_balance
