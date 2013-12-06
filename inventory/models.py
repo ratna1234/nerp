@@ -284,7 +284,7 @@ def _transaction_delete(sender, instance, **kwargs):
 
 
 class Demand(models.Model):
-    release_no = models.IntegerField()
+    release_no = models.IntegerField(blank=True, null=True)
     fiscal_year = models.CharField(max_length=10)
     demandee = models.ForeignKey(User)
     date = models.DateField()
