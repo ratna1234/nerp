@@ -120,10 +120,10 @@ class JournalEntry(models.Model):
     content_type = models.ForeignKey(ContentType, related_name='inventory_journal_entries')
     model_id = models.PositiveIntegerField()
     creator = generic.GenericForeignKey('content_type', 'model_id')
-    country_of_production = models.CharField(max_length=50, blank=True, null=True)
-    size = models.CharField(max_length=100, blank=True, null=True)
-    expected_life = models.CharField(max_length=100, blank=True, null=True)
-    source = models.CharField(max_length=100, blank=True, null=True)
+    #country_of_production = models.CharField(max_length=50, blank=True, null=True)
+    #size = models.CharField(max_length=100, blank=True, null=True)
+    #expected_life = models.CharField(max_length=100, blank=True, null=True)
+    #source = models.CharField(max_length=100, blank=True, null=True)
 
     @staticmethod
     def get_for(source):
@@ -439,4 +439,5 @@ class InventoryAccountRow(models.Model):
     expense_total_cost_price = models.FloatField(blank=True, null=True)
     remaining_total_cost_price = models.FloatField(blank=True, null=True)
     remarks = models.CharField(max_length=254, blank=True, null=True)
-    inventory_account = models.ForeignKey(InventoryAccount, related_name='rows')
+    #inventory_account = models.ForeignKey(InventoryAccount, related_name='rows')
+    journal_entry = models.OneToOneField(JournalEntry, related_name='account_row')
