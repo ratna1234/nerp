@@ -20,10 +20,10 @@ from app.nepdate import BSUtil
 def item_form(request, id=None):
     if id:
         item = get_object_or_404(Item, id=id)
-        scenario = _('Update')
+        scenario = 'Update'
     else:
         item = Item()
-        scenario = _('Create')
+        scenario = 'Create'
     if request.POST:
         form = ItemForm(data=request.POST, instance=item)
         if form.is_valid():
@@ -131,10 +131,10 @@ def delete_category(request, id):
 def demand_form(request, id=None):
     if id:
         obj = get_object_or_404(Demand, id=id)
-        scenario = _('Update')
+        scenario = 'Update'
     else:
         obj = Demand(date=BSUtil().today(), demandee=request.user)
-        scenario = _('Create')
+        scenario = 'Create'
     form = DemandForm(instance=obj)
     object_data = DemandSerializer(obj).data
     return render(request, 'demand_form.html',
@@ -202,10 +202,10 @@ def list_parties(request):
 def party_form(request, id=None):
     if id:
         obj = get_object_or_404(Party, id=id)
-        scenario = _('Update')
+        scenario = 'Update'
     else:
         obj = Party()
-        scenario = _('Create')
+        scenario = 'Create'
     if request.POST:
         form = PartyForm(data=request.POST, instance=obj)
         if form.is_valid():
@@ -245,10 +245,10 @@ def parties_as_json(request):
 def purchase_order(request, id=None):
     if id:
         obj = get_object_or_404(PurchaseOrder, id=id)
-        scenario = _('Update')
+        scenario = 'Update'
     else:
         obj = PurchaseOrder(date=date.today())
-        scenario = _('Create')
+        scenario = 'Create'
     form = PurchaseOrderForm(instance=obj)
     object_data = PurchaseOrderSerializer(obj).data
     return render(request, 'purchase_order.html',
@@ -355,10 +355,10 @@ def handover_incoming(request, id=None):
 def handover_outgoing(request, id=None):
     if id:
         obj = get_object_or_404(Handover, id=id)
-        scenario = _('Update')
+        scenario = 'Update'
     else:
         obj = Handover(date=date.today(), type='Outgoing')
-        scenario = _('Create')
+        scenario = 'Create'
     form = HandoverForm(instance=obj)
     object_data = HandoverSerializer(obj).data
     return render(request, 'handover.html',
@@ -639,8 +639,6 @@ def save_account(request):
             row['expense_total_cost_price'] = None
         if row.get('remaining_total_cost_price') == '':
             row['remaining_total_cost_price'] = None
-        #import pdb
-        #pdb.set_trace()
         values = {'country_of_production_or_company_name': row.get('country_or_company'), 'size': row.get('size'),
                   'expected_life': row.get('expected_life'), 'source': row.get('source'), 'remarks': row.get('remarks'),
                   'expense_total_cost_price': row.get('expense_total_cost_price'),

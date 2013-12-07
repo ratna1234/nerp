@@ -90,7 +90,6 @@ class Item(models.Model):
     code = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=254)
     description = models.TextField(blank=True, null=True)
-    #purchase_price = models.FloatField(blank=True, null=True)
     category = models.ForeignKey(Category, null=True, blank=True)
     account = models.OneToOneField(InventoryAccount, related_name='item')
     type_choices = [('consumable', 'Consumable'), ('non-consumable', 'Non Consumable')]
@@ -267,20 +266,6 @@ def delete_rows(rows, model):
             instance.delete()
 
 
-@receiver(pre_delete, sender=Transaction)
-def _transaction_delete(sender, instance, **kwargs):
-    transaction = instance
-    # cancel out existing dr_amount and cr_amount from account's current_dr and current_cr
-    if transaction.dr_amount:
-        transaction.account.current_balance -= transaction.dr_amount
-
-    if transaction.cr_amount:
-        transaction.account.current_balance += transaction.cr_amount
-
-    #alter(transaction.account, transaction.journal_entry.date, float(zero_for_none(transaction.dr_amount)) * -1,
-    #      float(zero_for_none(transaction.cr_amount)) * -1)
-
-    transaction.account.save()
 
 
 class Demand(models.Model):
@@ -441,3 +426,22 @@ class InventoryAccountRow(models.Model):
     remarks = models.CharField(max_length=254, blank=True, null=True)
     #inventory_account = models.ForeignKey(InventoryAccount, related_name='rows')
     journal_entry = models.OneToOneField(JournalEntry, related_name='account_row')
+
+@receiver(pre_delete, sender=EntryReportRow)
+def _entry_report_row_delete(sender, instance, **kwargs):
+    JournalEntry.get_for(instance).delete()
+
+@receiver(pre_delete, sender=Transaction)
+def _transaction_delete(sender, instance, **kwargs):
+    transaction = instance
+    # cancel out existing dr_amount and cr_amount from account's current_dr and current_cr
+    if transaction.dr_amount:
+        transaction.account.current_balance -= transaction.dr_amount
+
+    if transaction.cr_amount:
+        transaction.account.current_balance += transaction.cr_amount
+
+    #alter(transaction.account, transaction.journal_entry.date, float(zero_for_none(transaction.dr_amount)) * -1,
+    #      float(zero_for_none(transaction.cr_amount)) * -1)
+
+    transaction.account.save()
