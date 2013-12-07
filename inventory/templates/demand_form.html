@@ -117,7 +117,11 @@
             <div class="column large-8">
                 <div class="print-only">{% trans "Demandee's Signature" %}:-</div>
                 <div>{% trans "Name" %}:- {{ form.instance.demandee }}</div>
-                <div>{% trans "Date" %}:- {{ form.instance.date|date:"Y-m-d" }}</div>
+                <div>
+                    {% trans "Date" %}:-
+{#                    {{ form.instance.date|date:"Y-m-d" }}#}
+                    {{ form.date }}
+                </div>
                 <div>{% trans "Purpose" %}:- {{ form.purpose }}</div>
                 <div class="print-only">{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
                 <div class="print-only">{% trans "Date" %}:-</div>
