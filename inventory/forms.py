@@ -7,6 +7,7 @@ from models import Item, Category, Demand, Party, PurchaseOrder, InventoryAccoun
 class ItemForm(KOModelForm):
     #category = TreeNodeChoiceField(queryset=Category.objects.all(), required=False)
     account_no = forms.Field(widget=forms.TextInput())
+    opening_balance = forms.Field(widget=forms.TextInput(), initial=0)
 
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)

@@ -100,8 +100,10 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         account_no = kwargs.pop('account_no')
+        opening_balance = kwargs.pop('opening_balance')
         if self.pk is None:
-            account = InventoryAccount(code=self.code, name=self.name, account_no=account_no)
+            account = InventoryAccount(code=self.code, name=self.name, account_no=account_no,
+                                       opening_balance=opening_balance, current_balance=opening_balance)
             account.save()
             self.account = account
         super(Item, self).save(*args, **kwargs)
@@ -264,8 +266,6 @@ def delete_rows(rows, model):
             #JournalEntry.objects.get(content_type=ContentType.objects.get_for_model(model),
             #                         model_id=instance.id).delete()
             instance.delete()
-
-
 
 
 class Demand(models.Model):
@@ -432,9 +432,11 @@ class InventoryAccountRow(models.Model):
 def _entry_report_row_delete(sender, instance, **kwargs):
     JournalEntry.get_for(instance).delete()
 
+
 @receiver(pre_delete, sender=DemandRow)
 def _entry_report_row_delete(sender, instance, **kwargs):
     JournalEntry.get_for(instance).delete()
+
 
 @receiver(pre_delete, sender=Transaction)
 def _transaction_delete(sender, instance, **kwargs):
