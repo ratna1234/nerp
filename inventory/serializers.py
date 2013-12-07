@@ -73,6 +73,7 @@ class EntryReportSerializer(serializers.ModelSerializer):
 
 
 class InventoryAccountRowSerializer(serializers.ModelSerializer):
+    id = serializers.Field(source='id')
     voucher_no = serializers.Field(source='creator.get_voucher_no')
     specification = serializers.Field(source='creator.specification')
     country_or_company = serializers.SerializerMethodField('get_country_or_company')
@@ -139,13 +140,13 @@ class InventoryAccountRowSerializer(serializers.ModelSerializer):
 
     def get_expense_total_cost_price(self, obj):
         try:
-            return obj.account_row.expense_total_cost_price
+            return obj.account_row.expense_total_cost_price or ''
         except:
             return ''
 
     def get_remaining_total_cost_price(self, obj):
         try:
-            return obj.account_row.remaining_total_cost_price
+            return obj.account_row.remaining_total_cost_price or ''
         except:
             return ''
 

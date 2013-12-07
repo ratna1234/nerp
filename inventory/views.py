@@ -10,7 +10,7 @@ from livesettings import config_value
 
 from inventory.forms import ItemForm, CategoryForm, DemandForm, PartyForm, PurchaseOrderForm, HandoverForm, EntryReportForm
 from inventory.filters import InventoryItemFilter
-from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow, set_transactions, JournalEntry
+from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Party, PurchaseOrder, PurchaseOrderRow, InventoryAccount, Handover, HandoverRow, EntryReport, EntryReportRow, set_transactions, JournalEntry, InventoryAccountRow
 from app.libr import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer, EntryReportSerializer, EntryReportRowSerializer, InventoryAccountRowSerializer
 from app.nepdate import BSUtil
@@ -622,4 +622,28 @@ def unfulfill_demand(request):
     journal_entry.delete()
     row.status = 'Approved'
     row.save()
+    return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+
+@login_required
+def save_account(request):
+    params = json.loads(request.body)
+    dct = {'rows': {}}
+    for index, row in enumerate(params.get('table_vm').get('rows')):
+        entry = JournalEntry.objects.get(id=row.get('id'))
+        try:
+            account_row = entry.account_row
+        except:
+            account_row = InventoryAccountRow(journal_entry=entry)
+        if row.get('expense_total_cost_price') == '':
+            row['expense_total_cost_price'] = None
+        if row.get('remaining_total_cost_price') == '':
+            row['remaining_total_cost_price'] = None
+        #import pdb
+        #pdb.set_trace()
+        values = {'country_of_production_or_company_name': row.get('country_or_company'), 'size': row.get('size'),
+                  'expected_life': row.get('expected_life'), 'source': row.get('source'), 'remarks': row.get('remarks'),
+                  'expense_total_cost_price': row.get('expense_total_cost_price'),
+                  'remaining_total_cost_price': row.get('remaining_total_cost_price')}
+        account_row = save_model(account_row, values)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
