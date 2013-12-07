@@ -84,6 +84,9 @@ class User(AbstractBaseUser):
     class Meta:
         db_table = u'user'
 
+    def __str__(self):
+        return self.full_name
+
 
 def group_required(*group_names):
     """Requires user membership in at least one of the groups passed in."""

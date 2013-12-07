@@ -120,7 +120,16 @@
         <div class="row inline-fields">
             <div class="column large-8">
                 <div class="print-only">{% trans "Demandee's Signature" %}:-</div>
-                <div>{% trans "Name" %}:- {{ form.instance.demandee }}</div>
+                <div>
+                    {% trans "Name" %}:-
+                    {% ifusergroup 'Store Keeper' 'Chief' %}
+                        {{ form.demandee }}
+                        {{ form.demandee.errors }}
+                    {% else %}
+                        {{ form.instance.demandee }}
+                    {% endifusergroup %}
+
+                </div>
                 <div>
                     {% trans "Date" %}:-
                     {#                    {{ form.instance.date|date:"Y-m-d" }}#}

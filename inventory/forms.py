@@ -1,7 +1,8 @@
 from django import forms
 
-from app.libr import KOModelForm
+from app.libr import KOModelForm, UserModelChoiceField
 from models import Item, Category, Demand, Party, PurchaseOrder, InventoryAccount, Handover, EntryReport
+from users.models import User
 
 
 class ItemForm(KOModelForm):
@@ -53,6 +54,8 @@ class CategoryForm(KOModelForm):
 
 
 class DemandForm(KOModelForm):
+    demandee = UserModelChoiceField(User.objects.all(), empty_label=None)
+
     class Meta:
         model = Demand
 

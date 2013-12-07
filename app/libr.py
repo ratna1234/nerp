@@ -4,6 +4,7 @@ import os
 import re
 
 from django import forms
+from django.forms import ModelChoiceField
 
 
 class ExtFileField(forms.FileField):
@@ -137,3 +138,11 @@ def digitize(n):
     return float(result)
     # devanagari_nums = ('०','१','२','३','४','५','६','७','८','९')
     # return ''.join(devanagari_nums[int(digit)] for digit in str(n))
+
+class UserModelChoiceField(ModelChoiceField):
+    '''
+    A ModelChoiceField to represent User
+    select boxes in the Auto Admin
+    '''
+    def label_from_instance(self, obj):
+        return "%s"%(obj.full_name)
