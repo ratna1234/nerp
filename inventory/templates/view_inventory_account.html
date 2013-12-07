@@ -23,12 +23,32 @@
 
 {% block content %}
 
-    Inventory Item's Name : {{ obj.item.name }}
-    <br><br>
-    Unit : {{ obj.item.unit }}
-    <br><br>
-    Inventory Item's Property Classification Reference Number : {{ obj.item.property_classification_reference_number }}
+    <div class="print-onlys">
+        <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %}
+            {% if obj.item.type == 'non-consumable' %}
+                {% trans '4' %}{% trans '7' %}
+            {% else %}
+                {% trans '5' %}{% trans '2' %}
+            {% endif %}
+        </span>
+        <br/>
 
+        <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+
+        {% if obj.item.type == 'non-consumable' %}
+            <h3 class="center clear">{% trans 'Inventory Account for Non-Consumable Item' %}</h3>
+        {% else %}
+            <h3 class="center clear">{% trans 'Inventory Account for Consumable Item' %}</h3>
+        {% endif %}
+    </div>
+
+    {% trans "Inventory Item's Name" %} : {{ obj.item.name }}
+    <br><br>
+    {% trans 'Unit' %} : {{ obj.item.unit }}
+    <br><br>
+    {% trans "Inventory Item's Property Classification Reference Number" %} :
+    {{ obj.item.property_classification_reference_number }}
+    <br><br>
     <table class="table-bordered">
 
         <tr>
@@ -90,5 +110,23 @@
     </table>
 
     <input type="submit" class="small secondary button" value="{% trans 'Save' %}" data-bind="click: save">
+
+    <div class="row print-onlys">
+        <div class="column large-6">
+            {% trans "Faantwaala's" %} {% trans 'Signature' %}
+            <br><br>
+            {% trans 'Date' %}
+        </div>
+        <div class="column large-6">
+            {% trans 'Section' %} {% trans "Officer's" %} {% trans 'Signature' %}
+            <br><br>
+            {% trans 'Date' %}
+        </div>
+        <div class="column large-4">
+            {% trans "Signature of Head of Office" %}
+            <br><br>
+            {% trans 'Date' %}
+        </div>
+    </div>
 
 {% endblock %}
