@@ -17,6 +17,8 @@ class ItemForm(KOModelForm):
             self.fields['account_no'].widget = forms.HiddenInput()
             self.fields['opening_balance'].widget = forms.HiddenInput()
             self.fields['property_classification_reference_number'].widget = forms.HiddenInput()
+        if self.instance.id:
+            self.fields['opening_balance'].widget = forms.HiddenInput()
 
     def clean_account_no(self):
         try:
