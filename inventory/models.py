@@ -90,7 +90,7 @@ class Item(models.Model):
     code = models.CharField(max_length=10, blank=True, null=True)
     name = models.CharField(max_length=254)
     description = models.TextField(blank=True, null=True)
-    purchase_price = models.FloatField(blank=True, null=True)
+    #purchase_price = models.FloatField(blank=True, null=True)
     category = models.ForeignKey(Category, null=True, blank=True)
     account = models.OneToOneField(InventoryAccount, related_name='item')
     type_choices = [('consumable', 'Consumable'), ('non-consumable', 'Non Consumable')]
