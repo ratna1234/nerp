@@ -70,6 +70,13 @@ class User(AbstractBaseUser):
     def is_superuser(self):
         return self.is_admin
 
+    def in_group(self, group_name):
+        try:
+            group = Group.objects.get(name=group_name)
+            return group in self.groups.all()
+        except Group.DoesNotExist:
+            return False
+
     objects = UserManager()
 
     class Meta:

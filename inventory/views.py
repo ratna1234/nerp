@@ -25,7 +25,7 @@ def item_form(request, id=None):
         item = Item()
         scenario = 'Create'
     if request.POST:
-        form = ItemForm(data=request.POST, instance=item)
+        form = ItemForm(data=request.POST, instance=item, user=request.user)
         if form.is_valid():
             item = form.save(commit=False)
             item.save(account_no=form.cleaned_data['account_no'], opening_balance=form.cleaned_data['opening_balance'])
@@ -33,7 +33,7 @@ def item_form(request, id=None):
                 return render(request, 'callback.html', {'obj': ItemSerializer(item).data})
             return redirect('/inventory/items/')
     else:
-        form = ItemForm(instance=item)
+        form = ItemForm(instance=item, user=request.user)
     if request.is_ajax():
         base_template = 'modal.html'
     else:
