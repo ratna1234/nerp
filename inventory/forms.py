@@ -56,10 +56,6 @@ class DemandForm(KOModelForm):
     class Meta:
         model = Demand
 
-        # def clean(self):
-        #     import pdb
-        #     pdb.set_trace()
-
 
 class PartyForm(KOModelForm):
     class Meta:

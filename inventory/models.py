@@ -148,10 +148,9 @@ class Transaction(models.Model):
         return str(self.account) + ' [' + str(self.dr_amount) + ' / ' + str(self.cr_amount) + ']'
 
 
-def alter(account, date, dr_difference, cr_difference):
+def alter(account, date, diff):
     Transaction.objects.filter(journal_entry__date__gt=date, account=account).update(
-        current_dr=none_for_zero(zero_for_none(F('current_dr')) + zero_for_none(dr_difference)),
-        current_cr=none_for_zero(zero_for_none(F('current_cr')) + zero_for_none(cr_difference)))
+        current_balance=none_for_zero(zero_for_none(F('current_balance')) + zero_for_none(diff)))
 
 
 def set_transactions(model, date, *args):
@@ -186,6 +185,7 @@ def set_transactions(model, date, *args):
         transaction.current_balance = transaction.account.current_balance
         transaction.account.save()
         journal_entry.transactions.add(transaction)
+        alter(transaction.account, date, diff)
 
 
 #def set_transactions(submodel, date, *args):
@@ -434,7 +434,7 @@ def _entry_report_row_delete(sender, instance, **kwargs):
 
 
 @receiver(pre_delete, sender=DemandRow)
-def _entry_report_row_delete(sender, instance, **kwargs):
+def _demand_form_row_delete(sender, instance, **kwargs):
     JournalEntry.get_for(instance).delete()
 
 
