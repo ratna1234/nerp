@@ -14,6 +14,7 @@ from inventory.models import Demand, DemandRow, delete_rows, Item, Category, Par
 from app.libr import invalid, save_model
 from inventory.serializers import DemandSerializer, ItemSerializer, PartySerializer, PurchaseOrderSerializer, HandoverSerializer, EntryReportSerializer, EntryReportRowSerializer, InventoryAccountRowSerializer
 from app.nepdate import BSUtil
+from users.models import group_required
 
 
 @login_required
@@ -45,14 +46,14 @@ def item_form(request, id=None):
     })
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def delete_inventory_item(request, id):
     obj = get_object_or_404(Item, id=id)
     obj.delete()
     return redirect('/inventory/items/')
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_inventory_items(request):
     objects = Item.objects.all()
     filtered_items = InventoryItemFilter(request.GET, queryset=objects)
@@ -72,13 +73,13 @@ def items_as_json(request):
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_categories(request):
     categories = Category.objects.filter()
     return render(request, 'list_inventory_categories.html', {'categories': categories})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def create_category(request):
     category = Category()
     if request.POST:
@@ -99,7 +100,7 @@ def create_category(request):
     })
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def update_category(request, id):
     category = get_object_or_404(Category, id=id)
     if request.POST:
@@ -120,7 +121,7 @@ def update_category(request, id):
     })
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def delete_category(request, id):
     category = get_object_or_404(Category, id=id)
     category.delete()
@@ -192,13 +193,13 @@ def delete_demand(request, id):
     return redirect(reverse('list_demand_forms'))
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_parties(request):
     objects = Party.objects.all()
     return render(request, 'list_parties.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def party_form(request, id=None):
     if id:
         obj = get_object_or_404(Party, id=id)
@@ -227,21 +228,21 @@ def party_form(request, id=None):
     })
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def delete_party(request, id):
     obj = get_object_or_404(Party, id=id)
     obj.delete()
     return redirect(reverse('list_parties'))
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def parties_as_json(request):
     objects = Party.objects.all()
     objects_data = PartySerializer(objects).data
     return HttpResponse(json.dumps(objects_data), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def purchase_order(request, id=None):
     if id:
         obj = get_object_or_404(PurchaseOrder, id=id)
@@ -255,7 +256,7 @@ def purchase_order(request, id=None):
                   {'form': form, 'data': object_data, 'scenario': scenario})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def save_purchase_order(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
@@ -297,38 +298,38 @@ def save_purchase_order(request):
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_purchase_orders(request):
     objects = PurchaseOrder.objects.all()
     return render(request, 'list_purchase_orders.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def delete_purchase_order(request, id):
     obj = get_object_or_404(PurchaseOrder, id=id)
     obj.delete()
     return redirect(reverse('list_purchase_orders'))
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_inventory_accounts(request):
     objects = InventoryAccount.objects.all()
     return render(request, 'list_inventory_accounts.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_consumable_accounts(request):
     objects = InventoryAccount.objects.filter(item__type='consumable')
     return render(request, 'list_consumable_inventory_accounts.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_non_consumable_accounts(request):
     objects = InventoryAccount.objects.filter(item__type='non-consumable')
     return render(request, 'list_non_consumable_inventory_accounts.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def view_inventory_account(request, id):
     obj = get_object_or_404(InventoryAccount, id=id)
     journal_entries = JournalEntry.objects.filter(transactions__account_id=obj.id).order_by('id', 'date') \
@@ -337,7 +338,7 @@ def view_inventory_account(request, id):
     return render(request, 'view_inventory_account.html', {'obj': obj, 'entries': journal_entries, 'data': data})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def handover_incoming(request, id=None):
     if id:
         obj = get_object_or_404(Handover, id=id)
@@ -351,7 +352,7 @@ def handover_incoming(request, id=None):
                   {'form': form, 'data': object_data, 'scenario': scenario})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def handover_outgoing(request, id=None):
     if id:
         obj = get_object_or_404(Handover, id=id)
@@ -365,7 +366,7 @@ def handover_outgoing(request, id=None):
                   {'form': form, 'data': object_data, 'scenario': scenario})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def save_handover(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
@@ -404,19 +405,19 @@ def save_handover(request):
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_incoming_handovers(request):
     objects = Handover.objects.filter(type='Incoming')
     return render(request, 'list_incoming_handovers.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_outgoing_handovers(request):
     objects = Handover.objects.filter(type='Outgoing')
     return render(request, 'list_outgoing_handovers.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def handover_entry_report(request, id=None):
     source = get_object_or_404(Handover, id=id, type='Incoming')
     if source.get_entry_report():
@@ -447,7 +448,7 @@ def handover_entry_report(request, id=None):
                   {'form': form, 'data': object_data})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def purchase_entry_report(request, id=None):
     source = get_object_or_404(PurchaseOrder, id=id)
     if source.get_entry_report():
@@ -478,7 +479,7 @@ def purchase_entry_report(request, id=None):
                   {'form': form, 'data': object_data})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def save_entry_report(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
@@ -527,32 +528,32 @@ def save_entry_report(request):
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_entry_reports(request):
     objects = EntryReport.objects.all()
     return render(request, 'list_entry_reports.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_handover_entry_reports(request):
     objects = EntryReport.objects.filter(source_content_type__model='handover')
     return render(request, 'list_entry_reports.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def list_purchase_entry_reports(request):
     objects = EntryReport.objects.filter(source_content_type__model='purchaseorder')
     return render(request, 'list_entry_reports.html', {'objects': objects})
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def delete_entry_report(request, id):
     obj = get_object_or_404(EntryReport, id=id)
     obj.delete()
     return redirect(reverse('list_entry_reports'))
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def approve_demand(request):
     params = json.loads(request.body)
     dct = {'rows': {}}
@@ -572,7 +573,7 @@ def approve_demand(request):
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def disapprove_demand(request):
     params = json.loads(request.body)
     dct = {}
@@ -586,7 +587,7 @@ def disapprove_demand(request):
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def fulfill_demand(request):
     params = json.loads(request.body)
     dct = {}
@@ -606,7 +607,7 @@ def fulfill_demand(request):
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def unfulfill_demand(request):
     params = json.loads(request.body)
     dct = {}
@@ -625,7 +626,7 @@ def unfulfill_demand(request):
     return HttpResponse(json.dumps(dct), mimetype="application/json")
 
 
-@login_required
+@group_required('Store Keeper', 'Chief')
 def save_account(request):
     params = json.loads(request.body)
     dct = {'rows': {}}

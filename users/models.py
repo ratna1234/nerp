@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import user_passes_test
 import config
+
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, full_name=''):
@@ -81,3 +83,17 @@ class User(AbstractBaseUser):
 
     class Meta:
         db_table = u'user'
+
+
+def group_required(*group_names):
+    """Requires user membership in at least one of the groups passed in."""
+
+    def in_groups(u):
+        if u.is_authenticated():
+            #if bool(u.groups.filter(name__in=group_names)) | u.is_superuser():
+            #    return True
+            if bool(u.groups.filter(name__in=group_names)):
+                return True
+        return False
+
+    return user_passes_test(in_groups)

@@ -89,22 +89,24 @@
                     <td data-bind="editableText: remarks"></td>
                     <td class="hide-on-print">
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
-                        <button class="small secondary button"
-                                data-bind="click: approve, visible: $root.id() && status() == 'Requested'">Approve
-                        </button>
-                        <button class="small secondary button"
-                                data-bind="click: disapprove, visible: status() == 'Approved'">
-                            Disapprove
-                        </button>
-                        <button class="small secondary button"
-                                data-bind="click: function(data, event) { fulfill($root, data, event) }, visible: status() == 'Approved'">
-                            Set as
-                            Fulfilled
-                        </button>
-                        <button class="small secondary button"
-                                data-bind="click: unfulfill, visible: status() == 'Fulfilled'">Set
-                            as Unfulfilled
-                        </button>
+                        {% ifusergroup 'Store Keeper' 'Chief' %}
+                            <button class="small secondary button"
+                                    data-bind="click: approve, visible: $root.id() && status() == 'Requested'">Approve
+                            </button>
+                            <button class="small secondary button"
+                                    data-bind="click: disapprove, visible: status() == 'Approved'">
+                                Disapprove
+                            </button>
+                            <button class="small secondary button"
+                                    data-bind="click: function(data, event) { fulfill($root, data, event) }, visible: status() == 'Approved'">
+                                Set as
+                                Fulfilled
+                            </button>
+                            <button class="small secondary button"
+                                    data-bind="click: unfulfill, visible: status() == 'Fulfilled'">Set
+                                as Unfulfilled
+                            </button>
+                        {% endifusergroup %}
                     </td>
                 </tr>
                 <!-- /ko -->
