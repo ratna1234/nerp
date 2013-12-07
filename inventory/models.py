@@ -427,7 +427,12 @@ class InventoryAccountRow(models.Model):
     #inventory_account = models.ForeignKey(InventoryAccount, related_name='rows')
     journal_entry = models.OneToOneField(JournalEntry, related_name='account_row')
 
+
 @receiver(pre_delete, sender=EntryReportRow)
+def _entry_report_row_delete(sender, instance, **kwargs):
+    JournalEntry.get_for(instance).delete()
+
+@receiver(pre_delete, sender=DemandRow)
 def _entry_report_row_delete(sender, instance, **kwargs):
     JournalEntry.get_for(instance).delete()
 
@@ -445,3 +450,4 @@ def _transaction_delete(sender, instance, **kwargs):
     #      float(zero_for_none(transaction.cr_amount)) * -1)
 
     transaction.account.save()
+
