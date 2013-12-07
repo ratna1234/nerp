@@ -34,21 +34,22 @@
         {% csrf_token %}
 
         <div class="one-line row">
-    <span class="column large-8">
-        &nbsp;
-    </span>
-    <span class="column large-4">
-        {% trans 'Release No.' %}:
-        {{ form.release_no }}
-        {{ form.release_no.errors }}
+            <span class="column large-8">
+                &nbsp;
+            </span>
 
-    </span>
+            {% ifusergroup 'Store Keeper' 'Chief' %}
+                <span class="column large-4">
+                    {% trans 'Release No.' %}:
+                    {{ form.release_no }}
+                    {{ form.release_no.errors }}
+                </span>
+            {% endifusergroup %}
 
-    <span class="right column large-4 print-only">
-        {% trans 'Fiscal Year' %}:
-        {{ 'app'|setting:'fiscal_year' }}
-    </span>
-
+            <span class="right column large-4 print-only">
+                {% trans 'Fiscal Year' %}:
+                {{ 'app'|setting:'fiscal_year' }}
+            </span>
         </div>
 
         <div data-bind="with:table_view">
@@ -96,7 +97,8 @@
                             Disapprove
                         </button>
                         <button class="small secondary button"
-                                data-bind="click: function(data, event) { fulfill($root, data, event) }, visible: status() == 'Approved'">Set as
+                                data-bind="click: function(data, event) { fulfill($root, data, event) }, visible: status() == 'Approved'">
+                            Set as
                             Fulfilled
                         </button>
                         <button class="small secondary button"
@@ -119,7 +121,7 @@
                 <div>{% trans "Name" %}:- {{ form.instance.demandee }}</div>
                 <div>
                     {% trans "Date" %}:-
-{#                    {{ form.instance.date|date:"Y-m-d" }}#}
+                    {#                    {{ form.instance.date|date:"Y-m-d" }}#}
                     {{ form.date }}
                 </div>
                 <div>{% trans "Purpose" %}:- {{ form.purpose }}</div>
@@ -142,7 +144,7 @@
         <input type="submit" class="small secondary button" value="{% trans 'Save' %}"
                 {#               data-bind="visible: $root.status() == 'Requested'"#}
                 >
-        {% if scenario == 'Update'%}
+        {% if scenario == 'Update' %}
             <a class="small secondary button"
                href="{% url 'delete_demand_form' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}

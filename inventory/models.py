@@ -271,6 +271,16 @@ def delete_rows(rows, model):
             instance.delete()
 
 
+def get_next_voucher_no(cls, attr):
+    from django.db.models import Max
+
+    max_voucher_no = cls.objects.all().aggregate(Max(attr))[attr + '__max']
+    if max_voucher_no:
+        return max_voucher_no + 1
+    else:
+        return 1
+
+
 class Demand(models.Model):
     release_no = models.IntegerField(blank=True, null=True)
     fiscal_year = models.CharField(max_length=10)
@@ -280,6 +290,11 @@ class Demand(models.Model):
 
     def get_voucher_no(self):
         return self.release_no
+
+    def __init__(self, *args, **kwargs):
+        super(Demand, self).__init__(*args, **kwargs)
+        if not self.pk and not self.release_no:
+            self.release_no = get_next_voucher_no(Demand, 'release_no')
 
 
 class DemandRow(models.Model):
