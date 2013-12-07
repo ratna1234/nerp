@@ -128,7 +128,10 @@ class JournalEntry(models.Model):
 
     @staticmethod
     def get_for(source):
-        return JournalEntry.objects.get(content_type=ContentType.objects.get_for_model(source), model_id=source.id)
+        try:
+            return JournalEntry.objects.get(content_type=ContentType.objects.get_for_model(source), model_id=source.id)
+        except JournalEntry.DoesNotExist:
+            return None
 
     def __str__(self):
         return str(self.content_type) + ': ' + str(self.model_id) + ' [' + str(self.date) + ']'
@@ -430,12 +433,16 @@ class InventoryAccountRow(models.Model):
 
 @receiver(pre_delete, sender=EntryReportRow)
 def _entry_report_row_delete(sender, instance, **kwargs):
-    JournalEntry.get_for(instance).delete()
+    entry = JournalEntry.get_for(instance)
+    if entry:
+        entry.delete()
 
 
 @receiver(pre_delete, sender=DemandRow)
 def _demand_form_row_delete(sender, instance, **kwargs):
-    JournalEntry.get_for(instance).delete()
+    entry = JournalEntry.get_for(instance)
+    if entry:
+        entry.delete()
 
 
 @receiver(pre_delete, sender=Transaction)
