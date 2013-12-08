@@ -22,7 +22,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="print-onlys">
+    <div class="print-only">
         <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '5' %}{% trans '1' %}</span>
         <br>
 
@@ -39,7 +39,7 @@
         <span class="print-only">श्री प्रमुख,</span>
 
         <div class="one-line row">
-            <span class="column large-4 small-4 print-onlys">
+            <span class="column large-4 small-4 print-only">
     भण्डार शाखा
             </span>
 
@@ -50,13 +50,13 @@
                         {{ form.release_no }}
                         {{ form.release_no.errors }}
                     {% else %}
-                        <div class="print-onlys">{% trans 'Release No.' %}: <span data-bind="text: release_no"></span>
+                        <div class="print-only">{% trans 'Release No.' %}: <span data-bind="text: release_no"></span>
                         </div>
                     {% endifusergroup %}
                 </span>
 
 
-            <span class="right column large-6 small-6 print-onlys">
+            <span class="right column large-6 small-6 print-only">
                 {% trans 'Fiscal Year' %}:
                 {{ 'app'|setting:'fiscal_year' }}
             </span>
