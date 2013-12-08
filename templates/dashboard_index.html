@@ -25,10 +25,10 @@
                         <br/>
                         <a href="{% url 'create_party' %}">{% trans 'New' %} {% trans 'Party' %}</a>
                         <br/>
-{#                        <a href="{% url 'list_inventory_categories' %}">{% trans 'Inventory Categories' %}</a>#}
-{#                        <br/>#}
-{#                        <a href="{% url 'create_inventory_category' %}">{% trans 'Create' %} {% trans 'Inventory' %} {% trans 'Category' %}</a>#}
-{#                        <br/>#}
+                        {#                        <a href="{% url 'list_inventory_categories' %}">{% trans 'Inventory Categories' %}</a>#}
+                        {#                        <br/>#}
+                        {#                        <a href="{% url 'create_inventory_category' %}">{% trans 'Create' %} {% trans 'Inventory' %} {% trans 'Category' %}</a>#}
+                        {#                        <br/>#}
                         <a href="{% url 'create_demand_form' %}">{% trans 'New Demand Form' %}</a>
                         <br/>
                         <a href="{% url 'list_demand_forms' %}">{% trans 'Demand Forms' %}</a>
@@ -56,6 +56,11 @@
                         <a href="{% url 'list_consumable_inventory_accounts' %}">{% trans 'Consumable' %} {% trans 'Inventory' %} {% trans 'Accounts' %}</a>
                         <br/>
                         <a href="{% url 'list_non_consumable_inventory_accounts' %}">{% trans 'Non-Consumable' %} {% trans 'Inventory' %} {% trans 'Accounts' %}</a>
+                    {% else %}
+                        <a href="{% url 'create_demand_form' %}">{% trans 'New Demand Form' %}</a>
+                        <br/>
+                        <a href="{% url 'list_demand_forms' %}">{% trans 'Demand Forms' %}</a>
+                        <br/>
                     {% endifusergroup %}
                 </div>
             </section>

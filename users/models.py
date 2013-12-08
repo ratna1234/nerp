@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
             password=password,
             full_name=full_name,
         )
-        user.is_admin = True
+        user.is_superuser = True
         user.is_staff = True
         user.save(using=self._db)
         return user
@@ -42,7 +42,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(verbose_name='email address', max_length=254, unique=True, db_index=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     groups = models.ManyToManyField(Group, related_name='users')
 
     # USERNAME_FIELD = 'username'
@@ -69,8 +69,8 @@ class User(AbstractBaseUser):
     def email_user(self, subject, message, from_email):
         pass
 
-    def is_superuser(self):
-        return self.is_admin
+    def is_admin(self):
+        return self.is_superuser
 
     def in_group(self, group_name):
         try:
@@ -81,8 +81,8 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    class Meta:
-        db_table = u'user'
+    #class Meta:
+    #    db_table = u'auth_user'
 
     def __str__(self):
         return self.full_name
