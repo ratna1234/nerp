@@ -62,8 +62,21 @@ def list_inventory_items(request):
 
 @login_required
 def list_demand_forms(request):
-    objects = Demand.objects.all()
+    if request.user.in_group('Store Keeper') or request.user.in_group('Chief'):
+        objects = Demand.objects.all()
+    else:
+        objects = Demand.objects.filter(demandee=request.user)
     return render(request, 'list_demand_forms.html', {'objects': objects})
+
+
+@login_required
+def delete_demand(request, id):
+    if request.user.in_group('Store Keeper') or request.user.in_group('Chief'):
+        obj = get_object_or_404(Demand, id=id)
+    else:
+        obj = get_object_or_404(Demand, id=id, demandee=request.user)
+    obj.delete()
+    return redirect(reverse('list_demand_forms'))
 
 
 @login_required
@@ -184,13 +197,6 @@ def save_demand(request):
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
-
-
-@login_required
-def delete_demand(request, id):
-    obj = get_object_or_404(Demand, id=id)
-    obj.delete()
-    return redirect(reverse('list_demand_forms'))
 
 
 @group_required('Store Keeper', 'Chief')
