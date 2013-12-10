@@ -22,7 +22,7 @@
 
 {% block content %}
 
-    <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '5' %}</span>
+    <span class="right print-only">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '5' %}</span>
     <br>
     <h5 class="center print-only">{{ 'app'|setting:'header' }}</h5>
     <h6 class="center print-only">{% trans 'Purchase Order' %}</h6>
@@ -32,12 +32,11 @@
 
         <div class="row">
 
-            <div class="column large-10 small-10">
+            <div class="column large-8 small-8">
                 {% trans 'Shree' %}
                 <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
                 <input type="hidden" data-url="{% url 'create_party' %}"
                        data-bind="value: party, select2: $root.parties, event: {change: $root.party_changed}">
-                <br>
                 <br>
                 {% trans 'Address' %}: <span data-bind="text:party_address"></span>
                 <br>
@@ -46,7 +45,7 @@
                 <br/>
             </div>
 
-            <div class="column large-6 small-6">
+            <div class="column large-8 small-8">
                 {% trans 'Purchase Order' %} {% trans 'No.' %}: {{ form.order_no }}
                 {{ form.order_no.errors }}
                 <br>
@@ -57,8 +56,10 @@
 
         <div class="centre">
             देहाय बमोजिमका सामानहरु
-            {{ form.due_days }}{{ form.due_days.errors }}
+            <input type="text" class="width-3" size="" required="required" name="due_days" id="id_due_days"
+                   data-bind="value: due_days">
             दिन भित्र यस कार्यालयमा दाखिला गरि विल / इन्भ्वाईस प्रस्तुत गर्नु होला ।
+            {{ form.due_days.errors }}
         </div>
 
         <div class="row">
@@ -168,6 +169,72 @@
 
     </form>
 
-    {% trans "Firm's Name" %}: <span data-bind="text:party_name"></span>
+    <div class="row print-onlys">
+        <div class="column large-8 small-8">
+            {% trans "Faantwaala's" %} {% trans 'Signature' %}:-
+            <br><br>
+            {% trans 'Date' %}:-
+        </div>
+        <div class="column large-8 small-8">
+            {% trans 'Section' %} {% trans "Head's" %} {% trans 'Signature' %}:-
+            <br><br>
+            {% trans 'Date' %}:-
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <td><u>{% trans 'To be filled by financial section' %}</u>:-<br/><br>
+                माथि उल्लेखि सामानहरु बजट उपशिर्षक न. .............. को खर्च शिर्षक न. .......... बाट भुक्तानी दिन बजेट
+                बाँकी देखिन्छ / देखिदैंन ।
+                <br><br>
+
+                <div class="row">
+                    <span class="column large-8 small-8"></span>
+
+                    <div class="column large-8 small-8">
+                        {% trans 'Section' %} {% trans "Officer's" %} {% trans 'Signature' %}:-
+                        <br>
+                        {% trans 'Date' %}:-
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="row">
+                    <span class="column large-8 small-8"></span>
+
+                    <div class="column large-8 small-8">
+                        {% trans "Signature of Head of Office" %}:-
+                        <br>
+                        {% trans 'Date' %}:-
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    माथि उल्लेखित सामानहरु मिति .......................... भित्र .............................................................. कार्यालयमा बुझाउने  छु भनी सहिछाप गर्ने ।
+<br><br>
+
+
+    <div class="row print-onlys">
+        <div class="column large-6">
+            <b>{% trans "Firm's Name" %}</b>
+            <br><br>
+            <span data-bind="text:party_name"></span>
+        </div>
+        <div class="column large-6">
+            <b>{% trans 'Signature' %}</b>
+            <br><br>
+        </div>
+        <div class="column large-4">
+            <b>{% trans 'Date' %}</b>
+            <br><br>
+        </div>
+    </div>
+
+
 
 {% endblock %}
