@@ -23,7 +23,7 @@
 
 {% block content %}
 
-    <div class="print-onlys">
+    <div class="print-only">
         <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %}
             {% if obj.item.type == 'non-consumable' %}
                 {% trans '4' %}{% trans '7' %}
@@ -33,24 +33,24 @@
         </span>
         <br/>
 
-        <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+        <h5 class="center">{{ 'app'|setting:'header' }}</h5>
 
         {% if obj.item.type == 'non-consumable' %}
-            <h3 class="center clear">{% trans 'Inventory Account for Non-Consumable Item' %}</h3>
+            <h6 class="center clear">{% trans 'Inventory Account for Non-Consumable Item' %}</h6>
         {% else %}
-            <h3 class="center clear">{% trans 'Inventory Account for Consumable Item' %}</h3>
+            <h6 class="center clear">{% trans 'Inventory Account for Consumable Item' %}</h6>
         {% endif %}
     </div>
 
     {% trans "Inventory Item's Name" %} : {{ obj.item.name }}
-    <br><br>
+    <br>
     {% trans 'Unit' %} : {{ obj.item.unit }}
-    <br><br>
+    <br>
     {% trans "Inventory Item's Property Classification Reference Number" %} :
     {{ obj.item.property_classification_reference_number }}
-    <br><br>
-    <table class="table-bordered">
+    <br>
 
+    <table class="table-bordered">
         <tr>
             <th rowspan="2">{% trans 'Date' %}</th>
             <th rowspan="2">{% trans 'Entry No.' %}/{% trans 'Release No.' %}</th>
@@ -111,20 +111,20 @@
 
     <input type="submit" class="small secondary button" value="{% trans 'Save' %}" data-bind="click: save">
 
-    <div class="row print-only">
+    <div class="row print-onlys">
         <div class="column large-6">
             {% trans "Faantwaala's" %} {% trans 'Signature' %}
-            <br><br>
+            <br>
             {% trans 'Date' %}
         </div>
         <div class="column large-6">
             {% trans 'Section' %} {% trans "Officer's" %} {% trans 'Signature' %}
-            <br><br>
+            <br>
             {% trans 'Date' %}
         </div>
         <div class="column large-4">
             {% trans "Signature of Head of Office" %}
-            <br><br>
+            <br>
             {% trans 'Date' %}
         </div>
     </div>
