@@ -47,7 +47,9 @@
 
                 <span class="column large-8 small-8">
                     {% ifusergroup 'Store Keeper' 'Chief' %}
-                        {% trans 'Release No.' %}: {{ form.release_no }}{{ form.release_no.errors }}
+                        {% trans 'Release No.' %}:
+                        <input type="text" name="release_no" id="id_release_no" data-bind="value: release_no, localize: true">
+                        {{ form.release_no.errors }}
                     {% else %}
                         <div class="print-only">{% trans 'Release No.' %}: <span data-bind="text: release_no"></span>
                         </div>
@@ -95,7 +97,7 @@
                         {#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}, readOnly: status() != 'Requested'">#}
                     </td>
                     <td data-bind="editableText: specification, disable_content_editable: status() != 'Requested'"></td>
-                    <td data-bind="editableText: quantity, numeric: true, disable_content_editable: status() != 'Requested'"></td>
+                    <td data-bind="editableText: quantity, localize: true, numeric: true, disable_content_editable: status() != 'Requested'"></td>
                     <td data-bind="editableText: unit, disable_content_editable: status() != 'Requested'"></td>
 
                     <td {% ifusergroup 'Store Keeper' 'Chief' %}{% else %}class="only-on-print"{% endifusergroup %}
