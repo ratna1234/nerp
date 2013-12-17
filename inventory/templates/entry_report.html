@@ -51,7 +51,7 @@
                     <th rowspan="2" class="span3">{% trans 'Quantity' %}</th>
                     <th colspan="5" class="span2">{% trans 'Price' %} ({% trans 'As per Invoice' %})</th>
                     <th rowspan="2" class="span2">{% trans 'Remarks' %}</th>
-                    <th rowspan="2" class="span1"></th>
+                    <th rowspan="2" class="hide-on-print"></th>
                 </tr>
                 <tr>
                     <th>{% trans 'Rate per Unit' %}</th>
@@ -71,8 +71,9 @@
                     <td data-bind="text: account_no()"></td>
                     <td data-bind="text: inventory_classification_reference_no()"></td>
                     <td>
-                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"
-                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">
+{#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
+{#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">#}
+                        <select data-bind="selectize: $root.items, value: item_id, event: {change: $root.item_changed}" data-url="{% url 'create_inventory_item' %}"></select>
                     </td>
                     <td data-bind="editableText: specification"></td>
                     <td data-bind="editableText: unit"></td>
@@ -83,7 +84,7 @@
                     <td data-bind="editableText: other_expenses, numeric: true"></td>
                     <td data-bind="text: total()"></td>
                     <td class="remarks-cell" data-bind="editableText: remarks"></td>
-                    <td>
+                    <td class="hide-on-print">
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
                     </td>
                 </tr>
@@ -110,21 +111,21 @@
     माथि उल्लेखित सामानहरु खरिद आदेश नम्बर/हस्तान्तरण फाराम नम्बर ........... मिति .................... अनुसार श्री .......................... बाट प्राप्त हुन आएको हुँदा जाँची गन्ती गरी हेर्दा ठीक दुरुस्त भएकोले खातामा आम्दानी बाँधेको प्रमाणित गर्दछु ।
     <br>
     <div class="row print-only">
-        <div class="column large-6">
+        <div class="column large-4">
             {% trans "Faantwaala's" %} {% trans 'Signature' %}:
             <br>
             {% trans 'Name' %}:<br>
             {% trans 'Designation' %}:<br>
             {% trans 'Date' %}:
         </div>
-        <div class="column large-6">
+        <div class="column large-4">
             {% trans "Signature of Verifying Section Head" %}:
             <br>
             {% trans 'Name' %}:<br>
             {% trans 'Designation' %}:<br>
             {% trans 'Date' %}
         </div>
-        <div class="column large-3">
+        <div class="column large-4">
             {% trans "Signature of Head of Office" %}:
             <br>
             {% trans 'Name' %}:<br>
