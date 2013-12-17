@@ -40,12 +40,12 @@
         <span class="print-only">श्री प्रमुख,</span>
 
         <div class="one-line row">
-            <span class="column large-4 small-4 print-only">
+            <span class="column large-3 small-3 print-only">
     भण्डार शाखा
             </span>
 
 
-                <span class="column large-8 small-8">
+                <span class="column large-6 small-6">
                     {% ifusergroup 'Store Keeper' 'Chief' %}
                         {% trans 'Release No.' %}:
                         <input type="text" name="release_no" id="id_release_no" data-bind="value: release_no, localize: true">
@@ -57,7 +57,7 @@
                 </span>
 
 
-            <span class="right column large-4 small-4 print-only">
+            <span class="right column large-3 small-3 print-only">
                 {% trans 'Fiscal Year' %}:
                 {{ 'app'|setting:'fiscal_year' }}
             </span>
@@ -139,7 +139,7 @@
         </div>
 
         <div class="row inline-fields">
-            <div class="column large-8 small-8">
+            <div class="column large-6 small-6">
                 <div class="print-only">{% trans "Demandee's Signature" %}:-</div>
                 <div>
                     {% trans "Name" %}:-
@@ -161,7 +161,7 @@
                 <div class="print-only">{% trans "Date" %}:-</div>
             </div>
 
-            <div class="column large-8 small-8 print-only">
+            <div class="column large-6 small-6 print-only">
                 <div>{% trans "(a)" %} {% trans "Buy from market" %}</div>
                 <div>{% trans "(b)" %} {% trans "Lend from store" %}</div>
                 <div class="print-only">{% trans "Signature of the orderer" %}:-</div>
