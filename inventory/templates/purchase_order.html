@@ -35,8 +35,10 @@
             <div class="column large-6 small-6">
                 {% trans 'Shree' %}
                 <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
-                <input type="hidden" data-url="{% url 'create_party' %}"
-                       data-bind="value: party, select2: $root.parties, event: {change: $root.party_changed}">
+                {#                <input type="hidden" data-url="{% url 'create_party' %}"#}
+                {#                       data-bind="value: party, select2: $root.parties">#}
+                <select data-bind="selectize: $root.parties, value: party, event: {change: $root.party_changed}"
+                        data-url="{% url 'create_party' %}"></select>
                 <br>
                 {% trans 'Address' %}: <span data-bind="text:party_address"></span>
                 <br>
@@ -56,7 +58,7 @@
 
         <div class="centre">
             देहाय बमोजिमका सामानहरु
-            <input type="text" class="width-3" size="" required="required" name="due_days" id="id_due_days"
+            <input type="text" class="auto-size" size="" required="required" name="due_days" id="id_due_days"
                    data-bind="value: due_days">
             दिन भित्र यस कार्यालयमा दाखिला गरि विल / इन्भ्वाईस प्रस्तुत गर्नु होला ।
             {{ form.due_days.errors }}
@@ -101,8 +103,10 @@
                     <td>
                         {#                        <select class="span12 item-selector"#}
                         {#                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: 'Choose an item...', select2: {},  event: {change: $root.item_changed}"></select>#}
-                        <input type="hidden" data-url="{% url 'create_inventory_item' %}"
-                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">
+{#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}"#}
+{#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">#}
+                        <select data-bind="selectize: $root.items, value: item_id, event: {change: $root.item_changed}"
+                                data-url="{% url 'create_inventory_item' %}"></select>
                     </td>
                     <td data-bind="editableText: specification"></td>
                     <td data-bind="editableText: quantity, numeric: true"></td>
@@ -125,7 +129,7 @@
                     <td><span class="right">{% trans 'Total' %}</span></td>
                     <td data-bind="text: $root.sub_total()"></td>
                     <td></td>
-                    <td></td>
+                    <td class="hide-on-print"></td>
                 </tr>
                 <tr class="dont-validate">
                     <td></td>
@@ -188,6 +192,7 @@
                 माथि उल्लेखि सामानहरु बजट उपशिर्षक न. .............. को खर्च शिर्षक न. .......... बाट भुक्तानी दिन बजेट
                 बाँकी देखिन्छ / देखिदैंन ।
                 <br>
+
                 <div class="row">
                     <span class="column large-6 small-6"></span>
 
@@ -214,21 +219,22 @@
         </tr>
     </table>
 
-    माथि उल्लेखित सामानहरु मिति .......................... भित्र .............................................................. कार्यालयमा बुझाउने  छु भनी सहिछाप गर्ने ।
-<br>
+    माथि उल्लेखित सामानहरु मिति .......................... भित्र
+    .............................................................. कार्यालयमा बुझाउने  छु भनी सहिछाप गर्ने ।
+    <br>
 
 
     <div class="row print-onlys">
-        <div class="column large-4">
+        <div class="column large-4 small-4">
             <b>{% trans "Firm's Name" %}</b>
             <br>
             <span data-bind="text:party_name"></span>
         </div>
-        <div class="column large-4">
+        <div class="column large-4 small-4">
             <b>{% trans 'Signature' %}</b>
             <br>
         </div>
-        <div class="column large-4">
+        <div class="column large-4 small-4">
             <b>{% trans 'Date' %}</b>
             <br>
         </div>
