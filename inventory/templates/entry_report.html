@@ -101,7 +101,7 @@
         <span data-bind="text: msg, css: status"></span>
 
         {% if form.instance.id %}
-            <a class="small secondary button"
+            <a class="small secondary button alert"
                href="{% url 'delete_entry_report' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}
 

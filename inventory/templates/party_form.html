@@ -20,8 +20,8 @@
             <div class="span12">
                 <button type="submit" value="Submit" class="small secondary button">
                     {% trans 'Submit' %}</button>
-                {% if scenario = 'Update' %}
-                    <a class="small secondary button"
+                {% if scenario == 'Update' %}
+                    <a class="small secondary button alert"
                        href="{% url 'delete_party' form.instance.id %}">{% trans 'Delete' %}!</a>
                 {% endif %}
             </div>

@@ -21,7 +21,7 @@
                 <button type="submit" value="Submit" class="small secondary button">
                     {% trans 'Submit' %}</button>
                 {% if scenario == 'Update' %}
-                    <a class="small secondary button"
+                    <a class="small secondary button alert"
                        href="{% url 'delete_inventory_item' form.instance.id %}">{% trans 'Delete' %}!</a>
                 {% endif %}
 {#                <a class="small secondary button" target="_blank"#}

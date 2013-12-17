@@ -348,10 +348,10 @@ def view_inventory_account(request, id):
 def handover_incoming(request, id=None):
     if id:
         obj = get_object_or_404(Handover, id=id)
-        scenario = _('Update')
+        scenario = 'Update'
     else:
         obj = Handover(date=date.today(), type='Incoming')
-        scenario = _('Create')
+        scenario = 'Create'
     form = HandoverForm(instance=obj)
     object_data = HandoverSerializer(obj).data
     return render(request, 'handover.html',
