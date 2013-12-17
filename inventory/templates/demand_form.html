@@ -29,8 +29,9 @@
         <h5 class="center">{{ 'app'|setting:'header' }}</h5>
 
         <h6 class="center">{% trans 'Demand Form' %}</h6>
+        <br>
     </div>
-    <br>
+
 
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
@@ -87,10 +88,11 @@
                         <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
                     </td>
                     <td>
-                        {#                        <select class="span12 item-selector"#}
-                        {#                                data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: ' ', select2: {},  event: {change: $root.item_changed}"></select>#}
-                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"
-                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}, readOnly: status() != 'Requested'">
+                        <select data-bind="selectize: $root.items, value: item_id, object: item" data-url="{% url 'create_inventory_item' %}"></select>
+{#                                                <select class="span12 item-selector"#}
+{#                                                        data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: ' ', event: {change: $root.item_changed}"></select>#}
+                        {#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
+                        {#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}, readOnly: status() != 'Requested'">#}
                     </td>
                     <td data-bind="editableText: specification, disable_content_editable: status() != 'Requested'"></td>
                     <td data-bind="editableText: quantity, numeric: true, disable_content_editable: status() != 'Requested'"></td>
