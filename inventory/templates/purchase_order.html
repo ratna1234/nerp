@@ -32,7 +32,7 @@
 
         <div class="row">
 
-            <div class="column large-8 small-8">
+            <div class="column large-6 small-6">
                 {% trans 'Shree' %}
                 <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
                 <input type="hidden" data-url="{% url 'create_party' %}"
@@ -45,7 +45,7 @@
                 <br/>
             </div>
 
-            <div class="column large-8 small-8">
+            <div class="column large-6 small-6">
                 {% trans 'Purchase Order' %} {% trans 'No.' %}: {{ form.order_no }}
                 {{ form.order_no.errors }}
                 <br>
@@ -83,7 +83,7 @@
                     <th rowspan="2" class="span3">{% trans 'Unit' %}</th>
                     <th colspan="2" class="span2">{% trans 'Price' %}</th>
                     <th rowspan="2" class="span2">{% trans 'Remarks' %}</th>
-                    <th rowspan="2" class="span1"></th>
+                    <th rowspan="2" class="hide-on-print"></th>
                 </tr>
                 <tr>
                     <th>{% trans 'Rate' %}</th>
@@ -110,7 +110,7 @@
                     <td data-bind="editableText: rate, numeric: true"></td>
                     <td data-bind="text: total_amount()"></td>
                     <td class="remarks-cell" data-bind="editableText: remarks"></td>
-                    <td>
+                    <td class="hide-on-print">
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
                     </td>
                 </tr>
@@ -135,7 +135,7 @@
                     <td colspan="3"><span class="right">13% {% trans 'VAT' %}</span></td>
                     <td data-bind="text: $root.vat_amount()"></td>
                     <td></td>
-                    <td></td>
+                    <td class="hide-on-print"></td>
                 </tr>
                 <tr class="dont-validate">
                     <td></td>
@@ -147,7 +147,7 @@
                     <td><span class="right">{% trans 'Grand Total' %}</span></td>
                     <td data-bind="text: $root.grand_total()"></td>
                     <td></td>
-                    <td></td>
+                    <td class="hide-on-print"></td>
                 </tr>
 
                 </tbody>
@@ -170,12 +170,12 @@
     </form>
 
     <div class="row print-onlys">
-        <div class="column large-8 small-8">
+        <div class="column large-6 small-6">
             {% trans "Faantwaala's" %} {% trans 'Signature' %}:-
             <br>
             {% trans 'Date' %}:-
         </div>
-        <div class="column large-8 small-8">
+        <div class="column large-6 small-6">
             {% trans 'Section' %} {% trans "Head's" %} {% trans 'Signature' %}:-
             <br>
             {% trans 'Date' %}:-
@@ -189,9 +189,9 @@
                 बाँकी देखिन्छ / देखिदैंन ।
                 <br>
                 <div class="row">
-                    <span class="column large-8 small-8"></span>
+                    <span class="column large-6 small-6"></span>
 
-                    <div class="column large-8 small-8">
+                    <div class="column large-6 small-6">
                         {% trans 'Section' %} {% trans "Officer's" %} {% trans 'Signature' %}:-
                         <br>
                         {% trans 'Date' %}:-
@@ -202,9 +202,9 @@
         <tr>
             <td>
                 <div class="row">
-                    <span class="column large-8 small-8"></span>
+                    <span class="column large-6 small-6"></span>
 
-                    <div class="column large-8 small-8">
+                    <div class="column large-6 small-6">
                         {% trans "Signature of Head of Office" %}:-
                         <br>
                         {% trans 'Date' %}:-
@@ -219,12 +219,12 @@
 
 
     <div class="row print-onlys">
-        <div class="column large-6">
+        <div class="column large-4">
             <b>{% trans "Firm's Name" %}</b>
             <br>
             <span data-bind="text:party_name"></span>
         </div>
-        <div class="column large-6">
+        <div class="column large-4">
             <b>{% trans 'Signature' %}</b>
             <br>
         </div>
