@@ -27,6 +27,7 @@
     {% block head_end %}{% endblock %}
 
     <script src="{{ STATIC_URL }}js/vendors/custom.modernizr.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/jquery.autosize.input.js"></script>
     {% get_current_language as LANGUAGE_CODE %}
     <script>
         window.lang = '{{ LANGUAGE_CODE }}';
