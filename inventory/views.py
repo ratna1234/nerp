@@ -254,7 +254,7 @@ def purchase_order(request, id=None):
         obj = get_object_or_404(PurchaseOrder, id=id)
         scenario = 'Update'
     else:
-        obj = PurchaseOrder(date=date.today())
+        obj = PurchaseOrder(date=BSUtil().today())
         scenario = 'Create'
     form = PurchaseOrderForm(instance=obj)
     object_data = PurchaseOrderSerializer(obj).data
@@ -350,7 +350,7 @@ def handover_incoming(request, id=None):
         obj = get_object_or_404(Handover, id=id)
         scenario = 'Update'
     else:
-        obj = Handover(date=date.today(), type='Incoming')
+        obj = Handover(date=BSUtil().today(), type='Incoming')
         scenario = 'Create'
     form = HandoverForm(instance=obj)
     object_data = HandoverSerializer(obj).data
@@ -364,7 +364,7 @@ def handover_outgoing(request, id=None):
         obj = get_object_or_404(Handover, id=id)
         scenario = 'Update'
     else:
-        obj = Handover(date=date.today(), type='Outgoing')
+        obj = Handover(date=BSUtil().today(), type='Outgoing')
         scenario = 'Create'
     form = HandoverForm(instance=obj)
     object_data = HandoverSerializer(obj).data
