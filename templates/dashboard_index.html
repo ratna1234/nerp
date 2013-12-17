@@ -10,12 +10,11 @@
 
 {% block content %}
 
-    <div class="section-container accordion" data-section="accordion">
+    <dl class="accordion" data-accordion>
         {% ifappexists inventory %}
-            <section>
-                <p class="title" data-section-title><a href="#">{% trans 'Inventory' %}</a></p>
+            <dd><a href="#inventory">{% trans 'Inventory' %}</a>
 
-                <div class="content" data-section-content>
+                <div class="content active" id="inventory">
                     {% ifusergroup 'Store Keeper' %}
                         <a href="{% url 'list_inventory_items' %}">{% trans 'Inventory Items' %}</a>
                         <br/>
@@ -63,20 +62,19 @@
                         <br/>
                     {% endifusergroup %}
                 </div>
-            </section>
+            </dd>
         {% endifappexists %}
         {% ifappexists inventory %}
-            <section>
-                <p class="title" data-section-title><a href="#">{% trans 'Inventory' %}</a></p>
+            <dd><a href="#accounting">{% trans 'Accounting' %}</a>
 
-                <div class="content" data-section-content>
+                <div class="content" id="accounting">
                     {% ifusergroup 'Store Keeper' %}
                         {% trans 'Demand Form' %}
                     {% endifusergroup %}
                 </div>
-            </section>
+            </dd>
         {% endifappexists %}
-    </div>
+    </dl>
 
 
 
