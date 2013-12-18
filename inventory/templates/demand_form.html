@@ -7,7 +7,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %}{% trans 'Forms' %}</a>
+    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>
     <span> {% trans scenario %} {% trans 'Demand Form' %}</span>
 {% endblock %}
 
@@ -90,7 +90,7 @@
                         <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
                     </td>
                     <td>
-                        <select data-bind="selectize: $root.items, value: item_id, object: item" data-url="{% url 'create_inventory_item' %}"></select>
+                        <select data-bind="selectize: $root.items, value: item_id, object: item, event: {change: $root.item_changed}" data-url="{% url 'create_inventory_item' %}"></select>
 {#                                                <select class="span12 item-selector"#}
 {#                                                        data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: ' ', event: {change: $root.item_changed}"></select>#}
                         {#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
@@ -103,7 +103,7 @@
                     <td {% ifusergroup 'Store Keeper' 'Chief' %}{% else %}class="only-on-print"{% endifusergroup %}
                         data-bind="editableText: release_quantity, numeric: true, disable_content_editable: status() != 'Requested'"></td>
                     <td {% ifusergroup 'Store Keeper' 'Chief' %}{% else %}class="only-on-print"{% endifusergroup %}
-                        data-bind="text: inventory_account_id">2
+                        data-bind="text: localize(inventory_account_id(), window.lang)">2
                     </td>
                     <td {% ifusergroup 'Store Keeper' 'Chief' %}{% else %}class="only-on-print"{% endifusergroup %}
                         data-bind="editableText: remarks"></td>
