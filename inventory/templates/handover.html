@@ -129,7 +129,7 @@
         {% endif %}
 
         <a class="small secondary button" target="_blank"
-           data-bind="visible: $root.id(), attr: {'href': '/inventory/entry-report/handover/'+$root.id()}">{% trans 'Entry Report' %}</a>
+           data-bind="visible: $root.id() && $root.type() == 'Incoming', attr: {'href': '/inventory/entry-report/handover/'+$root.id()}">{% trans 'Entry Report' %}</a>
 
 
     </form>
