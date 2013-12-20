@@ -418,13 +418,16 @@ class PurchaseOrder(models.Model):
     def get_absolute_url(self):
         return reverse('update_purchase_order', kwargs={'id': self.id})
 
+    def get_voucher_no(self):
+        return self.order_no
+
     def __str__(self):
-        return _('Purchase Order') + ' (' + str(self.voucher_no) + ')'
+        return _('Purchase Order') + ' (' + str(self.order_no) + ')'
 
 
 class PurchaseOrderRow(models.Model):
     sn = models.PositiveIntegerField()
-    budget_title_no = models.IntegerField()
+    budget_title_no = models.IntegerField(blank=True, null=True)
     item = models.ForeignKey(Item)
     specification = models.CharField(max_length=254, blank=True, null=True)
     quantity = models.FloatField()
