@@ -6,8 +6,9 @@ django-debug-toolbar
 bpython
 pymongo
 django-mptt
+https://bitbucket.org/bkroeze/django-keyedcache/get/default.tar.gz
 -e hg+http://bitbucket.org/bkroeze/django-livesettings/#egg=django-livesettings
 django-pagination
 django-filter
- -e git://github.com/camilonova/django-sorting.git#egg=django_sorting
- djangorestframework
+-e git://github.com/camilonova/django-sorting.git#egg=django_sorting
+djangorestframework
