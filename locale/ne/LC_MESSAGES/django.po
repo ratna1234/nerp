@@ -285,11 +285,11 @@ msgstr "मूल्य"
 
 #: inventory/templates/entry_report.html:52
 msgid "As per Invoice"
-msgstr ""
+msgstr "इन्भ्वाइस अनुसार"
 
 #: inventory/templates/entry_report.html:57
 msgid "Rate per Unit"
-msgstr ""
+msgstr "प्रति इकाइ दर"
 
 #: inventory/templates/entry_report.html:58
 #: inventory/templates/purchase_order.html:139
