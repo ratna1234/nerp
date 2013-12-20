@@ -24,6 +24,7 @@
         {#        el.trigger('change');#}
 
         $select.addItem(obj.id);
+        $select.$wrapper.find('.appended-link').remove();
     }
     else {
         console.log(obj);
