@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.delete_column(u'user', 'is_admin')
 
         # Adding field 'User.is_superuser'
-        db.add_column(u'auth_user', 'is_superuser',
+        db.add_column(u'user', 'is_superuser',
                       self.gf('django.db.models.fields.BooleanField')(default=False),
                       keep_default=False)
 
@@ -24,7 +24,7 @@ class Migration(SchemaMigration):
                       keep_default=False)
 
         # Deleting field 'User.is_superuser'
-        db.delete_column(u'auth_user', 'is_superuser')
+        db.delete_column(u'user', 'is_superuser')
 
 
     models = {

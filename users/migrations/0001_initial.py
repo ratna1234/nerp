@@ -9,7 +9,7 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'User'
-        db.create_table(u'user', (
+        db.create_table(u'users_user', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
 
     def backwards(self, orm):
         # Deleting model 'User'
-        db.delete_table(u'user')
+        db.delete_table(u'users_user')
 
 
     models = {
