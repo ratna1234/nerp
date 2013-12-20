@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import json
 from datetime import date, timedelta
+import re
 
 from livesettings import config_value
 from django.core import serializers
@@ -215,3 +218,29 @@ def is_demand(obj):
     if obj.__class__.__name__ == 'DemandRow':
         return True
     return False
+
+
+@register.filter
+def get_class(value):
+    return value.__class__.__name__
+
+
+@register.filter
+def localize(text):
+    text = str(text)
+    dic = {
+        '०': '0',
+        '१': '1',
+        '२': '2',
+        '३': '3',
+        '४': '4',
+        '५': '5',
+        '६': '6',
+        '७': '7',
+        '८': '8',
+        '९': '9'
+    }
+    res = dict((v,k) for k,v in dic.iteritems())
+    for i, j in res.iteritems():
+        text = text.replace(i, j)
+    return text
