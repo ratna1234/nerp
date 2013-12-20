@@ -384,7 +384,7 @@ class Handover(models.Model):
     def get_absolute_url(self):
         return reverse('update_handover', kwargs={'id': self.id})
 
-    def __str__(self):
+    def __unicode__(self):
         return _('Handover') + ' (' + str(self.voucher_no) + ')'
 
 
@@ -421,7 +421,7 @@ class PurchaseOrder(models.Model):
     def get_voucher_no(self):
         return self.order_no
 
-    def __str__(self):
+    def __unicode__(self):
         return _('Purchase Order') + ' (' + str(self.order_no) + ')'
 
 

@@ -16,7 +16,7 @@
     <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
     <script src="{{ STATIC_URL }}js/entry_report.js"></script>
     <script>
-    ko_data = {{data|jsonify}};
+        ko_data = {{data|jsonify}};
     </script>
 {% endblock %}
 
@@ -71,9 +71,10 @@
                     <td data-bind="text: account_no()"></td>
                     <td data-bind="text: inventory_classification_reference_no()"></td>
                     <td>
-{#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
-{#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">#}
-                        <select data-bind="selectize: $root.items, value: item_id, event: {change: $root.item_changed}" data-url="{% url 'create_inventory_item' %}"></select>
+                        {#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
+                        {#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">#}
+                        <select data-bind="selectize: $root.items, value: item_id, event: {change: $root.item_changed}"
+                                data-url="{% url 'create_inventory_item' %}"></select>
                     </td>
                     <td data-bind="editableText: specification"></td>
                     <td data-bind="editableText: unit"></td>
@@ -107,8 +108,19 @@
 
 
     </form>
-
-    माथि उल्लेखित सामानहरु खरिद आदेश नम्बर/हस्तान्तरण फाराम नम्बर ........... मिति .................... अनुसार श्री .......................... बाट प्राप्त हुन आएको हुँदा जाँची गन्ती गरी हेर्दा ठीक दुरुस्त भएकोले खातामा आम्दानी बाँधेको प्रमाणित गर्दछु ।
+    {% if form.instance.source|get_class == 'PurchaseOrder' %}
+        माथि उल्लेखित सामानहरु खरिद आदेश नम्बर<b>{{ form.instance.source.order_no|localize }}</b> मिति <b>{{ form.instance.source.date|date:"Y-m-d"|localize }}</b>
+        अनुसार श्री
+        {{ form.instance.source.party }} बाट प्राप्त हुन आएको हुँदा जाँची गन्ती गरी हेर्दा ठीक दुरुस्त भएकोले खातामा
+        आम्दानी
+        बाँधेको प्रमाणित गर्दछु ।
+    {% else %}
+        माथि उल्लेखित सामानहरु हस्तान्तरण फारम नम्बर<b>{{ form.instance.source.voucher_no|localize }}</b> मिति <b>{{ form.instance.source.date|date:"Y-m-d"|localize }}</b>
+        अनुसार श्री
+        .................................................. बाट प्राप्त हुन आएको हुँदा जाँची गन्ती गरी हेर्दा ठीक दुरुस्त भएकोले खातामा
+        आम्दानी
+        बाँधेको प्रमाणित गर्दछु ।
+    {% endif %}
     <br>
     <div class="row print-only">
         <div class="column large-4">
