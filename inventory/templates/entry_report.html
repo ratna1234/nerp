@@ -106,6 +106,14 @@
                href="{% url 'delete_entry_report' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}
 
+    {% if form.instance.source|get_class == 'PurchaseOrder' %}
+        <a class="small secondary button" target="_blank"
+               href="{% url 'update_purchase_order' form.instance.source.id %}">{% trans 'Purchase Order' %}</a>
+    {% else %}
+        <a class="small secondary button" target="_blank"
+               href="{% url 'update_handover' form.instance.source.id %}">{% trans 'Handover' %}</a>
+    {% endif %}
+
 
     </form>
     {% if form.instance.source|get_class == 'PurchaseOrder' %}
@@ -123,21 +131,21 @@
     {% endif %}
     <br>
     <div class="row print-only">
-        <div class="column large-4">
+        <div class="column large-4 small-4">
             {% trans "Faantwaala's" %} {% trans 'Signature' %}:
             <br>
             {% trans 'Name' %}:<br>
             {% trans 'Designation' %}:<br>
             {% trans 'Date' %}:
         </div>
-        <div class="column large-4">
+        <div class="column large-4 small-4">
             {% trans "Signature of Verifying Section Head" %}:
             <br>
             {% trans 'Name' %}:<br>
             {% trans 'Designation' %}:<br>
             {% trans 'Date' %}
         </div>
-        <div class="column large-4">
+        <div class="column large-4 small-4">
             {% trans "Signature of Head of Office" %}:
             <br>
             {% trans 'Name' %}:<br>

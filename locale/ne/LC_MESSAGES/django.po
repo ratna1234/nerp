@@ -624,7 +624,7 @@ msgstr "दाखिले न."
 
 #: inventory/templates/view_inventory_account.html:60
 msgid "Description"
-msgstr ""
+msgstr "विवरण"
 
 #: inventory/templates/view_inventory_account.html:62
 msgid "Income"
@@ -639,12 +639,12 @@ msgid "Remaining"
 msgstr "बाँकी"
 
 #: inventory/templates/view_inventory_account.html:69
-msgid "Country of Production or Company\\'s Name"
-msgstr ""
+msgid "Country of Production or Company Name"
+msgstr "उत्पादन गर्ने देश वा कम्पनीको नाम"
 
 #: inventory/templates/view_inventory_account.html:70
 msgid "Size"
-msgstr ""
+msgstr "साइज"
 
 #: inventory/templates/view_inventory_account.html:71
 msgid "Expected Life"
@@ -711,7 +711,7 @@ msgstr "खरिद आदेशहरु"
 
 #: templates/dashboard_index.html:39
 msgid "Incoming Handover"
-msgstr "आएका  हस्तान्तरण फारम"
+msgstr "आएको  हस्तान्तरण फारम"
 
 #: templates/dashboard_index.html:41
 msgid "Create"
@@ -719,7 +719,7 @@ msgstr "नयाँ"
 
 #: templates/dashboard_index.html:41
 msgid "Outgoing Handover"
-msgstr "गएका  हस्तान्तरण फारम"
+msgstr "गएको हस्तान्तरण फारम"
 
 #: templates/dashboard_index.html:47
 msgid "Entry Reports"
