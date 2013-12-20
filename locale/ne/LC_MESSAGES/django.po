@@ -263,7 +263,7 @@ msgstr "जिन्सी खाता न."
 #: inventory/templates/entry_report.html:47
 #: inventory/templates/handover.html:68
 msgid "Inventory Classification Reference No."
-msgstr ""
+msgstr "जिन्सी वर्गीकरण संकेत न."
 
 #: inventory/templates/entry_report.html:48
 #: inventory/templates/handover.html:69
@@ -366,7 +366,7 @@ msgstr "जम्मा रकम"
 
 #: inventory/templates/handover.html:74
 msgid "Start Received Date"
-msgstr "सुरु प्राप्त मिति"
+msgstr "शुरु प्राप्त मिति"
 
 #: inventory/templates/handover.html:75
 msgid "Physical Condition of Item"
