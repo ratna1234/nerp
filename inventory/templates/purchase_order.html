@@ -170,6 +170,9 @@
                href="{% url 'delete_purchase_order' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}
 
+        <a class="small secondary button"
+           data-bind="visible: $root.id(), attr: {'href': '/inventory/entry-report/purchase/'+$root.id()}">{% trans 'Entry Report' %}</a>
+
 
     </form>
 

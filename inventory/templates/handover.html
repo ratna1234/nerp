@@ -21,39 +21,49 @@
 {% endblock %}
 
 {% block content %}
+    <div class="print-only">
+        <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '8' %}</span>
+        <br>
 
-    <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '8' %}</span>
-    <br>
-    <h3 class="center">{{ 'app'|setting:'header' }}</h3>
-    <h3 class="center">{% trans 'Handover' %} {% trans 'Form' %}</h3>
+        <h3 class="center">{{ 'app'|setting:'header' }}</h3>
+
+        <h3 class="center">{% trans 'Handover' %} {% trans 'Form' %}</h3>
+    </div>
 
     <form method="post" data-bind="submit: save">
         {% csrf_token %}
 
         <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
 
+
         {% trans 'Handover' %} {% trans 'Form No.' %}
-        <input type="text" required="required" name="voucher_no" id="id_voucher_no" data-bind="value: voucher_no, localize: 1">
+        <input type="text" required="required" name="voucher_no" id="id_voucher_no"
+               data-bind="value: voucher_no, localize: 1">
         <br>
         श्री
-        <input type="text" required="required" name="addressee" maxlength="254" id="id_addressee" data-bind="value: addressee, autosize: 16">
+        <input type="text" required="required" name="addressee" maxlength="254" id="id_addressee"
+               data-bind="value: addressee, autosize: 16">
         {{ form.addressee.errors }}<br>
         निम्नांकित मालसामानहरु मिति
         <input type="text" required="required" name="date" id="id_date"
-               data-bind="value: date, localize: 1, autosize: 7" >
+               data-bind="value: date, localize: 1, autosize: 7">
         को निर्णयानुसार
-        <input type="text" required="required" name="office" maxlength="254" id="id_office" data-bind="value: office, autosize: 12">
+        <input type="text" required="required" name="office" maxlength="254" id="id_office"
+               data-bind="value: office, autosize: 12">
         मन्त्रालय/विभाग/कार्यालय/आयोजनाका
-        <input type="text" required="required" name="designation" maxlength="254" id="id_designation" data-bind="value: designation, autosize: 12">
+        <input type="text" required="required" name="designation" maxlength="254" id="id_designation"
+               data-bind="value: designation, autosize: 12">
         श्री
-        <input type="text" required="required" name="handed_to" maxlength="254" id="id_handed_to" data-bind="value: handed_to, autosize: 12">
+        <input type="text" required="required" name="handed_to" maxlength="254" id="id_handed_to"
+               data-bind="value: handed_to, autosize: 12">
         {{ form.addressee.errors }}
         {{ form.date.errors }}
         {{ form.office.errors }}
         {{ form.designation.errors }}
         {{ form.handed_to.errors }}
         को हस्ते पठाएको छु । सो सामान भण्डार दाखिला गरी
-        <input type="text" required="required" name="due_days" id="id_due_days" data-bind="value: due_days, localize: 1, autosize: 0">
+        <input type="text" required="required" name="due_days" id="id_due_days"
+               data-bind="value: due_days, localize: 1, autosize: 0">
         दिनभित्र दाखिला प्रतिवेदन समेत पठाईदिनुहुन
         अनुरोध छ ।
         {{ form.due_days.errors }}
@@ -86,8 +96,8 @@
                     <td data-bind="text: account_no()"></td>
                     <td data-bind="text: inventory_classification_reference_no()"></td>
                     <td>
-{#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
-{#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">#}
+                        {#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
+                        {#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}">#}
                         <select data-bind="selectize: $root.items, value: item_id, event: {change: $root.item_changed}"
                                 data-url="{% url 'create_inventory_item' %}"></select>
                     </td>
@@ -117,6 +127,9 @@
             <a class="small secondary button alert"
                href="{% url 'delete_purchase_order' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}
+
+        <a class="small secondary button"
+           data-bind="visible: $root.id(), attr: {'href': '/inventory/entry-report/handover/'+$root.id()}">{% trans 'Entry Report' %}</a>
 
 
     </form>
