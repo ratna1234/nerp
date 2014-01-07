@@ -87,7 +87,7 @@
                 <!-- ko foreach: rows -->
                 <tr>
                     <td>
-                        <span class="wid-pad pull-left" data-bind="text:  $index()+1"> </span>
+                        <span class="wid-pad pull-left" data-bind="text:  $index()+1, localize: true"> </span>
                     </td>
                     <td>
                         <select data-bind="selectize: $root.items, value: item_id, object: item, event: {change: $root.item_changed}" data-url="{% url 'create_inventory_item' %}"></select>
@@ -97,11 +97,11 @@
                         {#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}, readOnly: status() != 'Requested'">#}
                     </td>
                     <td data-bind="editableText: specification, disable_content_editable: status() != 'Requested'"></td>
-                    <td data-bind="editableText: quantity, localize: true, numeric: true, disable_content_editable: status() != 'Requested'"></td>
+                    <td data-bind="editableText: quantity, localize: true, disable_content_editable: status() != 'Requested'"></td>
                     <td data-bind="editableText: unit, disable_content_editable: status() != 'Requested'"></td>
 
                     <td {% ifusergroup 'Store Keeper' 'Chief' %}{% else %}class="only-on-print"{% endifusergroup %}
-                        data-bind="editableText: release_quantity, numeric: true, disable_content_editable: status() != 'Requested'"></td>
+                        data-bind="editableText: release_quantity, localize: true, disable_content_editable: status() != 'Requested'"></td>
                     <td {% ifusergroup 'Store Keeper' 'Chief' %}{% else %}class="only-on-print"{% endifusergroup %}
                         data-bind="text: localize(inventory_account_id(), window.lang)">2
                     </td>
@@ -138,7 +138,7 @@
             </a>
         </div>
 
-        <div class="row">
+        <div class="row inline-fields">
             <div class="column large-6 small-6 marginless-inputs">
                 <div class="print-only">{% trans "Demandee's Signature" %}:-</div>
                 <div>
@@ -154,7 +154,7 @@
                 <div>
                     {% trans "Date" %}:-
                     {#                    {{ form.instance.date|date:"Y-m-d" }}#}
-                    {{ form.date }}
+                    <input type="text" required="required" name="date" id="id_date" data-bind="value: date, localize: true">
                 </div>
                 <div>{% trans "Purpose" %}:- {{ form.purpose }}</div>
                 <div class="print-only">{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
