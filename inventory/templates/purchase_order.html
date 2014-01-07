@@ -32,9 +32,8 @@
 
         <div class="row">
 
-            <div class="column large-6 small-6">
-                {% trans 'Shree' %}
-                <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
+            <div class="column large-6 small-6 selectize-inline">
+                {% trans 'Shree' %} <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
                 {#                <input type="hidden" data-url="{% url 'create_party' %}"#}
                 {#                       data-bind="value: party, select2: $root.parties">#}
                 <select data-bind="selectize: $root.parties, value: party, event: {change: $root.party_changed}"
@@ -42,12 +41,11 @@
                 <br>
                 {% trans 'Address' %}: <span data-bind="text:party_address"></span>
                 <br>
-                <br>
                 VAT/PAN: <span data-bind="text:party_pan_no"></span>
                 <br/>
             </div>
 
-            <div class="column large-6 small-6">
+            <div class="column large-6 small-6 marginless-inputs">
                 {% trans 'Purchase Order' %} {% trans 'No.' %}: {{ form.order_no }}
                 {{ form.order_no.errors }}
                 <br>
@@ -120,38 +118,16 @@
                 </tr>
                 <!-- /ko -->
                 <tr class="dont-validate">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="right">{% trans 'Total' %}</span></td>
-                    <td data-bind="text: $root.sub_total()"></td>
-                    <td></td>
-                    <td class="hide-on-print"></td>
+                    <td colspan="7"><span class="right">{% trans 'Total' %}</span></td>
+                    <td colspan="3" data-bind="text: $root.sub_total()"></td>
                 </tr>
                 <tr class="dont-validate">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td colspan="3"><span class="right">{% trans '1' %}{% trans '3' %}% {% trans 'VAT' %}</span></td>
-                    <td data-bind="text: $root.vat_amount()"></td>
-                    <td></td>
-                    <td class="hide-on-print"></td>
+                    <td colspan="7"><span class="right">{% trans '1' %}{% trans '3' %}% {% trans 'VAT' %}</span></td>
+                    <td colspan="3" data-bind="text: $root.vat_amount()"></td>
                 </tr>
                 <tr class="dont-validate">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><span class="right">{% trans 'Grand Total' %}</span></td>
-                    <td data-bind="text: $root.grand_total()"></td>
-                    <td></td>
-                    <td class="hide-on-print"></td>
+                    <td colspan="7"><span class="right">{% trans 'Grand Total' %}</span></td>
+                    <td colspan="3" data-bind="text: $root.grand_total()"></td>
                 </tr>
 
                 </tbody>
