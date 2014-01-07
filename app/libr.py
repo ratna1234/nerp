@@ -121,6 +121,8 @@ def add(*args):
 
 
 def digitize(n):
+    if n is None:
+        return None
     d = {
         '०': '0',
         '१': '1',

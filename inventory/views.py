@@ -180,8 +180,12 @@ def save_demand(request):
     dct['id'] = obj.id
     model = DemandRow
     for index, row in enumerate(params.get('table_view').get('rows')):
-        if invalid(row, ['item_id', 'quantity', 'unit', 'release_quantity']):
+        if invalid(row, ['item_id', 'quantity', 'unit']):
             continue
+        # print row
+        # if row.get('release_quantity') == '':
+        #     row['release_quantity'] = 1
+
         values = {'sn': index + 1, 'item_id': row.get('item_id'),
                   'specification': row.get('specification'),
                   'quantity': row.get('quantity'), 'unit': row.get('unit'),
