@@ -12,6 +12,7 @@
 
     {% load pagination_tags %}
     {% load sorting_tags %}
+    {% load filters %}
 
     {% autosort objects as sorted_objects %}
     {% autopaginate sorted_objects 25 as paginated_objects %}
@@ -27,14 +28,14 @@
         {% for item in paginated_objects %}
             <tr>
                 <td>
-                    <a href="{% url 'update_demand_form' item.id %}">{{ item.release_no }}</a>
+                    <a href="{% url 'update_demand_form' item.id %}">{{ item.release_no|localize }}</a>
                 </td>
                 <td>
                     {{ item.demandee.full_name }}
                 </td>
 
                 <td>
-                    {{ item.date|date:"Y-m-d" }}
+                    {{ item.date|date:"Y-m-d"|localize }}
                 </td>
                 <td>{{ item.purpose }}</td>
             </tr>
