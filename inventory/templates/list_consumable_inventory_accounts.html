@@ -12,6 +12,7 @@
 
     {% load pagination_tags %}
     {% load sorting_tags %}
+    {% load filters %}
 
     <br>
 
@@ -29,7 +30,7 @@
             <tr>
                 <td>
                     <a href="{% url 'view_inventory_account' obj.id %}">
-                    {{ obj.account_no }}
+                    {{ obj.account_no|localize }}
                     </a>
                 </td>
                 <td>

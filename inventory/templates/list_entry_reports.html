@@ -27,14 +27,14 @@
         {% for item in paginated_objects %}
             <tr>
                 <td>
-                    <a href="{{ item.get_absolute_url }}">{{ item.entry_report_no }}</a>
+                    <a href="{{ item.get_absolute_url }}">{{ item.entry_report_no|localize }}</a>
                 </td>
                 <td>
                     {{ item.source|linkify }}
                 </td>
 
                 <td>
-                    {{ item.source.date|date:"Y-m-d" }}
+                    {{ item.source.date|date:"Y-m-d"|localize }}
                 </td>
             </tr>
         {% endfor %}
