@@ -104,8 +104,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'south',
-    'keyedcache',
-    'livesettings',
     'mptt',
     'pagination',
     'django_sorting',
