@@ -24,7 +24,7 @@
 
     <span class="right print-only">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '4' %}{% trans '6' %}</span>
     <br>
-    <h3 class="center print-only">{{ 'app'|setting:'header' }}</h3>
+    <h3 class="center print-only">{{ request.setting.header_for_forms }}</h3>
     <h3 class="center print-only">{% trans 'Entry Report' %}</h3>
 
     <form method="post" data-bind="submit: save">

@@ -13,6 +13,7 @@ from django.utils.translation import ugettext as _
 
 from app.libr import zero_for_none, none_for_zero, digitize
 from users.models import User
+from core.models import FiscalYear
 
 
 class Category(MPTTModel):
@@ -283,7 +284,7 @@ def get_next_voucher_no(cls, attr):
 
 class Demand(models.Model):
     release_no = models.IntegerField(blank=True, null=True)
-    fiscal_year = models.CharField(max_length=10)
+    fiscal_year = models.ForeignKey(FiscalYear)
     demandee = models.ForeignKey(User)
     date = models.DateField()
     purpose = models.CharField(max_length=254)
@@ -330,7 +331,7 @@ class Party(models.Model):
 
 class EntryReport(models.Model):
     entry_report_no = models.PositiveIntegerField()
-    fiscal_year = models.CharField(max_length=10)
+    fiscal_year = models.ForeignKey(FiscalYear)
     source_content_type = models.ForeignKey(ContentType)
     source_object_id = models.PositiveIntegerField()
     source = generic.GenericForeignKey('source_content_type', 'source_object_id')
@@ -369,7 +370,7 @@ class Handover(models.Model):
     designation = models.CharField(max_length=254)
     handed_to = models.CharField(max_length=254)
     due_days = models.PositiveIntegerField(default=7)
-    fiscal_year = models.CharField(max_length=10)
+    fiscal_year = models.ForeignKey(FiscalYear)
     types = [('Incoming', 'Incoming'), ('Outgoing', 'Outgoing')]
     type = models.CharField(max_length=9, choices=types, default='Incoming')
     entry_reports = generic.GenericRelation(EntryReport, content_type_field='source_content_type_id',
@@ -405,7 +406,7 @@ class PurchaseOrder(models.Model):
     order_no = models.IntegerField()
     date = models.DateField()
     due_days = models.IntegerField(default=3)
-    fiscal_year = models.CharField(max_length=10)
+    fiscal_year = models.ForeignKey(FiscalYear)
     entry_reports = generic.GenericRelation(EntryReport, content_type_field='source_content_type_id',
                                             object_id_field='source_object_id')
 

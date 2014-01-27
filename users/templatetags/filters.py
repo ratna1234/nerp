@@ -4,7 +4,6 @@ import json
 from datetime import date, timedelta
 import re
 
-from livesettings import config_value
 from django.core import serializers
 from django.db.models.query import QuerySet
 from django.template import Library
@@ -151,7 +150,8 @@ class GroupCheckNode(template.Node):
 
 @register.filter
 def setting(group, key):
-    return mark_safe(config_value(group, key).replace("\n", "<br/>"))
+    # return mark_safe(config_value(group, key).replace("\n", "<br/>"))
+    return key
 
 
 @register.tag

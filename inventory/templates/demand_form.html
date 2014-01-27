@@ -26,7 +26,7 @@
         <span class="right">{% trans 'FCGO' %} {% trans 'F.N.' %} {% trans '5' %}{% trans '1' %}</span>
         <br>
 
-        <h5 class="center">{{ 'app'|setting:'header' }}</h5>
+        <h5 class="center">{{ request.setting.header_for_forms }}</h5>
 
         <h6 class="center">{% trans 'Demand Form' %}</h6>
         <br>
@@ -48,7 +48,8 @@
                 <span class="column large-6 small-6">
                     {% ifusergroup 'Store Keeper' 'Chief' %}
                         {% trans 'Release No.' %}:
-                        <input type="text" name="release_no" id="id_release_no" data-bind="value: release_no, localize: true">
+                        <input type="text" name="release_no" id="id_release_no"
+                               data-bind="value: release_no, localize: true">
                         {{ form.release_no.errors }}
                     {% else %}
                         <div class="print-only">{% trans 'Release No.' %}: <span data-bind="text: release_no"></span>
@@ -59,7 +60,7 @@
 
             <span class="right column large-3 small-3 print-only">
                 {% trans 'Fiscal Year' %}:
-                {{ 'app'|setting:'fiscal_year' }}
+                {{ request.setting.fiscal_year }}
             </span>
         </div>
 
@@ -90,9 +91,10 @@
                         <span class="wid-pad pull-left" data-bind="text:  $index()+1, localize: true"> </span>
                     </td>
                     <td>
-                        <select data-bind="selectize: $root.items, value: item_id, object: item, event: {change: $root.item_changed}" data-url="{% url 'create_inventory_item' %}"></select>
-{#                                                <select class="span12 item-selector"#}
-{#                                                        data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: ' ', event: {change: $root.item_changed}"></select>#}
+                        <select data-bind="selectize: $root.items, value: item_id, object: item, event: {change: $root.item_changed}"
+                                data-url="{% url 'create_inventory_item' %}"></select>
+                        {#                                                <select class="span12 item-selector"#}
+                        {#                                                        data-bind="options: $root.items, optionsText: 'name', optionsValue: 'id', value: item_id, optionsCaption: ' ', event: {change: $root.item_changed}"></select>#}
                         {#                        <input type="hidden" data-url="{% url 'create_inventory_item' %}" class="change-on-ready"#}
                         {#                               data-bind="value: item_id, select2: $root.items, event: {change: $root.item_changed}, readOnly: status() != 'Requested'">#}
                     </td>
@@ -154,7 +156,8 @@
                 <div>
                     {% trans "Date" %}:-
                     {#                    {{ form.instance.date|date:"Y-m-d" }}#}
-                    <input type="text" required="required" name="date" id="id_date" data-bind="value: date, localize: true">
+                    <input type="text" required="required" name="date" id="id_date"
+                           data-bind="value: date, localize: true">
                 </div>
                 <div>{% trans "Purpose" %}:- {{ form.purpose }}</div>
                 <div class="print-only">{% trans "Signature of the one who enters in Inventory Account" %}:-</div>
