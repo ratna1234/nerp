@@ -9,11 +9,6 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
 
 
-class PartySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Party
-
-
 class DemandRowSerializer(serializers.ModelSerializer):
     item_id = serializers.Field(source='item.id')
 

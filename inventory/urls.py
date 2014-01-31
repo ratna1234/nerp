@@ -33,12 +33,6 @@ urlpatterns = patterns('',
                            name='delete_demand_form'),
                        url(r'^demand-forms/$', views.list_demand_forms, name='list_demand_forms'),
 
-                       url(r'^parties/$', views.list_parties, name='list_parties'),
-                       url(r'^party/create/$', views.party_form, name='create_party'),
-                       url(r'^party/(?P<id>[0-9]+)/delete/$', views.delete_party, name='delete_party'),
-                       url(r'^party/(?P<id>[0-9]+)/$', views.party_form, name='update_party'),
-                       url(r'^parties.json$', views.parties_as_json, name='parties_as_json'),
-
                        url(r'^handover/incoming/$', views.handover_incoming, name='create_incoming_handover'),
                        url(r'^handover/outgoing/$', views.handover_outgoing, name='create_outgoing_handover'),
                        url(r'^save/handover/$', views.save_handover, name='save_handover'),

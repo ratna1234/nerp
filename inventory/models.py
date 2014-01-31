@@ -13,7 +13,7 @@ from django.utils.translation import ugettext as _
 
 from app.libr import zero_for_none, none_for_zero, digitize
 from users.models import User
-from core.models import FiscalYear
+from core.models import FiscalYear, Party
 
 
 class Category(MPTTModel):
@@ -317,16 +317,6 @@ class DemandRow(models.Model):
 
     def get_voucher_no(self):
         return self.demand.release_no
-
-
-class Party(models.Model):
-    name = models.CharField(max_length=254)
-    address = models.CharField(max_length=254, blank=True, null=True)
-    phone_no = models.CharField(max_length=100, blank=True, null=True)
-    pan_no = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
 
 
 class EntryReport(models.Model):

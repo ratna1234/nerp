@@ -1,7 +1,7 @@
 from django import forms
 
 from app.libr import KOModelForm, UserModelChoiceField
-from models import Item, Category, Demand, Party, PurchaseOrder, InventoryAccount, Handover, EntryReport
+from models import Item, Category, Demand, PurchaseOrder, InventoryAccount, Handover, EntryReport
 from users.models import User
 
 
@@ -58,11 +58,6 @@ class DemandForm(KOModelForm):
 
     class Meta:
         model = Demand
-
-
-class PartyForm(KOModelForm):
-    class Meta:
-        model = Party
 
 
 class PurchaseOrderForm(KOModelForm):

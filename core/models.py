@@ -1,5 +1,14 @@
 from django.db import models
 
+class Party(models.Model):
+    name = models.CharField(max_length=254)
+    address = models.CharField(max_length=254, blank=True, null=True)
+    phone_no = models.CharField(max_length=100, blank=True, null=True)
+    pan_no = models.CharField(max_length=50, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
 
 class FiscalYear(models.Model):
     years = (
