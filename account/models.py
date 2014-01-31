@@ -1,5 +1,6 @@
 from django.db import models
-from core.models import FiscalYear
+from core.models import FiscalYear, Donor, Activity
+from core.models import Budget
 
 
 class Account(models.Model):
@@ -18,3 +19,22 @@ class JournalVoucherRow(models.Model):
     dr_amount = models.PositiveIntegerField(blank=True, null=True)
     cr_amount = models.PositiveIntegerField(blank=True, null=True)
 
+
+# class Bharpai(models.Model):
+#     pass
+
+# class BharpaiRow(models.Model):
+#     sn = models.PositiveIntegerField()
+#     budget = models.ForeignKey(Budget)
+#     account = models.ForeignKey(Account)
+#     invoice_no = models.PositiveIntegerField(blank=True, null=True)
+#     amount = models.FloatField()
+#     vattable = models.BooleanField(default=False)
+#     sources = [('nepal_government', 'Nepal Government'), ('donor_organisation', 'Donor Organisation')]
+#     source = models.CharField(choices=sources, max_length=50, default='nepal_government')
+#     donor = models.ForeignKey(Donor, blank=True, null=True)
+#     advanced = models.FloatField(blank=True, null=True)
+#     advanced_fasrsyuat = models.FloatField(blank=True, null=True)
+#     amount_returned = models.FloatField(blank=True, null=True)
+#     activity = models.ForeignKey(Activity, blank=True, null=True)
+#     remarks = models.CharField(max_length=254)

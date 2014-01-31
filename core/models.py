@@ -52,3 +52,11 @@ class Activity(models.Model):
 
     def __str__(self):
         return str(self.no) + ' - ' + self.name
+
+
+class Budget(models.Model):
+    no = models.PositiveIntegerField()
+    name = models.CharField(max_length=254)
+
+    def __str__(self):
+        return str(self.no) + ' - ' + self.name
