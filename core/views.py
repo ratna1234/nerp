@@ -65,7 +65,6 @@ def list_employees(request):
 
 
 @group_required('Store Keeper', 'Chief', 'Accountant')
-
 @form_view
 def employee_form(request, id=None):
     return {
@@ -79,13 +78,13 @@ def employee_form(request, id=None):
 
 @group_required('Store Keeper', 'Chief', 'Accountant')
 def delete_employee(request, id):
-    obj = get_object_or_404(Party, id=id)
+    obj = get_object_or_404(Employee, id=id)
     obj.delete()
-    return redirect(reverse('list_parties'))
+    return redirect(reverse('list_employees'))
 
 
 @group_required('Store Keeper', 'Chief', 'Accountant')
 def employees_as_json(request):
-    objects = Party.objects.all()
-    objects_data = PartySerializer(objects).data
+    objects = Employee.objects.all()
+    objects_data = EmployeeSerializer(objects).data
     return HttpResponse(json.dumps(objects_data), mimetype="application/json")
