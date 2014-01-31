@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Party(models.Model):
     name = models.CharField(max_length=254)
     address = models.CharField(max_length=254, blank=True, null=True)
@@ -29,3 +30,10 @@ class AppSetting(models.Model):
 
     def __str__(self):
         return 'Default Settings ' + str(self.id)
+
+
+class Employee(models.Model):
+    name = models.CharField(max_length=254)
+
+    def __str__(self):
+        return self.name

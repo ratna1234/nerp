@@ -17,3 +17,4 @@ class JournalVoucherRow(models.Model):
     account = models.ForeignKey(Account)
     dr_amount = models.PositiveIntegerField(blank=True, null=True)
     cr_amount = models.PositiveIntegerField(blank=True, null=True)
+
