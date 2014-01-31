@@ -10,6 +10,9 @@ class Party(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name_plural = 'Parties'
+
 
 class FiscalYear(models.Model):
     years = (
@@ -53,6 +56,9 @@ class Activity(models.Model):
     def __str__(self):
         return str(self.no) + ' - ' + self.name
 
+    class Meta:
+        verbose_name_plural = 'Activities'
+
 
 class Budget(models.Model):
     no = models.PositiveIntegerField()
@@ -60,3 +66,6 @@ class Budget(models.Model):
 
     def __str__(self):
         return str(self.no) + ' - ' + self.name
+
+    class Meta:
+        verbose_name = 'Budget Head'
