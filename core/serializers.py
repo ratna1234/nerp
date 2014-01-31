@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Party, Employee
+from core.models import Party, Employee, Donor, Activity
 
 
 class PartySerializer(serializers.ModelSerializer):
@@ -10,3 +10,13 @@ class PartySerializer(serializers.ModelSerializer):
 class EmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
+
+
+class DonorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Donor
+
+
+class ActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Activity

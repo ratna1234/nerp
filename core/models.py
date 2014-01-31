@@ -49,6 +49,6 @@ class Donor(models.Model):
 class Activity(models.Model):
     no = models.PositiveIntegerField()
     name = models.CharField(max_length=254)
-    
+
     def __str__(self):
-        return self.name
+        return str(self.no) + ' - ' + self.name
