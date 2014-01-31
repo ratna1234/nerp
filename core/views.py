@@ -73,7 +73,7 @@ def employee_form(request, id=None):
         'form': EmployeeForm,
         'serializer': EmployeeSerializer,
         'listing_url': 'list_employees',
-        'template': 'party_form.html'
+        'template': 'employee_form.html'
     }
 
 

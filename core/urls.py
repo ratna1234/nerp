@@ -10,7 +10,7 @@ urlpatterns = patterns('',
                        url(r'^parties.json$', views.parties_as_json, name='parties_as_json'),
 
                        url(r'^employees/$', views.list_employees, name='list_employees'),
-                       url(r'^employee/create/$', views.employee_form, name='create_party'),
+                       url(r'^employee/create/$', views.employee_form, name='create_employee'),
                        url(r'^employee/(?P<id>[0-9]+)/delete/$', views.delete_employee, name='delete_employee'),
                        url(r'^employee/(?P<id>[0-9]+)/$', views.employee_form, name='update_employee'),
                        url(r'^employees.json$', views.employees_as_json, name='employees_as_json'),
