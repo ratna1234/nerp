@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from django.core.urlresolvers import reverse
 
 import os
 import re
 
 from django import forms
 from django.forms import ModelChoiceField
+from django.shortcuts import render, get_object_or_404, redirect
 
 
 class ExtFileField(forms.FileField):
@@ -141,10 +143,46 @@ def digitize(n):
     # devanagari_nums = ('०','१','२','३','४','५','६','७','८','९')
     # return ''.join(devanagari_nums[int(digit)] for digit in str(n))
 
+
 class UserModelChoiceField(ModelChoiceField):
     '''
     A ModelChoiceField to represent User
     select boxes in the Auto Admin
     '''
+
     def label_from_instance(self, obj):
-        return "%s"%(obj.full_name)
+        return "%s" % (obj.full_name)
+
+
+def form_view(some_func):
+    def inner(*args, **kwargs):
+        dct = some_func(args, kwargs)
+        request = (args)[0]
+        id = kwargs.get('id')
+        if id:
+            obj = get_object_or_404(dct['model'], id=id)
+            scenario = 'Update'
+        else:
+            obj = dct['model']()
+            scenario = 'Create'
+        if request.POST:
+            form = dct['form'](data=request.POST, instance=obj)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.save()
+                if request.is_ajax():
+                    return render(request, 'callback.html', {'obj': dct['serializer'](obj).data})
+                return redirect(reverse(dct['listing_url']))
+        else:
+            form = dct['form'](instance=obj)
+        if request.is_ajax():
+            base_template = 'modal.html'
+        else:
+            base_template = 'base.html'
+        return render(request, dct['template'], {
+            'scenario': scenario,
+            'form': form,
+            'base_template': base_template,
+        })
+
+    return inner
