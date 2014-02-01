@@ -1,14 +1,11 @@
 from django.db import models
+from app.libr import MultiNameModel
 
 
-class Party(models.Model):
-    name = models.CharField(max_length=254)
+class Party(MultiNameModel):
     address = models.CharField(max_length=254, blank=True, null=True)
     phone_no = models.CharField(max_length=100, blank=True, null=True)
     pan_no = models.CharField(max_length=50, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
 
     class Meta:
         verbose_name_plural = 'Parties'
@@ -35,37 +32,31 @@ class AppSetting(models.Model):
         return 'Default Settings ' + str(self.id)
 
 
-class Employee(models.Model):
-    name = models.CharField(max_length=254)
-
-    def __str__(self):
-        return self.name
+class Employee(MultiNameModel):
+    pass
 
 
 class Donor(models.Model):
-    name = models.CharField(max_length=254)
-
-    def __str__(self):
-        return self.name
+    pass
 
 
-class Activity(models.Model):
+class Activity(MultiNameModel):
     no = models.PositiveIntegerField()
-    name = models.CharField(max_length=254)
 
     def __str__(self):
-        return str(self.no) + ' - ' + self.name
+        return str(self.no) + ' - '
 
     class Meta:
         verbose_name_plural = 'Activities'
 
 
-class Budget(models.Model):
+class Budget(MultiNameModel):
     no = models.PositiveIntegerField()
-    name = models.CharField(max_length=254)
 
     def __str__(self):
-        return str(self.no) + ' - ' + self.name
+        return str(self.no) + ' - '
 
     class Meta:
         verbose_name = 'Budget Head'
+
+# class Source(models.Model):

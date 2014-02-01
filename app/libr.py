@@ -7,6 +7,7 @@ import re
 from django import forms
 from django.forms import ModelChoiceField
 from django.shortcuts import render, get_object_or_404, redirect
+from django.db import models
 
 
 class ExtFileField(forms.FileField):
@@ -186,3 +187,94 @@ def form_view(some_func):
         })
 
     return inner
+
+
+class MultilingualQuerySet(models.query.QuerySet):
+    selected_language = None
+
+    def __init__(self, *args, **kwargs):
+        super(MultilingualQuerySet, self).__init__(*args, **kwargs)
+
+    def select_language(self, lang):
+        self.selected_language = lang
+        return self
+
+    def iterator(self):
+        result_iter = super(MultilingualQuerySet, self).iterator()
+        for result in result_iter:
+            if hasattr(result, 'select_language'):
+                result.select_language(self.selected_language)
+            yield result
+
+    def _clone(self, *args, **kwargs):
+        qs = super(MultilingualQuerySet, self)._clone(*args, **kwargs)
+        if hasattr(qs, 'select_language'):
+            qs.select_language(self.selected_language)
+        return qs
+
+
+class MultilingualManager(models.Manager):
+    use_for_related_fields = True
+    selected_language = None
+
+    def select_language(self, lang):
+        self.selected_language = lang
+        return self
+
+    def get_query_set(self):
+        qs = MultilingualQuerySet(self.model, using=self._db)
+        return qs.select_language(self.selected_language)
+
+
+class MultilingualModel(models.Model):
+    # fallback/default language code
+    default_language = 'en'
+
+    # currently selected language
+    selected_language = None
+
+    class Meta:
+        abstract = True
+
+    def select_language(self, lang):
+        """Select a language"""
+        self.selected_language = lang
+        return self
+
+    objects = MultilingualManager()
+
+    def __getattribute__(self, name):
+        def get(x):
+            return super(MultilingualModel, self).__getattribute__(x)
+
+        try:
+            # Try to get the original field, if exists
+            value = get(name)
+            # If we can select language on the field as well, do it
+            if isinstance(value, MultilingualModel):
+                value.select_language(get('selected_language'))
+            return value
+        except AttributeError, e:
+            # Try the translated variant, falling back to default if no
+            # language has been explicitly selected
+            lang = self.selected_language
+            if not lang:
+                lang = self.default_language
+            if not lang:
+                raise
+
+            value = get(name + '_' + lang)
+
+            # If the translated variant is empty, fallback to default
+            if isinstance(value, basestring) and value == u'':
+                value = get(name + '_' + self.default_language)
+
+        return value
+
+
+class MultiNameModel(MultilingualModel):
+    name_ne = models.CharField(max_length=254, verbose_name='Name in Nepali', blank=True, null=True)
+    name_en = models.CharField(max_length=254, verbose_name='Name in English', blank=True, null=True)
+
+    class Meta:
+        abstract = True

@@ -1,10 +1,11 @@
 from django.db import models
+from app.libr import MultiNameModel
 from core.models import FiscalYear, Donor, Activity
 from core.models import Budget
 
 
-class Account(models.Model):
-    name = models.CharField(max_length=100)
+class Account(MultiNameModel):
+    # name = models.CharField(max_length=100)
     account_page_no = models.IntegerField()
 
 
@@ -20,10 +21,11 @@ class JournalVoucherRow(models.Model):
     cr_amount = models.PositiveIntegerField(blank=True, null=True)
 
 
-# class Bharpai(models.Model):
+# class Receipt(models.Model):
 #     pass
-
-# class BharpaiRow(models.Model):
+#
+#
+# class ReceiptRow(models.Model):
 #     sn = models.PositiveIntegerField()
 #     budget = models.ForeignKey(Budget)
 #     account = models.ForeignKey(Account)

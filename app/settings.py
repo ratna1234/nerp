@@ -111,7 +111,7 @@ INSTALLED_APPS = (
     'rest_framework',
 
     'users',
-    'inventory',
+    # 'inventory',
     'account',
     'core',
 
