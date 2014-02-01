@@ -5,7 +5,6 @@ from core.models import Budget
 
 
 class Account(MultiNameModel):
-    # name = models.CharField(max_length=100)
     account_page_no = models.IntegerField()
 
 

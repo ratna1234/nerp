@@ -44,7 +44,7 @@ class Activity(MultiNameModel):
     no = models.PositiveIntegerField()
 
     def __str__(self):
-        return str(self.no) + ' - '
+        return str(self.no) + ' - ' + self.name
 
     class Meta:
         verbose_name_plural = 'Activities'
@@ -54,7 +54,8 @@ class Budget(MultiNameModel):
     no = models.PositiveIntegerField()
 
     def __str__(self):
-        return str(self.no) + ' - '
+        return str(self.no) + ' - ' + self.name
+
 
     class Meta:
         verbose_name = 'Budget Head'

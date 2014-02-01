@@ -196,6 +196,10 @@ class MultilingualQuerySet(models.query.QuerySet):
         super(MultilingualQuerySet, self).__init__(*args, **kwargs)
 
     def select_language(self, lang):
+        from django.utils import translation
+
+        if not lang:
+            lang = translation.get_language()
         self.selected_language = lang
         return self
 
@@ -268,13 +272,23 @@ class MultilingualModel(models.Model):
             # If the translated variant is empty, fallback to default
             if isinstance(value, basestring) and value == u'':
                 value = get(name + '_' + self.default_language)
-
+                # if value is still u'', look for values in other languages
+                if value == u'':
+                    fields = [getattr(field, 'name') for field in self._meta.fields if
+                              getattr(field, name).startswith(name + '_')]
+                    for field in fields:
+                        value = getattr(self, field)
+                        if value != u'':
+                            break
         return value
 
 
 class MultiNameModel(MultilingualModel):
     name_ne = models.CharField(max_length=254, verbose_name='Name in Nepali', blank=True, null=True)
     name_en = models.CharField(max_length=254, verbose_name='Name in English', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         abstract = True
