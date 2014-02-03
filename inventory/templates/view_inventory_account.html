@@ -12,10 +12,7 @@
 {% load filters %}
 
 {% block head_end %}
-    <script src="{{ STATIC_URL }}js/base.js"></script>
-    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
-    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
-    <script src="{{ STATIC_URL }}js/inventory_account.js"></script>
+    <script src="{{ STATIC_URL }}js/inventory/inventory_account.js"></script>
     <script>
         ko_data = {{data|jsonify}};
     </script>

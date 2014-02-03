@@ -2,8 +2,23 @@
 
 {% load filters %}
 
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/account/receipt.js"></script>
+    <script>
+        ko_data = {{data|jsonify}};
+    </script>
+{% endblock %}
+
 {% block  content %}
 
     {{ data|jsonify }}
+
+    <form method="post" enctype="multipart/form-data" data-bind="submit: save">
+        {% csrf_token %}
+
+    <input type="text" name="no" id="id_no"
+                               data-bind="value: no, localize: true">
+
+    </form>
 
 {% endblock %}

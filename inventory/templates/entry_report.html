@@ -11,10 +11,7 @@
 {% endblock %}
 
 {% block head_end %}
-    <script src="{{ STATIC_URL }}js/base.js"></script>
-    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
-    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
-    <script src="{{ STATIC_URL }}js/entry_report.js"></script>
+    <script src="{{ STATIC_URL }}js/inventory/entry_report.js"></script>
     <script>
         ko_data = {{data|jsonify}};
     </script>
