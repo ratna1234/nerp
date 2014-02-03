@@ -12,7 +12,7 @@
 
 {% block  content %}
 
-    {{ data|jsonify }}
+    {#    {{ data|jsonify }}#}
 
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
@@ -45,6 +45,7 @@
                     <th>{% trans 'Payable Amount' %}</th>
                     <th>{% trans 'Activity' %}</th>
                     <th>{% trans 'Remarks' %}</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,13 +86,13 @@
                                         <input type="text" data-bind="value: nepal_government">
                                     </td>
                                     <td>
-                                        <input type="text" data-bind="value: foreign_cash_grant">
+                                        <input type="text" data-bind="value: foreign_cash_grant, autosize: 1">
                                     </td>
                                     <td>
                                         <input type="text" data-bind="value: foreign_compensating_grant">
                                     </td>
                                     <td>
-                                        <input type="text" data-bind="value: foreign_cash_loan">
+                                        <input type="text" data-bind="value: foreign_cash_loan, autosize: 1">
                                     </td>
                                     <td>
                                         <input type="text" data-bind="value: foreign_compensating_loan">
@@ -118,10 +119,16 @@
                     <td>
                         <input type="text" data-bind="value: remarks, autosize: 1">
                     </td>
+                    <td>
+                        <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
+                    </td>
                 </tr>
                 <!-- /ko -->
                 </tbody>
             </table>
+            <a class="small secondary button" data-bind="click: addRow">
+                {% trans 'Add New Row' %}
+            </a>
         </div>
 
     </form>
