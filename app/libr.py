@@ -200,6 +200,8 @@ class MultilingualQuerySet(models.query.QuerySet):
 
         if not lang:
             lang = translation.get_language()
+            # e.g. en-us to en
+            lang = lang.split('-')[0]
         self.selected_language = lang
         return self
 
