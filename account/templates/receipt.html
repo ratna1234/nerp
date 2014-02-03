@@ -27,6 +27,99 @@
         <input type="date" name="date" id="id_date"
                data-bind="value: date, localize: true">
 
+        <div data-bind="with: table_view">
+
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>{% trans 'SN' %}</th>
+                    <th>{% trans 'Budget No.' %}</th>
+                    <th>{% trans 'Budget Title' %}</th>
+                    <th>{% trans 'Particulars' %}</th>
+                    <th>{% trans 'Invoice No.' %}</th>
+                    <th>{% trans 'Amount' %}</th>
+                    <th>{% trans 'Vattable' %}</th>
+                    <th>{% trans 'VAT Amount' %}</th>
+                    <th>{% trans 'Taxable' %}</th>
+                    <th>{% trans 'Tax Amount' %}</th>
+                    <th>{% trans 'Payable Amount' %}</th>
+                    <th>{% trans 'Activity' %}</th>
+                    <th>{% trans 'Remarks' %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- ko foreach: rows -->
+                <tr>
+                    <td data-bind="text:  $index()+1, localize: true">
+                    </td>
+                    <td data-bind="text: budget_head().no, localize: true">
+                    </td>
+                    <td>
+                        <select data-bind="selectize: $root.budget_heads, value: budget_head_id, object: budget_head"></select>
+                    </td>
+                    <td>
+                        <select data-bind="selectize: $root.accounts, value: account_id, object: account, event: {change: $root.budget_head_changed}"
+                                data-url="{% url 'create_inventory_item' %}"></select>
+                    </td>
+                    <td>
+                        <input type="text" data-bind="value: invoice_no">
+                    </td>
+                    <td>
+                        <input type="text" readonly data-bind="value: amount()" data-dropdown="drop1">
+
+                        <div id="drop1" data-dropdown-content class="f-dropdown content amount-dropdown">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th rowspan="2">Nepal Government</th>
+                                    <th colspan="5">Foreign</th>
+                                </tr>
+                                <tr>
+                                    <td>{% trans 'Cash Grant' %}</td>
+                                    <td>{% trans 'Compensating Grant' %}</td>
+                                    <td>{% trans 'Cash Loan' %}</td>
+                                    <td>{% trans 'Compensating Loan' %}</td>
+                                    <td>{% trans 'Substantial Aid' %}</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text" data-bind="value: nepal_government">
+                                    </td>
+                                    <td>
+                                        <input type="text" data-bind="value: foreign_cash_grant">
+                                    </td>
+                                    <td>
+                                        <input type="text" data-bind="value: foreign_compensating_grant">
+                                    </td>
+                                    <td>
+                                        <input type="text" data-bind="value: foreign_cash_loan">
+                                    </td>
+                                    <td>
+                                        <input type="text" data-bind="value: foreign_compensating_loan">
+                                    </td>
+                                    <td>
+                                        <input type="text" data-bind="value: foreign_substantial_aid">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                        <input type="checkbox" data-bind="checked: vattable">
+                    </td>
+                    <td data-bind="text: vat_amount()"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <input type="text" data-bind="value: remarks, autosize: 1">
+                    </td>
+                </tr>
+                <!-- /ko -->
+                </tbody>
+            </table>
+        </div>
+
     </form>
 
 {% endblock %}

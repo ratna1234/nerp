@@ -43,4 +43,4 @@ class ReceiptRow(models.Model):
 
     activity = models.ForeignKey(Activity, blank=True, null=True)
     remarks = models.CharField(max_length=254)
-    receipt = models.ForeignKey(Receipt)
+    receipt = models.ForeignKey(Receipt, related_name='rows')
