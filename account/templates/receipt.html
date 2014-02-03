@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load filters %}
+{% load i18n %}
 
 {% block head_end %}
     <script src="{{ STATIC_URL }}js/account/receipt.js"></script>
@@ -16,8 +17,15 @@
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
 
-    <input type="text" name="no" id="id_no"
-                               data-bind="value: no, localize: true">
+        {% trans 'No.' %}
+
+        <input type="text" name="no" id="id_no"
+               data-bind="value: no, localize: true">
+
+        {% trans 'Date' %}
+
+        <input type="date" name="date" id="id_date"
+               data-bind="value: date, localize: true">
 
     </form>
 

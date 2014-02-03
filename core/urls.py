@@ -15,4 +15,9 @@ urlpatterns = patterns('',
                        url(r'^employee/(?P<id>[0-9]+)/$', views.employee_form, name='update_employee'),
                        url(r'^employees.json$', views.employees_as_json, name='employees_as_json'),
 
+                       url(r'^budget_heads.json$', views.budget_heads_as_json, name='budget_heads_as_json'),
+                       url(r'^accounts.json$', views.accounts_as_json, name='accounts_as_json'),
+                       url(r'^activities.json$', views.activities_as_json, name='activities_as_json'),
+                       url(r'^donors.json$', views.donors_as_json, name='donors_as_json'),
+
 )

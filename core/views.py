@@ -1,10 +1,11 @@
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from account.serializers import AccountSerializer
 from app.libr import form_view
 from core.forms import PartyForm, EmployeeForm
-from core.models import Party, Employee
-from core.serializers import PartySerializer, EmployeeSerializer
+from core.models import Party, Employee, Budget, Donor, Activity, Account
+from core.serializers import PartySerializer, EmployeeSerializer, BudgetSerializer, ActivitySerializer, DonorSerializer
 from users.models import group_required
 import json
 
@@ -87,4 +88,28 @@ def delete_employee(request, id):
 def employees_as_json(request):
     objects = Employee.objects.all()
     objects_data = EmployeeSerializer(objects).data
+    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+
+
+def budget_heads_as_json(request):
+    objects = Budget.objects.all()
+    objects_data = BudgetSerializer(objects).data
+    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+
+
+def donors_as_json(request):
+    objects = Donor.objects.all()
+    objects_data = DonorSerializer(objects).data
+    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+
+
+def activities_as_json(request):
+    objects = Activity.objects.all()
+    objects_data = ActivitySerializer(objects).data
+    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+
+
+def accounts_as_json(request):
+    objects = Account.objects.all()
+    objects_data = AccountSerializer(objects).data
     return HttpResponse(json.dumps(objects_data), mimetype="application/json")
