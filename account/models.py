@@ -15,6 +15,8 @@ class JournalVoucherRow(models.Model):
 
 
 class Receipt(models.Model):
+    date = models.DateField()
+    no = models.PositiveIntegerField()
     pass
 
 

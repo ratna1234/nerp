@@ -12,6 +12,7 @@ class Account(MultiNameModel):
     # account_page_no = models.IntegerField()
     pass
 
+
 class Party(MultiNameModel):
     address = models.CharField(max_length=254, blank=True, null=True)
     phone_no = models.CharField(max_length=100, blank=True, null=True)
