@@ -10,9 +10,12 @@ urlpatterns = patterns('',
                        (r'^user/', include('users.urls')),
                        # url(r'^app/', include('app.foo.urls')),
 
+                       (r'^account/', include('account.urls')),
                        (r'^inventory/', include('inventory.urls')),
+
                        url(r'^admin/', include(admin.site.urls)),
                        (r'^i18n/', include('django.conf.urls.i18n')),
+
                        (r'', include('core.urls')),
 
 

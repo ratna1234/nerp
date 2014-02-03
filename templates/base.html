@@ -26,6 +26,11 @@
     {#    <script src="{{ STATIC_URL }}js/vendors/select2.js"></script>#}
     <script src="{{ STATIC_URL }}js/vendors/selectize.js"></script>
 
+    <script src="{{ STATIC_URL }}js/base.js"></script>
+    <script src="{{ STATIC_URL }}js/vendors/knockout.js"></script>
+    <script src="{{ STATIC_URL }}js/ko_lib.js"></script>
+    
+
     {% block head_end %}{% endblock %}
 
     <script src="{{ STATIC_URL }}js/vendors/custom.modernizr.js"></script>
@@ -46,7 +51,7 @@
     <div class="large-12 columns">
         <div class="nav-bar right">
             <ul class="button-group">
-{#                <li><a href="#" class="secondary small button">Link 1</a></li>#}
+                {#                <li><a href="#" class="secondary small button">Link 1</a></li>#}
                 {% if user.is_admin %}
                     <li><a href="/admin" class="secondary small button">{% trans 'Control Panel' %}</a></li>
                 {% endif %}
@@ -82,7 +87,7 @@
     {% block breadcrumbs %}
         <a href="/">{% trans 'Home' %}</a>
     {% endblock %}
-<div class="right"><a href="javascript: window.print();">{% trans 'Print' %}</a></div>
+    <div class="right"><a href="javascript: window.print();">{% trans 'Print' %}</a></div>
 </nav>
 
 

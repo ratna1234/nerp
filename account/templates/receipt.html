@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% load filters %}
+
+{% block  content %}
+
+    {{ data|jsonify }}
+
+{% endblock %}
