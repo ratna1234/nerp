@@ -112,7 +112,9 @@
                     </td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td>
+                        <select data-bind="selectize: $root.activities, value: activity_id, object: activity"></select>
+                    </td>
                     <td>
                         <input type="text" data-bind="value: remarks, autosize: 1">
                     </td>
