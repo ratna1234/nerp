@@ -1,11 +1,5 @@
 from django.db import models
-from app.libr import MultiNameModel
-from core.models import FiscalYear, Donor, Activity
-from core.models import Budget
-
-
-class Account(MultiNameModel):
-    account_page_no = models.IntegerField()
+from core.models import FiscalYear, Donor, Activity, Account, Budget
 
 
 class JournalVoucher(models.Model):

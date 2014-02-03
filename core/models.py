@@ -1,4 +1,5 @@
 from django.db import models
+
 from app.libr import MultiNameModel
 
 SOURCES = [('nepal_government', 'Nepal Government'), ('foreign_cash_grant', 'Foreign Cash Grant'),
@@ -7,10 +8,22 @@ SOURCES = [('nepal_government', 'Nepal Government'), ('foreign_cash_grant', 'For
            ('foreign_substantial_aid', 'Foreign Substantial Aid')]
 
 
+class Account(MultiNameModel):
+    account_page_no = models.IntegerField()
+
+
 class Party(MultiNameModel):
     address = models.CharField(max_length=254, blank=True, null=True)
     phone_no = models.CharField(max_length=100, blank=True, null=True)
     pan_no = models.CharField(max_length=50, blank=True, null=True)
+    account = models.OneToOneField(Account, related_name='party')
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            account = Account(name_en=self.name_en, name_ne=self.name_ne)
+            account.save()
+            self.account = account
+        super(Party, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'Parties'
@@ -39,6 +52,13 @@ class AppSetting(models.Model):
 
 class Employee(MultiNameModel):
     pass
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            account = Account(name_en=self.name_en, name_ne=self.name_ne)
+            account.save()
+            self.account = account
+        super(Employee, self).save(*args, **kwargs)
 
 
 class Donor(MultiNameModel):
