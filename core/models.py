@@ -88,9 +88,15 @@ class Budget(MultiNameModel):
     def total(self):
         return self.nepal_government + self.foreign_cash_grant + self.foreign_compensating_grant + self.foreign_cash_loan + self.foreign_compensating_loan + self.foreign_substantial_aid
 
-
     def __str__(self):
         return str(self.no) + ' - ' + self.name + ' (' + str(self.total()) + ')'
 
     class Meta:
         verbose_name = 'Budget Head'
+
+
+class TaxScheme(MultiNameModel):
+    percent = models.FloatField()
+
+    def __str__(self):
+        return self.name + ' (' + str(self.percent()) + '%)'
