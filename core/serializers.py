@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Party, Employee, Donor, Activity, Budget
+from core.models import Party, Employee, Donor, Activity, Budget, TaxScheme
 
 
 class PartySerializer(serializers.ModelSerializer):
@@ -35,3 +35,10 @@ class BudgetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Budget
+
+
+class TaxSchemeSerializer(serializers.ModelSerializer):
+    name = serializers.Field(source='name')
+
+    class Meta:
+        model = TaxScheme
