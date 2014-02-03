@@ -40,7 +40,7 @@
                     <th>{% trans 'Amount' %}</th>
                     <th>{% trans 'Vattable' %}</th>
                     <th>{% trans 'VAT Amount' %}</th>
-                    <th>{% trans 'Taxable' %}</th>
+                    <th>{% trans 'Tax Scheme' %}</th>
                     <th>{% trans 'Tax Amount' %}</th>
                     <th>{% trans 'Payable Amount' %}</th>
                     <th>{% trans 'Activity' %}</th>
@@ -107,7 +107,9 @@
                         <input type="checkbox" data-bind="checked: vattable">
                     </td>
                     <td data-bind="text: vat_amount()"></td>
-                    <td></td>
+                    <td>
+                        <select data-bind="selectize: $root.tax_schemes, value: tax_scheme_id, object: tax_scheme"></select>
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
