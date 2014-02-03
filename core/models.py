@@ -98,5 +98,10 @@ class Budget(MultiNameModel):
 class TaxScheme(MultiNameModel):
     percent = models.FloatField()
 
+    def get_multiplier(self):
+        return self.percent / 100
+
+    multiplier = property(get_multiplier)
+
     def __str__(self):
-        return self.name + ' (' + str(self.percent()) + '%)'
+        return self.name + ' (' + str(self.percent) + '%)'
