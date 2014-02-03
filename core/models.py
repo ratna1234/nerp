@@ -9,8 +9,8 @@ SOURCES = [('nepal_government', 'Nepal Government'), ('foreign_cash_grant', 'For
 
 
 class Account(MultiNameModel):
-    account_page_no = models.IntegerField()
-
+    # account_page_no = models.IntegerField()
+    pass
 
 class Party(MultiNameModel):
     address = models.CharField(max_length=254, blank=True, null=True)
