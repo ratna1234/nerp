@@ -41,7 +41,7 @@ class Employee(MultiNameModel):
     pass
 
 
-class Donor(models.Model):
+class Donor(MultiNameModel):
     pass
 
 

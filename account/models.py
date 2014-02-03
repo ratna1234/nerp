@@ -20,22 +20,31 @@ class JournalVoucherRow(models.Model):
     cr_amount = models.PositiveIntegerField(blank=True, null=True)
 
 
-# class Receipt(models.Model):
-#     pass
-#
-#
-# class ReceiptRow(models.Model):
-#     sn = models.PositiveIntegerField()
-#     budget = models.ForeignKey(Budget)
-#     account = models.ForeignKey(Account)
-#     invoice_no = models.PositiveIntegerField(blank=True, null=True)
-#     amount = models.FloatField()
-#     vattable = models.BooleanField(default=False)
-#     sources = [('nepal_government', 'Nepal Government'), ('donor_organisation', 'Donor Organisation')]
-#     source = models.CharField(choices=sources, max_length=50, default='nepal_government')
-#     donor = models.ForeignKey(Donor, blank=True, null=True)
-#     advanced = models.FloatField(blank=True, null=True)
-#     advanced_fasrsyuat = models.FloatField(blank=True, null=True)
-#     amount_returned = models.FloatField(blank=True, null=True)
-#     activity = models.ForeignKey(Activity, blank=True, null=True)
-#     remarks = models.CharField(max_length=254)
+class Receipt(models.Model):
+    pass
+
+
+class ReceiptRow(models.Model):
+    sn = models.PositiveIntegerField()
+    budget = models.ForeignKey(Budget)
+    account = models.ForeignKey(Account)
+    invoice_no = models.PositiveIntegerField(blank=True, null=True)
+    # amount = models.FloatField()
+    vattable = models.BooleanField(default=False)
+
+    nepal_government = models.FloatField(default=0)
+    foreign_cash_grant = models.FloatField(default=0)
+    foreign_compensating_grant = models.FloatField(default=0)
+    foreign_cash_loan = models.FloatField(default=0)
+    foreign_compensating_loan = models.FloatField(default=0)
+    foreign_substantial_aid = models.FloatField(default=0)
+
+    donor = models.ForeignKey(Donor, blank=True, null=True)
+
+    advanced = models.FloatField(blank=True, null=True)
+    advanced_settlement = models.FloatField(blank=True, null=True)
+    cash_returned = models.FloatField(blank=True, null=True)
+
+    activity = models.ForeignKey(Activity, blank=True, null=True)
+    remarks = models.CharField(max_length=254)
+    receipt = models.ForeignKey(Receipt)
