@@ -1,6 +1,11 @@
 from django.db import models
 from app.libr import MultiNameModel
 
+SOURCES = [('nepal_government', 'Nepal Government'), ('foreign_cash_grant', 'Foreign Cash Grant'),
+           ('foreign_compensating_grant', 'Foreign Compensating Grant'), ('foreign_cash_loan', 'Foreign Cash Loan'),
+           ('foreign_compensating_loan', 'Foreign Compensating Loan'),
+           ('foreign_substantial_aid', 'Foreign Substantial Aid')]
+
 
 class Party(MultiNameModel):
     address = models.CharField(max_length=254, blank=True, null=True)
@@ -52,12 +57,19 @@ class Activity(MultiNameModel):
 
 class Budget(MultiNameModel):
     no = models.PositiveIntegerField()
+    nepal_government = models.FloatField(default=0)
+    foreign_cash_grant = models.FloatField(default=0)
+    foreign_compensating_grant = models.FloatField(default=0)
+    foreign_cash_loan = models.FloatField(default=0)
+    foreign_compensating_loan = models.FloatField(default=0)
+    foreign_substantial_aid = models.FloatField(default=0)
+
+    def total(self):
+        return self.nepal_government + self.foreign_cash_grant + self.foreign_compensating_grant + self.foreign_cash_loan + self.foreign_compensating_loan + self.foreign_substantial_aid
+
 
     def __str__(self):
-        return str(self.no) + ' - ' + self.name
-
+        return str(self.no) + ' - ' + self.name + ' (' + str(self.total()) + ')'
 
     class Meta:
         verbose_name = 'Budget Head'
-
-# class Source(models.Model):
