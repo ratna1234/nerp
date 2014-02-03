@@ -110,8 +110,8 @@
                     <td>
                         <select data-bind="selectize: $root.tax_schemes, value: tax_scheme_id, object: tax_scheme, optionsCaption: false"></select>
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td data-bind="text: tax_amount()"></td>
+                    <td data-bind="text: payable_amount()"></td>
                     <td>
                         <select data-bind="selectize: $root.activities, value: activity_id, object: activity"></select>
                     </td>
