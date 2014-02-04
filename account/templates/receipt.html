@@ -63,7 +63,7 @@
                                 data-url="{% url 'create_inventory_item' %}"></select>
                     </td>
                     <td>
-                        <input type="text" data-bind="value: invoice_no">
+                        <input type="text" data-bind="value: invoice_no, autosize: 1" class="small">
                     </td>
                     <td>
                         <input type="text" readonly data-bind="value: amount()" data-dropdown="drop1">
@@ -117,7 +117,7 @@
                         <select data-bind="selectize: $root.activities, value: activity_id, object: activity"></select>
                     </td>
                     <td>
-                        <input type="text" data-bind="value: remarks, autosize: 1">
+                        <input type="text" data-bind="value: remarks, autosize: 1" class="small">
                     </td>
                     <td>
                         <a href="#" class="close tiny secondary" data-bind="click: $parent.removeRow">x</a>
