@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
+from django.utils import translation
 
 import os
 import re
@@ -196,8 +197,6 @@ class MultilingualQuerySet(models.query.QuerySet):
         super(MultilingualQuerySet, self).__init__(*args, **kwargs)
 
     def select_language(self, lang):
-        from django.utils import translation
-
         if not lang:
             lang = translation.get_language()
             # e.g. en-us to en
@@ -244,6 +243,8 @@ class MultilingualModel(models.Model):
 
     def select_language(self, lang):
         """Select a language"""
+        # import pdb
+        # pdb.set_trace()
         self.selected_language = lang
         return self
 
@@ -261,9 +262,11 @@ class MultilingualModel(models.Model):
                 value.select_language(get('selected_language'))
             return value
         except AttributeError, e:
-            # Try the translated variant, falling back to default if no
+            # Try the translated variant, falling back to current language if no
             # language has been explicitly selected
-            lang = self.selected_language
+            lang = translation.get_language()
+            # e.g. en-us to en
+            lang = lang.split('-')[0]
             if not lang:
                 lang = self.default_language
             if not lang:
