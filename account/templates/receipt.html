@@ -102,6 +102,28 @@
                                     </td>
                                 </tr>
                             </table>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>{% trans 'Advanced' %}</th>
+                                    <th>{% trans 'Advanced Settlement' %}</th>
+                                    <th>{% trans 'Cash Returned' %}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="text" data-bind="value: advanced, autosize: 0">
+                                    </td>
+                                    <td>
+                                        <input type="text" data-bind="value: advanced_settlement, autosize: 0">
+                                    </td>
+                                    <td>
+                                        <input type="text" data-bind="value: cash_returned, autosize: 0">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </td>
                     <td>
