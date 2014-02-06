@@ -28,12 +28,12 @@ class ReceiptRow(models.Model):
     # amount = models.FloatField()
     vattable = models.BooleanField(default=False)
 
-    nepal_government = models.FloatField(default=0)
-    foreign_cash_grant = models.FloatField(default=0)
-    foreign_compensating_grant = models.FloatField(default=0)
-    foreign_cash_loan = models.FloatField(default=0)
-    foreign_compensating_loan = models.FloatField(default=0)
-    foreign_substantial_aid = models.FloatField(default=0)
+    nepal_government = models.FloatField(blank=True, null=True)
+    foreign_cash_grant = models.FloatField(blank=True, null=True)
+    foreign_compensating_grant = models.FloatField(blank=True, null=True)
+    foreign_cash_loan = models.FloatField(blank=True, null=True)
+    foreign_compensating_loan = models.FloatField(blank=True, null=True)
+    foreign_substantial_aid = models.FloatField(blank=True, null=True)
 
     donor = models.ForeignKey(Donor, blank=True, null=True)
 
