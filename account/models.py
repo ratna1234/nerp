@@ -17,7 +17,6 @@ class JournalVoucherRow(models.Model):
 class Receipt(models.Model):
     date = models.DateField()
     no = models.PositiveIntegerField()
-    pass
 
 
 class ReceiptRow(models.Model):
@@ -42,5 +41,6 @@ class ReceiptRow(models.Model):
     cash_returned = models.FloatField(blank=True, null=True)
 
     activity = models.ForeignKey(Activity, blank=True, null=True)
-    remarks = models.CharField(max_length=254)
+    remarks = models.CharField(max_length=254, blank=True, null=True)
+
     receipt = models.ForeignKey(Receipt, related_name='rows')
