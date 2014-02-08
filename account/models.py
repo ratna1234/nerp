@@ -1,5 +1,5 @@
 from django.db import models
-from core.models import FiscalYear, Donor, Activity, Account, Budget
+from core.models import FiscalYear, Donor, Activity, Account, Budget, TaxScheme
 
 
 class JournalVoucher(models.Model):
@@ -17,11 +17,12 @@ class JournalVoucherRow(models.Model):
 class Receipt(models.Model):
     date = models.DateField()
     no = models.PositiveIntegerField()
+    fiscal_year = models.ForeignKey(FiscalYear)
 
 
 class ReceiptRow(models.Model):
     sn = models.PositiveIntegerField()
-    budget = models.ForeignKey(Budget)
+    budget_head = models.ForeignKey(Budget)
     account = models.ForeignKey(Account)
     invoice_no = models.PositiveIntegerField(blank=True, null=True)
     # amount = models.FloatField()
@@ -40,6 +41,7 @@ class ReceiptRow(models.Model):
     advanced_settlement = models.FloatField(blank=True, null=True)
     cash_returned = models.FloatField(blank=True, null=True)
 
+    tax_scheme = models.ForeignKey(TaxScheme)
     activity = models.ForeignKey(Activity, blank=True, null=True)
     remarks = models.CharField(max_length=254, blank=True, null=True)
 
