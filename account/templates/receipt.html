@@ -12,20 +12,18 @@
 
 {% block  content %}
 
-    {#    {{ data|jsonify }}#}
+        {{ data|jsonify }}
 
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
 
         {% trans 'No.' %}
 
-        <input type="text" name="no" id="id_no"
-               data-bind="value: no, localize: true">
+        <input type="text" name="no" id="id_no" data-bind="value: no, localize: true" required>
 
         {% trans 'Date' %}
 
-        <input type="date" name="date" id="id_date"
-               data-bind="value: date, localize: true">
+        <input type="date" name="date" id="id_date" data-bind="value: date, localize: true" required>
 
         <div data-bind="with: table_view">
 
@@ -56,10 +54,10 @@
                     <td data-bind="text: budget_head().no, localize: true">
                     </td>
                     <td>
-                        <select data-bind="selectize: $root.budget_heads, value: budget_head_id, object: budget_head"></select>
+                        <select data-bind="selectize: $root.budget_heads, value: budget_head_id, object: budget_head, optionsText: 'name', optionsValue: 'id'"></select>
                     </td>
                     <td>
-                        <select data-bind="selectize: $root.accounts, value: account_id, object: account, event: {change: $root.budget_head_changed}"
+                        <select data-bind="selectize: $root.accounts, value: account_id, object: account"
                                 data-url="{% url 'create_inventory_item' %}"></select>
                     </td>
                     <td>
@@ -131,7 +129,7 @@
                     </td>
                     <td data-bind="text: vat_amount()"></td>
                     <td>
-                        <select data-bind="selectize: $root.tax_schemes, value: tax_scheme_id, object: tax_scheme, optionsCaption: false"></select>
+                        <select data-bind="selectize: $root.tax_schemes, value: tax_scheme_id, object: tax_scheme, optionsCaption: null"></select>
                     </td>
                     <td data-bind="text: tax_amount()"></td>
                     <td data-bind="text: payable_amount()"></td>
@@ -151,6 +149,7 @@
             <a class="small secondary button" data-bind="click: addRow">
                 {% trans 'Add New Row' %}
             </a>
+            <input type="submit" class="small secondary button" value="{% trans 'Save' %}">
         </div>
 
     </form>
