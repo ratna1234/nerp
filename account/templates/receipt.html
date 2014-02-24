@@ -29,8 +29,7 @@
                 <thead>
                 <tr>
                     <th>{% trans 'SN' %}</th>
-                    <th>{% trans 'Budget No.' %}</th>
-                    <th>{% trans 'Budget Title' %}</th>
+                    <th>{% trans 'Budget Head' %}</th>
                     <th>{% trans 'Particulars' %}</th>
                     <th>{% trans 'Invoice No.' %}</th>
                     <th>{% trans 'Amount' %}</th>
@@ -48,8 +47,6 @@
                 <!-- ko foreach: rows -->
                 <tr>
                     <td data-bind="text:  $index()+1, localize: true">
-                    </td>
-                    <td data-bind="text: budget_head().no, localize: true">
                     </td>
                     <td>
                         <select data-bind="selectize: $root.budget_heads, value: budget_head_id, object: budget_head, optionsText: 'name', optionsValue: 'id'"></select>
