@@ -11,7 +11,7 @@ from django.db.models import F
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.translation import ugettext as _
 
-from app.libr import zero_for_none, none_for_zero, digitize
+from app.libr import zero_for_none, none_for_zero, ne2en
 from users.models import User
 from core.models import FiscalYear, Party
 
@@ -311,8 +311,8 @@ class DemandRow(models.Model):
     status = models.CharField(max_length=9, choices=statuses, default='Requested')
 
     def save(self, *args, **kwargs):
-        self.quantity = digitize(self.quantity)
-        self.release_quantity = digitize(self.release_quantity)
+        self.quantity = ne2en(self.quantity)
+        self.release_quantity = ne2en(self.release_quantity)
         super(DemandRow, self).save(*args, **kwargs)
 
     def get_voucher_no(self):

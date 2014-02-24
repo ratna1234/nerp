@@ -124,10 +124,10 @@ def add(*args):
     return total
 
 
-def digitize(n):
-    if n is None:
+def ne2en(num, reverse=False):
+    if num is None:
         return None
-    d = {
+    dct = {
         '०': '0',
         '१': '1',
         '२': '2',
@@ -139,11 +139,29 @@ def digitize(n):
         '८': '8',
         '९': '9'
     }
-    pattern = re.compile('|'.join(d.keys()))
-    result = pattern.sub(lambda x: d[x.group()], unicode(n))
-    return float(result)
+    if reverse:
+        dct = dict((v, k) for k, v in dct.iteritems())
+    pattern = re.compile('|'.join(dct.keys()))
+    grouper = lambda x: dct[x.group()]
+    num = unicode(num).encode()
+    result = pattern.sub(grouper, num)
+    return result
+
     # devanagari_nums = ('०','१','२','३','४','५','६','७','८','९')
     # return ''.join(devanagari_nums[int(digit)] for digit in str(n))
+
+
+def en2ne(n):
+    return ne2en(n, reverse=True)
+
+
+def transl(s):
+    lang = translation.get_language()
+    lang = lang.split('-')[0]
+    if lang == 'en':
+        return ne2en(s)
+    elif lang == 'ne':
+        return en2ne(s)
 
 
 class UserModelChoiceField(ModelChoiceField):
@@ -285,6 +303,9 @@ class MultilingualModel(models.Model):
                         value = getattr(self, field)
                         if value != u'':
                             break
+
+        if type(value) == unicode:
+            return value.encode('utf-8')
         return value
 
 

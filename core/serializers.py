@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
 from core.models import Party, Employee, Donor, Activity, Budget, TaxScheme
 
@@ -31,7 +32,7 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 
 class BudgetSerializer(serializers.ModelSerializer):
-    name = serializers.Field(source='name')
+    name = serializers.Field(source='__str__')
 
     class Meta:
         model = Budget

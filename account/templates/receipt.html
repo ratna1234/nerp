@@ -12,8 +12,6 @@
 
 {% block  content %}
 
-        {{ data|jsonify }}
-
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
 
@@ -64,7 +62,7 @@
                         <input type="text" data-bind="value: invoice_no, autosize: 1" class="small">
                     </td>
                     <td>
-                        <input type="text" readonly data-bind="value: amount()" data-dropdown="drop1">
+                        <input type="text" readonly data-bind="value: amount(), click: focus" data-dropdown="drop1">
 
                         <div id="drop1" data-dropdown-content class="f-dropdown content amount-dropdown">
                             <table class="table table-bordered">

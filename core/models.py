@@ -1,6 +1,7 @@
 from django.db import models
 
-from app.libr import MultiNameModel
+from app.libr import MultiNameModel, transl, ne2en
+
 
 SOURCES = [('nepal_government', 'Nepal Government'), ('foreign_cash_grant', 'Foreign Cash Grant'),
            ('foreign_compensating_grant', 'Foreign Compensating Grant'), ('foreign_cash_loan', 'Foreign Cash Loan'),
@@ -89,7 +90,7 @@ class Budget(MultiNameModel):
         return self.nepal_government + self.foreign_cash_grant + self.foreign_compensating_grant + self.foreign_cash_loan + self.foreign_compensating_loan + self.foreign_substantial_aid
 
     def __str__(self):
-        return str(self.no) + ' - ' + self.name + ' (' + str(self.total()) + ')'
+        return transl(self.no) + ' - ' + self.name
 
     class Meta:
         verbose_name = 'Budget Head'
