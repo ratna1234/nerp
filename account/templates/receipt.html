@@ -66,33 +66,33 @@
                              class="f-dropdown content amount-dropdown">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th rowspan="2">Nepal Government</th>
-                                    <th colspan="5">Foreign</th>
+                                    <th rowspan="2" data-bind="visible: has_balance('nepal_government')">Nepal Government</th>
+                                    <th colspan="5" data-bind="visible: has_foreign()">Foreign</th>
                                 </tr>
                                 <tr>
-                                    <td>{% trans 'Cash Grant' %}</td>
-                                    <td>{% trans 'Compensating Grant' %}</td>
-                                    <td>{% trans 'Cash Loan' %}</td>
-                                    <td>{% trans 'Compensating Loan' %}</td>
-                                    <td>{% trans 'Substantial Aid' %}</td>
+                                    <td data-bind="visible: has_balance('foreign_cash_grant')">{% trans 'Cash Grant' %}</td>
+                                    <td data-bind="visible: has_balance('foreign_compensating_grant')">{% trans 'Compensating Grant' %}</td>
+                                    <td data-bind="visible: has_balance('foreign_cash_loan')">{% trans 'Cash Loan' %}</td>
+                                    <td data-bind="visible: has_balance('foreign_compensating_loan')">{% trans 'Compensating Loan' %}</td>
+                                    <td data-bind="visible: has_balance('foreign_substantial_aid')">{% trans 'Substantial Aid' %}</td>
                                 </tr>
                                 <tr>
-                                    <td>
+                                    <td data-bind="visible: has_balance('nepal_government')">
                                         <input type="text" data-bind="value: nepal_government">
                                     </td>
-                                    <td>
+                                    <td data-bind="visible: has_balance('foreign_cash_grant')">
                                         <input type="text" data-bind="value: foreign_cash_grant, autosize: 1">
                                     </td>
-                                    <td>
+                                    <td data-bind="visible: has_balance('foreign_compensating_grant')">
                                         <input type="text" data-bind="value: foreign_compensating_grant">
                                     </td>
-                                    <td>
+                                    <td data-bind="visible: has_balance('foreign_cash_loan')">
                                         <input type="text" data-bind="value: foreign_cash_loan, autosize: 1">
                                     </td>
-                                    <td>
+                                    <td data-bind="visible: has_balance('foreign_compensating_loan')">
                                         <input type="text" data-bind="value: foreign_compensating_loan">
                                     </td>
-                                    <td>
+                                    <td data-bind="visible: has_balance('foreign_substantial_aid')">
                                         <input type="text" data-bind="value: foreign_substantial_aid">
                                     </td>
                                 </tr>
