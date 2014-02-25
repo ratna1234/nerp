@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
-from core.models import Party, Employee, Donor, Activity, BudgetHead, TaxScheme
+from core.models import Party, Employee, Donor, Activity, BudgetHead, TaxScheme, BudgetBalance
 
 
 class PartySerializer(serializers.ModelSerializer):
@@ -31,11 +31,18 @@ class ActivitySerializer(serializers.ModelSerializer):
         model = Activity
 
 
+class BudgetBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BudgetBalance
+
+
 class BudgetSerializer(serializers.ModelSerializer):
     name = serializers.Field(source='__str__')
+    current_balance = BudgetBalanceSerializer()
 
     class Meta:
         model = BudgetHead
+        exclude = ['id', 'budget_head']
 
 
 class TaxSchemeSerializer(serializers.ModelSerializer):

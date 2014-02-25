@@ -37,7 +37,7 @@ class FiscalYear(models.Model):
         (2070, "2070/71"),
         (2071, "2071/72")
     )
-    year = models.IntegerField(choices=years)
+    year = models.IntegerField(choices=years, unique=True)
 
     def __str__(self):
         return str(self.year) + '/' + str(self.year - 1999)
@@ -80,6 +80,11 @@ class Activity(MultiNameModel):
 class BudgetHead(MultiNameModel):
     no = models.PositiveIntegerField()
 
+    def get_current_balance(self):
+        return BudgetBalance.objects.get(fiscal_year=AppSetting.objects.first(), budget_head=self)
+
+    current_balance = property(get_current_balance)
+
     def __str__(self):
         return transl(self.no) + ' - ' + self.name
 
@@ -88,7 +93,7 @@ class BudgetHead(MultiNameModel):
 
 
 class BudgetBalance(models.Model):
-    budget_head = models.ForeignKey(BudgetHead)
+    budget_head = models.ForeignKey(BudgetHead, related_name='balance')
     fiscal_year = models.ForeignKey(FiscalYear)
     nepal_government = models.FloatField(default=0)
     foreign_cash_grant = models.FloatField(default=0)
