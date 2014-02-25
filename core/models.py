@@ -77,23 +77,37 @@ class Activity(MultiNameModel):
         verbose_name_plural = 'Activities'
 
 
-class Budget(MultiNameModel):
+class BudgetHead(MultiNameModel):
     no = models.PositiveIntegerField()
-    nepal_government = models.FloatField(default=0)
-    foreign_cash_grant = models.FloatField(default=0)
-    foreign_compensating_grant = models.FloatField(default=0)
-    foreign_cash_loan = models.FloatField(default=0)
-    foreign_compensating_loan = models.FloatField(default=0)
-    foreign_substantial_aid = models.FloatField(default=0)
-
-    def total(self):
-        return self.nepal_government + self.foreign_cash_grant + self.foreign_compensating_grant + self.foreign_cash_loan + self.foreign_compensating_loan + self.foreign_substantial_aid
 
     def __str__(self):
         return transl(self.no) + ' - ' + self.name
 
     class Meta:
         verbose_name = 'Budget Head'
+
+
+class BudgetBalance(models.Model):
+    budget_head = models.ForeignKey(BudgetHead)
+    fiscal_year = models.ForeignKey(FiscalYear)
+    nepal_government = models.FloatField(default=0)
+    foreign_cash_grant = models.FloatField(default=0)
+    foreign_compensating_grant = models.FloatField(default=0)
+    foreign_cash_loan = models.FloatField(default=0)
+    foreign_compensating_loan = models.FloatField(default=0)
+    foreign_substantial_aid = models.FloatField(default=0)
+    nepal_government_due = models.FloatField(default=0)
+    foreign_cash_grant_due = models.FloatField(default=0)
+    foreign_compensating_grant_due = models.FloatField(default=0)
+    foreign_cash_loan_due = models.FloatField(default=0)
+    foreign_compensating_loan_due = models.FloatField(default=0)
+    foreign_substantial_aid_due = models.FloatField(default=0)
+
+    def total(self):
+        return self.nepal_government + self.foreign_cash_grant + self.foreign_compensating_grant + self.foreign_cash_loan + self.foreign_compensating_loan + self.foreign_substantial_aid
+
+    def __str__(self):
+        return self.budget_head.name + ' - ' + str(self.fiscal_year)
 
 
 class TaxScheme(MultiNameModel):
