@@ -96,18 +96,31 @@ class BudgetBalance(models.Model):
     foreign_cash_loan = models.FloatField(default=0)
     foreign_compensating_loan = models.FloatField(default=0)
     foreign_substantial_aid = models.FloatField(default=0)
-    nepal_government_due = models.FloatField(default=0)
-    foreign_cash_grant_due = models.FloatField(default=0)
-    foreign_compensating_grant_due = models.FloatField(default=0)
-    foreign_cash_loan_due = models.FloatField(default=0)
-    foreign_compensating_loan_due = models.FloatField(default=0)
-    foreign_substantial_aid_due = models.FloatField(default=0)
+    nepal_government_due = models.FloatField(default=0, editable=False)
+    foreign_cash_grant_due = models.FloatField(default=0, editable=False)
+    foreign_compensating_grant_due = models.FloatField(default=0, editable=False)
+    foreign_cash_loan_due = models.FloatField(default=0, editable=False)
+    foreign_compensating_loan_due = models.FloatField(default=0, editable=False)
+    foreign_substantial_aid_due = models.FloatField(default=0, editable=False)
 
     def total(self):
         return self.nepal_government + self.foreign_cash_grant + self.foreign_compensating_grant + self.foreign_cash_loan + self.foreign_compensating_loan + self.foreign_substantial_aid
 
     def __str__(self):
         return self.budget_head.name + ' - ' + str(self.fiscal_year)
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            self.nepal_government_due = self.nepal_government
+            self.foreign_cash_grant_due = self.foreign_cash_grant
+            self.foreign_compensating_grant_due= self.foreign_compensating_grant
+            self.foreign_cash_loan_due = self.foreign_cash_loan
+            self.foreign_compensating_loan_due = self.foreign_compensating_loan
+            self.foreign_substantial_aid_due = self.foreign_substantial_aid
+        super(BudgetBalance, self).save(*args, **kwargs)
+
+    class Meta:
+        unique_together = ['budget_head', 'fiscal_year']
 
 
 class TaxScheme(MultiNameModel):
