@@ -34,6 +34,8 @@ class ActivitySerializer(serializers.ModelSerializer):
 class BudgetBalanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = BudgetBalance
+        exclude = ['id', 'budget_head', 'fiscal_year', 'nepal_government', 'foreign_cash_grant', 'foreign_cash_loan',
+                   'foreign_compensating_grant', 'foreign_compensating_loan', 'foreign_substantial_aid']
 
 
 class BudgetSerializer(serializers.ModelSerializer):
@@ -42,7 +44,6 @@ class BudgetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BudgetHead
-        exclude = ['id', 'budget_head']
 
 
 class TaxSchemeSerializer(serializers.ModelSerializer):
