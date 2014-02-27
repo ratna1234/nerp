@@ -95,7 +95,9 @@
 <div class="row">
 
     <div class="large-12 columns right main-content" role="content">
+    {% block alert %}
         <div id="alert_placeholder"></div>
+    {% endblock %}
         {% block content %}
         {% endblock %}
     </div>
