@@ -10,10 +10,23 @@
     </script>
 {% endblock %}
 
+{% block alert %}
+    <div id="alert_placeholder">
+        <ul data-bind="foreach: errors.items" class="alert-error">
+            <li>
+                Budget for "<span data-bind="text: budget.name()"></span>" from source "<span data-bind="text: source"></span>" exceeds
+            </li>
+        </ul>
+    </div>
+{% endblock %}
+
 {% block  content %}
+
 
     <form method="post" enctype="multipart/form-data" data-bind="submit: save">
         {% csrf_token %}
+
+{#        <div data-bind="text: ko.toJSON($root)"></div>#}
 
         {% trans 'No.' %}
 
@@ -66,7 +79,9 @@
                              class="f-dropdown content amount-dropdown">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th rowspan="2" data-bind="visible: has_balance('nepal_government')">Nepal Government</th>
+                                    <th rowspan="2" data-bind="visible: has_balance('nepal_government')">Nepal
+                                        Government
+                                    </th>
                                     <th colspan="5" data-bind="visible: has_foreign()">Foreign</th>
                                 </tr>
                                 <tr>
@@ -122,7 +137,8 @@
                         </div>
                     </td>
                     <td>
-                        <input type="checkbox" data-bind="checked: vattable, event: {'focus': vattable_focused}, attr: {'data-index': $index()}">
+                        <input type="checkbox"
+                               data-bind="checked: vattable, event: {'focus': vattable_focused}, attr: {'data-index': $index()}">
                     </td>
                     <td data-bind="text: vat_amount()"></td>
                     <td>
@@ -146,7 +162,7 @@
             <a class="small secondary button" data-bind="click: addRow">
                 {% trans 'Add New Row' %}
             </a>
-            <input type="submit" class="small secondary button" value="{% trans 'Save' %}">
+            <input type="submit" class="small secondary button" value="{% trans 'Save' %}" data-bind="disable: $root.errors.items().length">
         </div>
 
     </form>
