@@ -9,6 +9,7 @@ from django import forms
 from django.forms import ModelChoiceField
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 
 class ExtFileField(forms.FileField):
@@ -310,8 +311,8 @@ class MultilingualModel(models.Model):
 
 
 class MultiNameModel(MultilingualModel):
-    name_ne = models.CharField(max_length=254, verbose_name='Name in Nepali', blank=True, null=True)
-    name_en = models.CharField(max_length=254, verbose_name='Name in English', blank=True, null=True)
+    name_ne = models.CharField(max_length=254, verbose_name=_('Name in Nepali'), blank=True, null=True)
+    name_en = models.CharField(max_length=254, verbose_name=_('Name in English'), blank=True, null=True)
 
     def __str__(self):
         return self.name
