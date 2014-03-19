@@ -13,11 +13,13 @@ class ItemForm(KOModelForm):
     unit = forms.CharField(label=_('Unit'))
     property_classification_reference_number = forms.CharField(label=_('Inventory Classification Reference No.'))
     account_no = forms.Field(widget=forms.TextInput(), label=_('Inventory Account No.'))
-    opening_balance = forms.Field(widget=forms.TextInput(), initial=0)
+    opening_balance = forms.Field(widget=forms.TextInput(), initial=0, label=_('Opening Balance'))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(ItemForm, self).__init__(*args, **kwargs)
+        self.fields['vattable'].label = _('Vattable')
+        self.fields['type'].label = _('Type')
         self.fields['account_no'].initial = InventoryAccount.get_next_account_no()
         if not self.user.in_group('Store Keeper'):
             self.fields['account_no'].widget = forms.HiddenInput()
