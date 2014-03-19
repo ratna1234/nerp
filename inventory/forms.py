@@ -3,11 +3,16 @@ from django import forms
 from app.libr import KOModelForm, UserModelChoiceField
 from models import Item, Category, Demand, PurchaseOrder, InventoryAccount, Handover, EntryReport
 from users.models import User
+from django.utils.translation import ugettext_lazy as _
 
 
 class ItemForm(KOModelForm):
     #category = TreeNodeChoiceField(queryset=Category.objects.all(), required=False)
-    account_no = forms.Field(widget=forms.TextInput())
+    name = forms.CharField(label=_('Name'))
+    description = forms.Field(label=_('Specification'), widget=forms.Textarea())
+    unit = forms.CharField(label=_('Unit'))
+    property_classification_reference_number = forms.CharField(label=_('Inventory Classification Reference No.'))
+    account_no = forms.Field(widget=forms.TextInput(), label=_('Inventory Account No.'))
     opening_balance = forms.Field(widget=forms.TextInput(), initial=0)
 
     def __init__(self, *args, **kwargs):
