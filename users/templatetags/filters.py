@@ -209,6 +209,11 @@ class AppCheckNode(template.Node):
 
 
 @register.filter
+def linebreaks(obj):
+    return mark_safe(obj.replace("\n", "<br>"))
+
+
+@register.filter
 def linkify(obj):
     return mark_safe('<a href="' + obj.get_absolute_url() + '">' + unicode(obj) + '</a>')
 
@@ -240,7 +245,7 @@ def localize(text):
         '८': '8',
         '९': '9'
     }
-    res = dict((v,k) for k,v in dic.iteritems())
+    res = dict((v, k) for k, v in dic.iteritems())
     for i, j in res.iteritems():
         text = text.replace(i, j)
     return text
