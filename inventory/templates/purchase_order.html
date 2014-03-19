@@ -43,7 +43,7 @@
             </div>
 
             <div class="column large-6 small-6 marginless-inputs">
-                {% trans 'Purchase Order' %} {% trans 'No.' %}: <input type="number" required="required" name="order_no" id="id_order_no" data-bind="value: order_no, localize: 1">
+                {% trans 'Purchase Order' %} {% trans 'No.' %}: <input type="number" name="order_no" id="id_order_no" data-bind="value: order_no, localize: 1">
                 {{ form.order_no.errors }}
                 <br>
                 {% trans 'Date' %}: <input type="text" required="required" name="date" id="id_date" data-bind="value: date, localize: 1">

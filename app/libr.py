@@ -86,6 +86,12 @@ def invalid(row, required_fields):
     return invalid_attrs
 
 
+def empty_to_none(o):
+    if o == '':
+        return None
+    return o
+
+
 def all_empty(row, required_fields):
     empty = True
     for attr in required_fields:

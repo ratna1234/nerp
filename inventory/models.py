@@ -320,7 +320,7 @@ class DemandRow(models.Model):
 
 
 class EntryReport(models.Model):
-    entry_report_no = models.PositiveIntegerField()
+    entry_report_no = models.PositiveIntegerField(blank=True, null=True)
     fiscal_year = models.ForeignKey(FiscalYear)
     source_content_type = models.ForeignKey(ContentType)
     source_object_id = models.PositiveIntegerField()
@@ -353,7 +353,7 @@ class EntryReportRow(models.Model):
 
 
 class Handover(models.Model):
-    voucher_no = models.PositiveIntegerField()
+    voucher_no = models.PositiveIntegerField(blank=True, null=True)
     addressee = models.CharField(max_length=254)
     date = models.DateField()
     office = models.CharField(max_length=254)
@@ -393,7 +393,7 @@ class HandoverRow(models.Model):
 
 class PurchaseOrder(models.Model):
     party = models.ForeignKey(Party)
-    order_no = models.IntegerField()
+    order_no = models.IntegerField(blank=True, null=True)
     date = models.DateField()
     due_days = models.IntegerField(default=3)
     fiscal_year = models.ForeignKey(FiscalYear)
