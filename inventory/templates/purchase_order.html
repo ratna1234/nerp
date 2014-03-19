@@ -30,7 +30,8 @@
         <div class="row">
 
             <div class="column large-6 small-6 selectize-inline">
-                {% trans 'Shree' %} <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
+                {% trans 'Shree' %} <input type="hidden" name="table_model"
+                                           data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
                 {#                <input type="hidden" data-url="{% url 'create_party' %}"#}
                 {#                       data-bind="value: party, select2: $root.parties">#}
                 <select data-bind="selectize: $root.parties, value: party, event: {change: $root.party_changed}"
@@ -43,10 +44,12 @@
             </div>
 
             <div class="column large-6 small-6 marginless-inputs">
-                {% trans 'Purchase Order' %} {% trans 'No.' %}: <input type="number" name="order_no" id="id_order_no" data-bind="value: order_no, localize: 1">
+                {% trans 'Purchase Order' %} {% trans 'No.' %}: <input type="number" name="order_no" id="id_order_no"
+                                                                       data-bind="value: order_no, localize: 1">
                 {{ form.order_no.errors }}
                 <br>
-                {% trans 'Date' %}: <input type="text" required="required" name="date" id="id_date" data-bind="value: date, localize: 1">
+                {% trans 'Date' %}: <input type="text" required="required" name="date" id="id_date"
+                                           data-bind="value: date, localize: 1">
                 {{ form.date.errors }}
             </div>
         </div>
@@ -162,7 +165,7 @@
         </div>
     </div>
 
-    <table class="table table-bordered">
+    <table class="table table-bordered print-only">
         <tr>
             <td><u>{% trans 'To be filled by financial administration section' %}</u>:-<br><br>
                 माथि उल्लेखि सामानहरु बजट उपशिर्षक न. .............. को खर्च शिर्षक न. .......... बाट भुक्तानी दिन बजेट
@@ -195,9 +198,13 @@
         </tr>
     </table>
 
-    माथि उल्लेखित सामानहरु मिति .......................... भित्र
-    .............................................................. कार्यालयमा बुझाउने  छु भनी सहिछाप गर्ने ।
-    <br>
+    <div class="print-only">
+
+        माथि उल्लेखित सामानहरु मिति .......................... भित्र
+        .............................................................. कार्यालयमा बुझाउने छु भनी सहिछाप गर्ने ।
+        <br>
+
+    </div>
 
 
     <div class="row print-only">
