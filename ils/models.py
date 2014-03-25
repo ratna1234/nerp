@@ -20,7 +20,8 @@ class Subject(MPTTModel):
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
+    identifier = models.CharField(max_length=50, null=True, blank=True)
     slug = models.SlugField(max_length=255, blank=True)
 
     def __unicode__(self):
@@ -31,12 +32,17 @@ class Author(models.Model):
         super(Author, self).save(*args, **kwargs)
 
 
+class Publisher(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, blank=True)
+
+
 class Book(models.Model):
     title = models.CharField(max_length=254)
     subtitle = models.CharField(max_length=254, null=True, blank=True)
     authors = models.ManyToManyField(Author)
     language = models.CharField(max_length=7, choices=LANGUAGES, default='en', null=True, blank=True)
-    subject = models.ForeignKey(Subject)
+    subject = models.ManyToManyField(Subject)
     slug = models.SlugField(max_length=255, blank=True)
 
     def __unicode__(self):
@@ -66,6 +72,9 @@ class Record(models.Model):
     )
     type = models.CharField(choices=types, unique=True, max_length=11)
     book = models.ForeignKey(Book)
+    openlibrary_url = models.URLField(blank=True, null=True)
+    thumbnail = models.ImageField(blank=True, null=True)
+    publisher = models.ForeignKey(Publisher)
 
     def __unicode__(self):
         return self.book.title + ' (' + self.edition + ') ' + ' [' + self.format + ']'
