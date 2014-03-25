@@ -2,9 +2,10 @@ from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django.conf.global_settings import LANGUAGES
 from app.libr import unique_slugify
+from users.models import User
 
 
-class Category(MPTTModel):
+class Subject(MPTTModel):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=254, null=True, blank=True)
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children')
@@ -15,10 +16,7 @@ class Category(MPTTModel):
 
     def save(self, *args, **kwargs):
         unique_slugify(self, self.name)
-        super(Category, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = u'Book Categories'
+        super(Subject, self).save(*args, **kwargs)
 
 
 class Author(models.Model):
@@ -35,9 +33,10 @@ class Author(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=254)
-    author = models.ForeignKey(Author)
-    language = models.CharField(max_length=7, choices=LANGUAGES, default='en')
-    category = models.ForeignKey(Category)
+    subtitle = models.CharField(max_length=254, null=True, blank=True)
+    authors = models.ManyToManyField(Author)
+    language = models.CharField(max_length=7, choices=LANGUAGES, default='en', null=True, blank=True)
+    subject = models.ForeignKey(Subject)
     slug = models.SlugField(max_length=255, blank=True)
 
     def __unicode__(self):
@@ -48,4 +47,41 @@ class Book(models.Model):
         super(Book, self).save(*args, **kwargs)
 
 
+class Record(models.Model):
+    edition = models.CharField(max_length=254, null=True, blank=True)
+    formats = (
+        ('paperback', 'Paperback'),
+        ('hardcover', 'Hardcover'),
+        ('ebook', 'eBook')
+    )
+    format = models.CharField(max_length=10, default='Paperback', choices=formats)
+    pagination = models.CharField(max_length=254, null=True, blank=True)
+    isbn13 = models.CharField(max_length=254, null=True, blank=True)
+    date_of_publication = models.DateField(null=True, blank=True)
+    price = models.FloatField(null=True, blank=True)
+    quantity = models.PositiveIntegerField()
+    types = (
+        ('reference', 'Reference'),
+        ('circulative', 'Circulative')
+    )
+    type = models.CharField(choices=types, unique=True, max_length=11)
+    book = models.ForeignKey(Book)
 
+    def __unicode__(self):
+        return self.book.title + ' (' + self.edition + ') ' + ' [' + self.format + ']'
+
+
+class Transaction(models.Model):
+    record = models.ForeignKey(Record)
+    user = models.ForeignKey(User)
+    borrow_date = models.DateField()
+    due_date = models.DateField()
+    return_date = models.DateField(null=True, blank=True)
+    returned = models.BooleanField(default=False)
+    fine_per_day = models.FloatField()
+    fine_paid = models.FloatField(default=False)
+
+
+class LibrarySetting(models.Model):
+    fine_per_day = models.FloatField()
+    borrow_days = models.PositiveIntegerField()

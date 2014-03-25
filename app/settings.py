@@ -114,6 +114,7 @@ INSTALLED_APPS = (
     'inventory',
     'account',
     'core',
+    'ils',
 
 
     'django.contrib.admin',
