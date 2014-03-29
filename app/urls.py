@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
                        (r'^account/', include('account.urls')),
                        (r'^inventory/', include('inventory.urls')),
+                       (r'^library/', include('ils.urls')),
 
                        url(r'^admin/', include(admin.site.urls)),
                        (r'^i18n/', include('django.conf.urls.i18n')),
