@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from ils.serializers import RecordSerializer
 import isbn as isbnpy
 import urllib2, urllib
 import json
@@ -13,18 +14,22 @@ pp = pprint.PrettyPrinter(indent=4).pprint
 
 # Create your views here.
 def acquisition(request):
+    record_data = {}
     if request.GET.get('isbn'):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
-            response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
+            # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
+            response = urllib2.urlopen('http://localhost/1.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
                 isbn = isbnpy.convert(isbn)
             try:
                 record = Record.objects.get(isbn13=isbn)
+                new_record = False
             except Record.DoesNotExist:
                 record = Record(isbn13=isbn)
+                new_record = True
                 # pp(data)
             if record.book_id:
                 book = record.book
@@ -33,14 +38,15 @@ def acquisition(request):
             book.title = data['data']['title']
             book.save()
             record.pagination = data['data']['number_of_pages']
-            record.format = data['details']['details']['physical_format']
+            record.format = data['details']['details']['physical_format'].lower()
             record.openlibrary_url = data['data']['url']
             record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %d, %Y').date()
             record.openlibrary_id = data['data']['identifiers']['openlibrary'][0]
             record.goodreads_id = data['data']['identifiers']['goodreads'][0]
             record.librarything_id = data['data']['identifiers']['librarything'][0]
             record.book = book
-            record.date_added = datetime.today()
+            if new_record:
+                record.date_added = datetime.today()
             record.save()
             record.book.authors.all().delete()
             for author in data['details']['details']['authors']:
@@ -67,32 +73,34 @@ def acquisition(request):
             #     book_publisher.save()
             # record.publisher = book_publisher
 
-            cover_url = data['data']['cover']['large']
-            result = urllib.urlretrieve(cover_url)
-            record.large_cover.save(
-                os.path.basename(cover_url),
-                File(open(result[0]))
-            )
-            cover_url = data['data']['cover']['medium']
-            result = urllib.urlretrieve(cover_url)
-            record.medium_cover.save(
-                os.path.basename(cover_url),
-                File(open(result[0]))
-            )
-            cover_url = data['data']['cover']['small']
-            result = urllib.urlretrieve(cover_url)
-            record.small_cover.save(
-                os.path.basename(cover_url),
-                File(open(result[0]))
-            )
-            thumbnail_url = data['details']['thumbnail_url']
-            result = urllib.urlretrieve(thumbnail_url)
-            record.small_cover.save(
-                os.path.basename(thumbnail_url),
-                File(open(result[0]))
-            )
+            # cover_url = data['data']['cover']['large']
+            # result = urllib.urlretrieve(cover_url)
+            # record.large_cover.save(
+            #     os.path.basename(cover_url),
+            #     File(open(result[0]))
+            # )
+            # cover_url = data['data']['cover']['medium']
+            # result = urllib.urlretrieve(cover_url)
+            # record.medium_cover.save(
+            #     os.path.basename(cover_url),
+            #     File(open(result[0]))
+            # )
+            # cover_url = data['data']['cover']['small']
+            # result = urllib.urlretrieve(cover_url)
+            # record.small_cover.save(
+            #     os.path.basename(cover_url),
+            #     File(open(result[0]))
+            # )
+            # thumbnail_url = data['details']['thumbnail_url']
+            # result = urllib.urlretrieve(thumbnail_url)
+            # record.small_cover.save(
+            #     os.path.basename(thumbnail_url),
+            #     File(open(result[0]))
+            # )
 
-            import pdb
+            # import pdb
+            #
+            # pdb.set_trace()
+            record_data = RecordSerializer(record).data
 
-            pdb.set_trace()
-    return render(request, 'acquisition.html', {})
+    return render(request, 'acquisition.html', {'data': record_data})

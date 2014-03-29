@@ -12,14 +12,21 @@
 {% endblock %}
 
 {% block head_end %}
-
+    <script src="{{ STATIC_URL }}js/ils/acquisition.js"></script>
+    <script>
+        ko_data = {{data|jsonify}};
+    </script>
 {% endblock %}
 
 {% block content %}
 
+    {{ data|jsonify }}
+
     <form>
         ISBN:
-        <input type="text" name="isbn" size="20">
+        <input type="text" name="isbn" size="20" data-bind="value: isbn13">
     </form>
+
+    <input type="text" data-bind="value: book.title">
 
 {% endblock %}
