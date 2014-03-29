@@ -72,7 +72,7 @@ class Record(models.Model):
     isbn13 = models.CharField(max_length=254, null=True, blank=True)
     date_of_publication = models.DateField(null=True, blank=True)
     price = models.FloatField(null=True, blank=True)
-    quantity = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(null=True, blank=True)
     types = (
         ('reference', 'Reference'),
         ('circulative', 'Circulative')
