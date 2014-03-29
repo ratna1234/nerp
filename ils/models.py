@@ -36,6 +36,13 @@ class Publisher(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, blank=True)
 
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        unique_slugify(self, self.name)
+        super(Publisher, self).save(*args, **kwargs)
+
 
 class Book(models.Model):
     title = models.CharField(max_length=254)
@@ -81,7 +88,7 @@ class Record(models.Model):
     date_added = models.DateField()
     goodreads_id = models.PositiveIntegerField(null=True, blank=True)
     librarything_id = models.PositiveIntegerField(null=True, blank=True)
-    openlibrary_id = models.PositiveIntegerField(null=True, blank=True)
+    openlibrary_id = models.CharField(max_length=254, null=True, blank=True)
 
     def __unicode__(self):
         return self.book.title + ' (' + self.edition + ') ' + ' [' + self.format + ']'
