@@ -78,6 +78,10 @@ class Record(models.Model):
     medium_cover = models.ImageField(blank=True, null=True, upload_to='ils/covers/medium/')
     large_cover = models.ImageField(blank=True, null=True, upload_to='ils/covers/large/')
     publisher = models.ForeignKey(Publisher, blank=True, null=True)
+    date_added = models.DateField()
+    goodreads_id = models.PositiveIntegerField(null=True, blank=True)
+    librarything_id = models.PositiveIntegerField(null=True, blank=True)
+    openlibrary_id = models.PositiveIntegerField(null=True, blank=True)
 
     def __unicode__(self):
         return self.book.title + ' (' + self.edition + ') ' + ' [' + self.format + ']'
