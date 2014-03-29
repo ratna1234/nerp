@@ -91,7 +91,7 @@ class Record(models.Model):
     openlibrary_id = models.CharField(max_length=254, null=True, blank=True)
 
     def __unicode__(self):
-        return self.book.title + ' (' + self.edition + ') ' + ' [' + self.format + ']'
+        return self.book.title
 
 
 class BookFile(models.Model):
@@ -113,3 +113,8 @@ class Transaction(models.Model):
 class LibrarySetting(models.Model):
     fine_per_day = models.FloatField()
     borrow_days = models.PositiveIntegerField()
+    types = (
+        ('reference', 'Reference'),
+        ('circulative', 'Circulative')
+    )
+    default_type = models.CharField(choices=types, unique=True, max_length=11, default='circulative')
