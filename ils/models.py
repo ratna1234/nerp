@@ -83,6 +83,11 @@ class Record(models.Model):
         return self.book.title + ' (' + self.edition + ') ' + ' [' + self.format + ']'
 
 
+class BookFile(models.Model):
+    file = models.FileField(upload_to='ils/books/')
+    record = models.ForeignKey(Record, related_name='files')
+
+
 class Transaction(models.Model):
     record = models.ForeignKey(Record)
     user = models.ForeignKey(User)
