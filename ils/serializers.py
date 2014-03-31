@@ -2,12 +2,18 @@ from rest_framework import serializers
 from models import Book, Record, Author, Publisher
 
 
+class PublisherSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publisher
+
+
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
 
 
 class RecordSerializer(serializers.ModelSerializer):
+    publisher = PublisherSerializer()
     book = BookSerializer()
 
     class Meta:
