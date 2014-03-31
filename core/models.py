@@ -13,6 +13,9 @@ class Language(models.Model):
     code = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
 
+    def __unicode__(self):
+        return self.name + ' (' + self.code + ')'
+
 
 class Account(MultiNameModel):
     # account_page_no = models.IntegerField()
