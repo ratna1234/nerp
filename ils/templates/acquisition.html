@@ -53,7 +53,7 @@
         <input type="text" data-bind="value: quantity" id="quantity">
 
         <label for="publisher">Publisher</label>
-        <input type="text" data-bind="value: publisher" id="publisher">
+        <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher"></select>
 
     </form>
 
