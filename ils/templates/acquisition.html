@@ -23,10 +23,38 @@
     {{ data|jsonify }}
 
     <form>
-        ISBN:
-        <input type="text" name="isbn" size="20" data-bind="value: isbn13">
+        <label for="isbn">ISBN</label>
+        <input type="text" name="isbn" size="20" data-bind="value: isbn13" id="isbn">
     </form>
 
-    <input type="text" data-bind="value: book.title">
+    <form method="post">
+
+        <input type="hidden" data-bind="value: isbn13">
+
+        <label for="title">Title</label>
+        <input type="text" data-bind="value: book.title" id="title">
+
+        <label for="subtitle">Sub-title</label>
+        <input type="text" data-bind="value: book.subtitle" id="subtitle">
+
+        <label for="edition">Edition</label>
+        <input type="text" data-bind="value: edition" id="edition">
+
+        <label for="pagination">Pagination</label>
+        <input type="text" data-bind="value: pagination" id="pagination">
+
+        <label for="date_of_publication">Date of Publication</label>
+        <input type="text" data-bind="value: date_of_publication" id="date_of_publication">
+
+        <label for="price">Price</label>
+        <input type="text" data-bind="value: price" id="price">
+
+        <label for="quantity">Quantity</label>
+        <input type="text" data-bind="value: quantity" id="quantity">
+
+        <label for="publisher">Publisher</label>
+        <input type="text" data-bind="value: publisher" id="publisher">
+
+    </form>
 
 {% endblock %}
