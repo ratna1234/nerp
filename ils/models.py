@@ -1,6 +1,6 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
-from django.conf.global_settings import LANGUAGES
+from core.models import Language
 from app.libr import unique_slugify
 from users.models import User
 
@@ -48,8 +48,8 @@ class Book(models.Model):
     title = models.CharField(max_length=254)
     subtitle = models.CharField(max_length=254, null=True, blank=True)
     authors = models.ManyToManyField(Author)
-    language = models.CharField(max_length=7, choices=LANGUAGES, default='en', null=True, blank=True)
-    subject = models.ManyToManyField(Subject)
+    languages = models.ManyToManyField(Language)
+    subjects = models.ManyToManyField(Subject)
     slug = models.SlugField(max_length=255, blank=True)
 
     def __unicode__(self):
