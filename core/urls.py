@@ -20,5 +20,6 @@ urlpatterns = patterns('',
                        url(r'^activities.json$', views.activities_as_json, name='activities_as_json'),
                        url(r'^donors.json$', views.donors_as_json, name='donors_as_json'),
                        url(r'^tax_schemes.json$', views.tax_schemes_as_json, name='tax_schemes_as_json'),
+                       url(r'^languages.json$', views.languages_as_json, name='languages_as_json'),
 
 )

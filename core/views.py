@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from account.serializers import AccountSerializer
 from app.libr import form_view
 from core.forms import PartyForm, EmployeeForm
-from core.models import Party, Employee, BudgetHead, Donor, Activity, Account, TaxScheme
-from core.serializers import PartySerializer, EmployeeSerializer, BudgetSerializer, ActivitySerializer, DonorSerializer, TaxSchemeSerializer
+from core.models import Party, Employee, BudgetHead, Donor, Activity, Account, TaxScheme, Language
+from core.serializers import PartySerializer, EmployeeSerializer, BudgetSerializer, ActivitySerializer, DonorSerializer, TaxSchemeSerializer, LanguageSerializer
 from users.models import group_required
 import json
 
@@ -118,4 +118,10 @@ def accounts_as_json(request):
 def tax_schemes_as_json(request):
     objects = TaxScheme.objects.all()
     objects_data = TaxSchemeSerializer(objects).data
+    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+
+
+def languages_as_json(request):
+    objects = Language.objects.all()
+    objects_data = LanguageSerializer(objects).data
     return HttpResponse(json.dumps(objects_data), mimetype="application/json")
