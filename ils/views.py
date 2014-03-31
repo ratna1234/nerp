@@ -119,4 +119,4 @@ def acquisition(request):
             # pdb.set_trace()
             record_data = RecordSerializer(record).data
 
-    return render(request, 'acquisition.html', {'data': record_data})
+    return render(request, 'acquisition.html', {'data': record_data, 'book': book, 'record': record})
