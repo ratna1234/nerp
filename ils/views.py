@@ -66,12 +66,12 @@ def acquisition(request):
             #         book_publisher = Publisher(name=publisher['name'])
             #         book_publisher.save()
             #     record.publishers.add(book_publisher)
-            # try:
-            #     book_publisher = Publisher.objects.get(name=data['details']['details']['publishers'][0]['name'])
-            # except Publisher.DoesNotExist:
-            #     book_publisher = Publisher(name=data['details']['details']['publishers'][0]['name'])
-            #     book_publisher.save()
-            # record.publisher = book_publisher
+            try:
+                book_publisher = Publisher.objects.get(name=data['details']['details']['publishers'][0])
+            except Publisher.DoesNotExist:
+                book_publisher = Publisher(name=data['details']['details']['publishers'][0])
+                book_publisher.save()
+            record.publisher = book_publisher
 
             # cover_url = data['data']['cover']['large']
             # result = urllib.urlretrieve(cover_url)
