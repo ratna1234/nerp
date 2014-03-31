@@ -13,18 +13,22 @@ class PublisherSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    authors = AuthorSerializer()
+    # authors = AuthorSerializer()
+    # author_id = serializers.Field(source='author.id')
 
     class Meta:
         model = Book
+        exclude = ['id', 'slug']
 
 
 class RecordSerializer(serializers.ModelSerializer):
-    publisher = PublisherSerializer()
+    # publisher = PublisherSerializer()
     book = BookSerializer()
+    publisher_id = serializers.Field(source='publisher.id')
 
     class Meta:
         model = Record
+        exclude = ['slug', 'publisher']
 
 
         # class AccountSerializer(serializers.ModelSerializer):
