@@ -9,6 +9,11 @@ SOURCES = [('nepal_government', 'Nepal Government'), ('foreign_cash_grant', 'For
            ('foreign_substantial_aid', 'Foreign Substantial Aid')]
 
 
+class Language(models.Model):
+    code = models.CharField(max_length=10)
+    name = models.CharField(max_length=100)
+
+
 class Account(MultiNameModel):
     # account_page_no = models.IntegerField()
     pass
@@ -118,7 +123,7 @@ class BudgetBalance(models.Model):
         if self.pk is None:
             self.nepal_government_due = self.nepal_government
             self.foreign_cash_grant_due = self.foreign_cash_grant
-            self.foreign_compensating_grant_due= self.foreign_compensating_grant
+            self.foreign_compensating_grant_due = self.foreign_compensating_grant
             self.foreign_cash_loan_due = self.foreign_cash_loan
             self.foreign_compensating_loan_due = self.foreign_compensating_loan
             self.foreign_substantial_aid_due = self.foreign_substantial_aid
