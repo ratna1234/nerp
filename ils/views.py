@@ -31,6 +31,7 @@ def publishers_as_json(request):
 # Create your views here.
 def acquisition(request):
     record_data = {}
+    # record = None
     if request.GET.get('isbn'):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
@@ -64,7 +65,7 @@ def acquisition(request):
             if new_record:
                 record.date_added = datetime.today()
             record.save()
-            record.book.authors.all().delete()
+            record.book.authors.clear()
             for author in data['details']['details']['authors']:
                 author_key = author['key'].replace('/authors/', '')
                 try:
@@ -119,4 +120,4 @@ def acquisition(request):
             # pdb.set_trace()
             record_data = RecordSerializer(record).data
 
-    return render(request, 'acquisition.html', {'data': record_data, 'book': book, 'record': record})
+    return render(request, 'acquisition.html', {'data': record_data})
