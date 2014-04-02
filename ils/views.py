@@ -61,7 +61,12 @@ def acquisition(request):
                 book = Book()
             book.title = data['data']['title']
             book.save()
-            record.pagination = data['data']['number_of_pages']
+
+            if data['details']['details'].has_key('pagination'):
+                record.pagination = data['data']['pagination']
+            elif data['details']['details'].has_key('number_of_pages'):
+                record.pagination = str(data['data']['number_of_pages']) + ' p.'
+
             if data['details']['details'].has_key('physical_format'):
                 record.format = data['details']['details']['physical_format'].lower()
             record.openlibrary_url = data['data']['url']
@@ -72,7 +77,7 @@ def acquisition(request):
                 record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%Y').date()
                 record.publication_has_month = False
                 record.publication_has_day = False
-                
+
             record.openlibrary_id = data['data']['identifiers']['openlibrary'][0]
             record.goodreads_id = data['data']['identifiers']['goodreads'][0]
             record.librarything_id = data['data']['identifiers']['librarything'][0]
