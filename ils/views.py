@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
-from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer
+from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer
 import isbn as isbnpy
 import urllib2, urllib
 import json
@@ -25,6 +25,13 @@ def authors_as_json(request):
 def publishers_as_json(request):
     items = Publisher.objects.all()
     items_data = PublisherSerializer(items).data
+    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+
+
+@login_required
+def subjects_as_json(request):
+    items = Subject.objects.all()
+    items_data = SubjectSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
