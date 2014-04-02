@@ -62,7 +62,8 @@ def acquisition(request):
             book.title = data['data']['title']
             book.save()
             record.pagination = data['data']['number_of_pages']
-            record.format = data['details']['details']['physical_format'].lower()
+            if data['details']['details'].has_key('physical_format'):
+                record.format = data['details']['details']['physical_format'].lower()
             record.openlibrary_url = data['data']['url']
             record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %d, %Y').date()
             record.openlibrary_id = data['data']['identifiers']['openlibrary'][0]

@@ -52,6 +52,13 @@
         <label for="quantity">Quantity</label>
         <input type="text" data-bind="value: quantity" id="quantity">
 
+        <label for="quantity">Format</label>
+        <select id="format" name="format" data-bind="value: format">
+            <option value="paperback">Paperback</option>
+            <option value="hardcover">Hardcover</option>
+            <option value="ebook">Ebook</option>
+        </select>
+
         <label for="publisher">Publisher</label>
         <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher"></select>
 
