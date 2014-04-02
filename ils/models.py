@@ -71,6 +71,8 @@ class Record(models.Model):
     pagination = models.CharField(max_length=254, null=True, blank=True)
     isbn13 = models.CharField(max_length=254, null=True, blank=True)
     date_of_publication = models.DateField(null=True, blank=True)
+    publication_has_month = models.BooleanField(default=True)
+    publication_has_day = models.BooleanField(default=True)
     price = models.FloatField(null=True, blank=True)
     quantity = models.PositiveIntegerField(null=True, blank=True)
     types = (

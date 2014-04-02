@@ -43,7 +43,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/1.json')
+            response = urllib2.urlopen('http://localhost/2.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -65,7 +65,14 @@ def acquisition(request):
             if data['details']['details'].has_key('physical_format'):
                 record.format = data['details']['details']['physical_format'].lower()
             record.openlibrary_url = data['data']['url']
-            record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %d, %Y').date()
+
+            try:
+                record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %d, %Y').date()
+            except ValueError:
+                record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%Y').date()
+                record.publication_has_month = False
+                record.publication_has_day = False
+                
             record.openlibrary_id = data['data']['identifiers']['openlibrary'][0]
             record.goodreads_id = data['data']['identifiers']['goodreads'][0]
             record.librarything_id = data['data']['identifiers']['librarything'][0]
