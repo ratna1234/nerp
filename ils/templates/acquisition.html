@@ -55,6 +55,14 @@
         <label for="publisher">Publisher</label>
         <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher"></select>
 
+        <label for="languages">Languages</label>
+        <select data-bind="selectize: $root.languages, selectedOptions: book.languages" size="5" multiple="true">
+        </select>
+
+        <select id="authors" name="authors" size="5" multiple="true"
+                    data-bind="options: authors, selectedOptions: book.authors, optionsText: 'name', optionsValue: 'id'">
+        </select>
+
     </form>
 
 {% endblock %}
