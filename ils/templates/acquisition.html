@@ -59,8 +59,12 @@
         <select data-bind="selectize: $root.languages, selectedOptions: book.languages" size="5" multiple="true">
         </select>
 
-        <select id="authors" name="authors" size="5" multiple="true"
-                    data-bind="options: authors, selectedOptions: book.authors, optionsText: 'name', optionsValue: 'id'">
+        <select id="subjects" name="subjects" multiple="true"
+                data-bind="options: subjects, selectedOptions: book.subjects, optionsText: 'name', optionsValue: 'id'">
+        </select>
+
+        <select id="authors" name="authors" multiple="true"
+                data-bind="options: authors, selectedOptions: book.authors, optionsText: 'name', optionsValue: 'id'">
         </select>
 
     </form>
