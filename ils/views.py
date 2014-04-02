@@ -6,7 +6,7 @@ import isbn as isbnpy
 import urllib2, urllib
 import json
 import pprint
-from models import Record, Author, Publisher, Book
+from models import Record, Author, Publisher, Book, Subject
 import os
 from django.core.files import File
 from datetime import datetime
@@ -75,7 +75,17 @@ def acquisition(request):
                 book_author.name = author['name']
                 book_author.save()
                 record.book.authors.add(book_author)
-                # record.publishers.all().delete()
+
+            record.book.subjects.clear()
+            for subject in data['details']['details']['subjects']:
+                try:
+                    book_subject = Subject.objects.get(name=subject)
+                except Subject.DoesNotExist:
+                    book_subject = Subject(name=subject)
+                book_subject.save()
+                record.book.subjects.add(book_subject)
+
+            # record.publishers.clear()
             # for publisher in data['details']['details']['publishers']:
             #     try:
             #         book_publisher = Publisher.objects.get(name=publisher['name'])
