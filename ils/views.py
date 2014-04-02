@@ -67,6 +67,9 @@ def acquisition(request):
             elif data['details']['details'].has_key('number_of_pages'):
                 record.pagination = str(data['data']['number_of_pages']) + ' p.'
 
+            if data['details']['details'].has_key('subtitle'):
+                book.subtitle = data['details']['details']['subtitle']
+
             if data['details']['details'].has_key('physical_format'):
                 record.format = data['details']['details']['physical_format'].lower()
             record.openlibrary_url = data['data']['url']
