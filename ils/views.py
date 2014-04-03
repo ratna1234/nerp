@@ -74,6 +74,12 @@ def acquisition(request):
                 record.format = data['details']['details']['physical_format'].lower()
             record.openlibrary_url = data['data']['url']
 
+            if data['data'].has_key('classifications'):
+                if data['data']['classifications'].has_key('dewey_decimal_class'):
+                    record.ddc = data['data']['classifications'].get('dewey_decimal_class')[0]
+                if data['data']['classifications'].has_key('lc_classifications'):
+                    record.lcc = data['data']['classifications'].get('lc_classifications')[0]
+
             try:
                 record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %d, %Y').date()
             except ValueError:
@@ -81,13 +87,23 @@ def acquisition(request):
                 record.publication_has_month = False
                 record.publication_has_day = False
 
-            record.openlibrary_id = data['data']['identifiers']['openlibrary'][0]
-            record.goodreads_id = data['data']['identifiers']['goodreads'][0]
-            record.librarything_id = data['data']['identifiers']['librarything'][0]
+            if data['data'].has_key('identifiers'):
+                if data['data']['identifiers'].has_key('openlibrary'):
+                    record.openlibrary_id = data['data']['identifiers']['openlibrary'][0]
+                if data['data']['identifiers'].has_key('goodreads'):
+                    record.goodreads_id = data['data']['identifiers']['goodreads'][0]
+                if data['data']['identifiers'].has_key('librarything'):
+                    record.librarything_id = data['data']['identifiers']['librarything'][0]
+                if data['data']['identifiers'].has_key('oclc'):
+                    record.oclc_id = data['data']['identifiers']['oclc'][0]
+                if data['data']['identifiers'].has_key('lccn'):
+                    record.lccn_id = data['data']['identifiers']['lccn'][0]
+
             record.book = book
             if new_record:
                 record.date_added = datetime.today()
             record.save()
+
             record.book.authors.clear()
             for author in data['details']['details']['authors']:
                 author_key = author['key'].replace('/authors/', '')

@@ -91,6 +91,10 @@ class Record(models.Model):
     goodreads_id = models.PositiveIntegerField(null=True, blank=True)
     librarything_id = models.PositiveIntegerField(null=True, blank=True)
     openlibrary_id = models.CharField(max_length=254, null=True, blank=True)
+    lcc = models.CharField(max_length=100, null=True, blank=True)
+    ddc = models.CharField(max_length=100, null=True, blank=True)
+    lccn_id = models.CharField(max_length=100, null=True, blank=True)
+    oclc_id = models.CharField(max_length=100, null=True, blank=True)
 
     def __unicode__(self):
         return self.book.title
