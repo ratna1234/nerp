@@ -32,6 +32,18 @@ class Author(models.Model):
         super(Author, self).save(*args, **kwargs)
 
 
+class Place(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, blank=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        unique_slugify(self, self.name)
+        super(Place, self).save(*args, **kwargs)
+
+
 class Publisher(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, blank=True)
@@ -95,6 +107,7 @@ class Record(models.Model):
     ddc = models.CharField(max_length=100, null=True, blank=True)
     lccn_id = models.CharField(max_length=100, null=True, blank=True)
     oclc_id = models.CharField(max_length=100, null=True, blank=True)
+    published_places = models.ManyToManyField(Place)
 
     def __unicode__(self):
         return self.book.title

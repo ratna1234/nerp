@@ -84,6 +84,8 @@ def acquisition(request):
 
             try:
                 record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %d, %Y').date()
+                record.publication_has_month = True
+                record.publication_has_day = True
             except ValueError:
                 try:
                     record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%Y').date()
@@ -92,6 +94,7 @@ def acquisition(request):
                 except ValueError:
                     record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %Y').date()
                     record.publication_has_day = False
+                    record.publication_has_month = True
 
             if data['data'].has_key('identifiers'):
                 if data['data']['identifiers'].has_key('openlibrary'):
