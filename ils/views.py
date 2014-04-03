@@ -8,7 +8,7 @@ import isbn as isbnpy
 import urllib2, urllib
 import json
 import pprint
-from models import Record, Author, Publisher, Book, Subject, Place
+from models import Record, Author, Publisher, Book, Subject, Place, BookFile
 import os
 from django.core.files import File
 from datetime import datetime
@@ -45,7 +45,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/json/2.json')
+            response = urllib2.urlopen('http://localhost/json/3.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -115,16 +115,6 @@ def acquisition(request):
                 if data['data']['identifiers'].has_key('lccn'):
                     record.lccn_id = data['data']['identifiers']['lccn'][0]
 
-            if data['data'].has_key('publish_places'):
-                record.published_places.clear()
-                for place in data['data']['publish_places']:
-                    try:
-                        published_place = Place.objects.get(name=place['name'])
-                    except Place.DoesNotExist:
-                        published_place = Place(name=place['name'])
-                    published_place.save()
-                    record.published_places.add(published_place)
-
             if data['details']['details'].has_key('languages'):
                 record.book.languages.clear()
                 for lang in data['details']['details']['languages']:
@@ -146,12 +136,22 @@ def acquisition(request):
                 record.notes = data['data'].get('notes')
 
             if data['data'].has_key('excerpts'):
-                record.excerpt= data['data'].get('excerpts')[0].get('text')
+                record.excerpt = data['data'].get('excerpts')[0].get('text')
 
             record.book = book
             if new_record:
                 record.date_added = datetime.today()
             record.save()
+
+            if data['data'].has_key('publish_places'):
+                record.published_places.clear()
+                for place in data['data']['publish_places']:
+                    try:
+                        published_place = Place.objects.get(name=place['name'])
+                    except Place.DoesNotExist:
+                        published_place = Place(name=place['name'])
+                    published_place.save()
+                    record.published_places.add(published_place)
 
             record.book.authors.clear()
             for author in data['details']['details']['authors']:
@@ -163,6 +163,20 @@ def acquisition(request):
                 book_author.name = author['name']
                 book_author.save()
                 record.book.authors.add(book_author)
+
+            if data['data'].has_key('ebooks'):
+                if data['data']['ebooks'][0].has_key('formats'):
+                    formats = data['data']['ebooks'][0]['formats']
+                    for book_format in formats:
+                        if formats[book_format].has_key('url'):
+                            url = formats[book_format].get('url')
+                            result = urllib.urlretrieve(url)
+                            book_file = BookFile(record=record)
+                            book_file.file.save(
+                                os.path.basename(url),
+                                File(open(result[0]))
+                            )
+                            book_file.save()
 
             subjects = None
             if data['details']['details'].has_key('subjects'):
