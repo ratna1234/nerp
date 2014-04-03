@@ -145,6 +145,9 @@ def acquisition(request):
             if data['data'].has_key('notes'):
                 record.notes = data['data'].get('notes')
 
+            if data['data'].has_key('excerpts'):
+                record.excerpt= data['data'].get('excerpts')[0].get('text')
+
             record.book = book
             if new_record:
                 record.date_added = datetime.today()
