@@ -118,12 +118,12 @@ class Record(models.Model):
     def __unicode__(self):
         return self.book.title
 
-    def ebooks(self, format=None):
+    def ebooks(self, book_format=None):
         ebooks = BookFile.objects.filter(record=self)
-        if format:
+        if book_format:
             books = []
             for ebook in ebooks:
-                if ebook.format == format:
+                if ebook.format == book_format:
                     books.append(ebook)
             return books
         else:
@@ -144,6 +144,9 @@ class BookFile(models.Model):
         return ext
 
     format = property(format)
+
+    def __unicode__(self):
+        return unicode(self.record) + ' {' + self.format + '}'
 
 
 class Transaction(models.Model):
