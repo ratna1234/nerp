@@ -45,7 +45,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/json/3.json')
+            response = urllib2.urlopen('http://localhost/json/4.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -74,6 +74,8 @@ def acquisition(request):
 
             if data['details']['details'].has_key('physical_format'):
                 record.format = data['details']['details']['physical_format'].lower()
+                if record.format.startswith('electronic'):
+                    record.format = 'ebook'
             record.openlibrary_url = data['data']['url']
 
             if data['data'].has_key('classifications'):
