@@ -8,7 +8,7 @@ import isbn as isbnpy
 import urllib2, urllib
 import json
 import pprint
-from models import Record, Author, Publisher, Book, Subject
+from models import Record, Author, Publisher, Book, Subject, Place
 import os
 from django.core.files import File
 from datetime import datetime
@@ -107,6 +107,15 @@ def acquisition(request):
                     record.oclc_id = data['data']['identifiers']['oclc'][0]
                 if data['data']['identifiers'].has_key('lccn'):
                     record.lccn_id = data['data']['identifiers']['lccn'][0]
+
+            if data['data'].has_key('publish_places'):
+                for place in data['data']['publish_places']:
+                    try:
+                        published_place = Place.objects.get(name=place['name'])
+                    except Place.DoesNotExist:
+                        published_place = Place(name=place['name'])
+                    published_place.save()
+                    record.published_places.add(published_place)
 
             if data['details']['details'].has_key('languages'):
                 record.book.languages.clear()
