@@ -3,6 +3,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 from core.models import Language
 from app.libr import unique_slugify
 from users.models import User
+import os
 
 
 class Subject(MPTTModel):
@@ -117,10 +118,32 @@ class Record(models.Model):
     def __unicode__(self):
         return self.book.title
 
+    def ebooks(self, format=None):
+        ebooks = BookFile.objects.filter(record=self)
+        if format:
+            books = []
+            for ebook in ebooks:
+                if ebook.format == format:
+                    books.append(ebook)
+            return books
+        else:
+            return ebooks
+
 
 class BookFile(models.Model):
     file = models.FileField(upload_to='ils/books/')
     record = models.ForeignKey(Record, related_name='files')
+
+    def format(self):
+        filename = self.file.file.name
+        ext = os.path.splitext(filename)[1]
+        if ext[0] == '.':
+            ext = ext[1:]
+        if ext == 'txt':
+            return 'text'
+        return ext
+
+    format = property(format)
 
 
 class Transaction(models.Model):
