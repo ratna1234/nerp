@@ -45,7 +45,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/json/5.json')
+            response = urllib2.urlopen('http://localhost/json/2.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -141,6 +141,9 @@ def acquisition(request):
 
             if data['data'].has_key('by_statement'):
                 record.by_statement = data['data'].get('by_statement')
+
+            if data['data'].has_key('notes'):
+                record.notes = data['data'].get('notes')
 
             record.book = book
             if new_record:
