@@ -168,6 +168,9 @@ def acquisition(request):
                 if data['data']['ebooks'][0].has_key('formats'):
                     formats = data['data']['ebooks'][0]['formats']
                     for book_format in formats:
+                        ebooks = record.ebooks(book_format)
+                        for ebook in ebooks:
+                            ebook.delete()
                         if formats[book_format].has_key('url'):
                             url = formats[book_format].get('url')
                             result = urllib.urlretrieve(url)
