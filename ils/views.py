@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
+from core.models import Language
 from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer
 import isbn as isbnpy
 import urllib2, urllib
@@ -43,7 +44,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/2.json')
+            response = urllib2.urlopen('http://localhost/json/5.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -98,6 +99,20 @@ def acquisition(request):
                     record.oclc_id = data['data']['identifiers']['oclc'][0]
                 if data['data']['identifiers'].has_key('lccn'):
                     record.lccn_id = data['data']['identifiers']['lccn'][0]
+
+            if data['details']['details'].has_key('languages'):
+                record.book.languages.clear()
+                for lang in data['details']['details']['languages']:
+                    lang_key = lang['key'].replace('/languages/', '')
+                    try:
+                        book_lang = Language.objects.get(code=lang_key)
+                    except Language.DoesNotExist:
+                        try:
+                            book_lang = Language.objects.get(code=lang_key[:-1])
+                        except Language.DoesNotExist:
+                            raise Exception(
+                                "Please add a language with code " + lang_key + " or " + lang_key[:-1] + " first!")
+                    record.book.languages.add(book_lang)
 
             record.book = book
             if new_record:
