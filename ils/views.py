@@ -139,6 +139,9 @@ def acquisition(request):
                                 "Please add a language with code " + lang_key + " or " + lang_key[:-1] + " first!")
                     record.book.languages.add(book_lang)
 
+            if data['data'].has_key('by_statement'):
+                record.by_statement = data['data'].get('by_statement')
+
             record.book = book
             if new_record:
                 record.date_added = datetime.today()

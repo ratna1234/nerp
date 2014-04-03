@@ -110,6 +110,7 @@ class Record(models.Model):
     published_places = models.ManyToManyField(Place)
     weight = models.CharField(max_length=254, null=True, blank=True)
     dimensions = models.CharField(max_length=254, null=True, blank=True)
+    by_statement = models.CharField(max_length=254, null=True, blank=True)
 
     def __unicode__(self):
         return self.book.title
