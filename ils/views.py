@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
+from app.libr import title_case
 from core.models import Language
 from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer
 import isbn as isbnpy
@@ -44,7 +45,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/json/5.json')
+            response = urllib2.urlopen('http://localhost/json/3.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -84,9 +85,13 @@ def acquisition(request):
             try:
                 record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %d, %Y').date()
             except ValueError:
-                record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%Y').date()
-                record.publication_has_month = False
-                record.publication_has_day = False
+                try:
+                    record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%Y').date()
+                    record.publication_has_month = False
+                    record.publication_has_day = False
+                except ValueError:
+                    record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %Y').date()
+                    record.publication_has_day = False
 
             if data['data'].has_key('identifiers'):
                 if data['data']['identifiers'].has_key('openlibrary'):
@@ -130,14 +135,22 @@ def acquisition(request):
                 book_author.save()
                 record.book.authors.add(book_author)
 
-            record.book.subjects.clear()
-            for subject in data['details']['details']['subjects']:
-                try:
-                    book_subject = Subject.objects.get(name=subject)
-                except Subject.DoesNotExist:
-                    book_subject = Subject(name=subject)
-                book_subject.save()
-                record.book.subjects.add(book_subject)
+            subjects = None
+            if data['details']['details'].has_key('subjects'):
+                subjects = data['details']['details']['subjects']
+            elif data['data'].has_key('subjects'):
+                subjects = data['data']['subjects']
+            if subjects:
+                record.book.subjects.clear()
+                for subject in subjects:
+                    if type(subject) == dict:
+                        subject = title_case(subject['name'])
+                    try:
+                        book_subject = Subject.objects.get(name=subject)
+                    except Subject.DoesNotExist:
+                        book_subject = Subject(name=subject)
+                    book_subject.save()
+                    record.book.subjects.add(book_subject)
 
             # record.publishers.clear()
             # for publisher in data['details']['details']['publishers']:
@@ -174,7 +187,7 @@ def acquisition(request):
             # )
             # thumbnail_url = data['details']['thumbnail_url']
             # result = urllib.urlretrieve(thumbnail_url)
-            # record.small_cover.save(
+            # record.thumbnail.save(
             #     os.path.basename(thumbnail_url),
             #     File(open(result[0]))
             # )

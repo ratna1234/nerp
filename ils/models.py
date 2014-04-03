@@ -6,7 +6,7 @@ from users.models import User
 
 
 class Subject(MPTTModel):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=255)
     description = models.CharField(max_length=254, null=True, blank=True)
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children')
     slug = models.SlugField(max_length=255, blank=True)

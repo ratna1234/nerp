@@ -395,3 +395,6 @@ class MultiNameModel(MultilingualModel):
 
     class Meta:
         abstract = True
+
+def title_case(line):
+    return ' '.join([s[0].upper() + s[1:] for s in line.split(' ')])
