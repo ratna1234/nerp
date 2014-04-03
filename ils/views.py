@@ -45,7 +45,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/json/4.json')
+            response = urllib2.urlopen('http://localhost/json/5.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -77,6 +77,11 @@ def acquisition(request):
                 if record.format.startswith('electronic'):
                     record.format = 'ebook'
             record.openlibrary_url = data['data']['url']
+
+            if data['details']['details'].has_key('weight'):
+                record.weight = data['details']['details'].get('weight')
+            if data['details']['details'].has_key('physical_dimensions'):
+                record.dimensions = data['details']['details'].get('physical_dimensions')
 
             if data['data'].has_key('classifications'):
                 if data['data']['classifications'].has_key('dewey_decimal_class'):
@@ -111,6 +116,7 @@ def acquisition(request):
                     record.lccn_id = data['data']['identifiers']['lccn'][0]
 
             if data['data'].has_key('publish_places'):
+                record.published_places.clear()
                 for place in data['data']['publish_places']:
                     try:
                         published_place = Place.objects.get(name=place['name'])

@@ -108,6 +108,8 @@ class Record(models.Model):
     lccn_id = models.CharField(max_length=100, null=True, blank=True)
     oclc_id = models.CharField(max_length=100, null=True, blank=True)
     published_places = models.ManyToManyField(Place)
+    weight = models.CharField(max_length=254, null=True, blank=True)
+    dimensions = models.CharField(max_length=254, null=True, blank=True)
 
     def __unicode__(self):
         return self.book.title
