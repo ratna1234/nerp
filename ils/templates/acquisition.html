@@ -29,6 +29,14 @@
 
     <form method="post">
 
+
+        <label for="date_of_publication">Date of Publication</label>
+        {#        <input type="text" data-bind="value: date_of_publication" id="date_of_publication">#}
+        <input type="text" data-bind="value: year" id="date_of_publication" placeholder="YYYY">
+        <input type="text" data-bind="value: month, visible: year()!=''" id="date_of_publication" placeholder="MM">
+        <input type="text" data-bind="value: day, visible: year()!='' && month()!=''" id="date_of_publication"
+               placeholder="DD">
+
         <input type="hidden" data-bind="value: isbn13">
 
         <label for="title">Title</label>
@@ -43,8 +51,6 @@
         <label for="pagination">Pagination</label>
         <input type="text" data-bind="value: pagination" id="pagination">
 
-        <label for="date_of_publication">Date of Publication</label>
-        <input type="text" data-bind="value: date_of_publication" id="date_of_publication">
 
         <label for="price">Price</label>
         <input type="text" data-bind="value: price" id="price">
@@ -73,6 +79,15 @@
         <select id="authors" name="authors" multiple="true"
                 data-bind="options: authors, selectedOptions: book.authors, optionsText: 'name', optionsValue: 'id'">
         </select>
+
+        <label id="id_small_cover">Small Cover</label>
+        {{ form.small_cover }}
+
+        <label id="id_medium_cover">Medium Cover</label>
+        {{ form.medium_cover }}
+
+        <label id="id_large_cover">Large Cover</label>
+        {{ form.large_cover }}
 
     </form>
 

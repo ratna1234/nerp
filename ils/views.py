@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from app.libr import title_case
 from core.models import Language
+from ils.forms import RecordForm
 from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer
 import isbn as isbnpy
 import urllib2, urllib
@@ -40,12 +41,12 @@ def subjects_as_json(request):
 # Create your views here.
 def acquisition(request):
     record_data = {}
-    # record = None
+    record = None
     if request.GET.get('isbn'):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/json/3.json')
+            response = urllib2.urlopen('http://localhost/json/2.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -243,4 +244,6 @@ def acquisition(request):
             # pdb.set_trace()
             record_data = RecordSerializer(record).data
 
-    return render(request, 'acquisition.html', {'data': record_data})
+    record_form = RecordForm(instance=record)
+
+    return render(request, 'acquisition.html', {'data': record_data, 'form': record_form})
