@@ -52,8 +52,8 @@ def acquisition(request):
     if request.GET.get('isbn'):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
-            response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            # response = urllib2.urlopen('http://localhost/json/3.json')
+            # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
+            response = urllib2.urlopen('http://127.0.0.1/json/3.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -222,25 +222,27 @@ def acquisition(request):
                 book_publisher.save()
             record.publisher = book_publisher
 
-            cover_url = data['data']['cover']['large']
-            result = urllib.urlretrieve(cover_url)
-            record.large_cover.save(
-                os.path.basename(cover_url),
-                File(open(result[0]))
-            )
-            cover_url = data['data']['cover']['medium']
-            result = urllib.urlretrieve(cover_url)
-            record.medium_cover.save(
-                os.path.basename(cover_url),
-                File(open(result[0]))
-            )
-            cover_url = data['data']['cover']['small']
-            result = urllib.urlretrieve(cover_url)
-            record.small_cover.save(
-                os.path.basename(cover_url),
-                File(open(result[0]))
-            )
-            
+            # cover_url = data['data']['cover']['large']
+            # result = urllib.urlretrieve(cover_url)
+            # record.large_cover.save(
+            #     os.path.basename(cover_url),
+            #     File(open(result[0]))
+            # )
+            # cover_url = data['data']['cover']['medium']
+            # result = urllib.urlretrieve(cover_url)
+            # record.medium_cover.save(
+            #     os.path.basename(cover_url),
+            #     File(open(result[0]))
+            # )
+            # cover_url = data['data']['cover']['small']
+            # result = urllib.urlretrieve(cover_url)
+            # record.small_cover.save(
+            #     os.path.basename(cover_url),
+            #     File(open(result[0]))
+            # )
+
+
+
             # thumbnail_url = data['details']['thumbnail_url']
             # result = urllib.urlretrieve(thumbnail_url)
             # record.thumbnail.save(
@@ -259,4 +261,7 @@ def acquisition(request):
 
 
 def save_acquisition(request):
+    import pdb
+
+    pdb.set_trace()
     pass

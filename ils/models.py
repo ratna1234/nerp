@@ -87,7 +87,7 @@ class Record(models.Model):
     publication_has_month = models.BooleanField(default=True)
     publication_has_day = models.BooleanField(default=True)
     price = models.FloatField(null=True, blank=True)
-    quantity = models.PositiveIntegerField(null=True, blank=True)
+    quantity = models.PositiveIntegerField(null=True, blank=True, default=1)
     types = (
         ('reference', 'Reference'),
         ('circulative', 'Circulative')

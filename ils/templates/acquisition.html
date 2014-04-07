@@ -56,12 +56,13 @@
 
             <div class="column large-4">
                 <label for="price">Price</label>
-                <input type="text" data-bind="value: price" id="price">
+                <input type="number" data-bind="value: price" id="price">
             </div>
 
             <div class="column large-4">
-                <label for="quantity" class="required">Quantity</label>
-                <input type="text" data-bind="value: quantity" id="quantity" required>
+                <label for="quantity" data-bind="css: format()!='ebook'?'required':'not-required'">Quantity</label>
+                <input type="text" data-bind="value: quantity, attr:{'required': format()!='ebook'}"
+                       id="quantity">
             </div>
 
         </div>
