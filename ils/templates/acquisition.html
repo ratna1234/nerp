@@ -33,15 +33,18 @@
 
         <input type="hidden" data-bind="value: isbn13">
 
-        <label for="title" class="required">Title</label>
-        <input type="text" data-bind="value: book.title" id="title" required>
+        <label for="books" class="required">Title</label>
+        {#        <input type="text" data-bind="value: book().title" id="title" required>#}
+        <select id="books" name="book"
+                data-bind="options: books, value: book().id, optionsText: 'title', optionsValue: 'id'">
+        </select>
 
         <label for="subtitle">Sub-title</label>
-        <input type="text" data-bind="value: book.subtitle" id="subtitle">
+        <input type="text" data-bind="value: book().subtitle" id="subtitle">
 
         <label for="authors">Authors</label>
         <select id="authors" name="authors" multiple="true"
-                data-bind="options: authors, selectedOptions: book.authors, optionsText: 'name', optionsValue: 'id'">
+                data-bind="options: authors, selectedOptions: book().authors, optionsText: 'name', optionsValue: 'id'">
         </select>
 
         <div class="row">
@@ -67,7 +70,7 @@
 
             <div class="column large-4">
                 <label for="languages">Languages</label>
-                <select data-bind="selectize: $root.languages, selectedOptions: book.languages" size="5"
+                <select data-bind="selectize: $root.languages, selectedOptions: book().languages" size="5"
                         multiple="true">
                 </select>
             </div>
@@ -111,7 +114,7 @@
 
         <label for="subjects">Subjects</label>
         <select id="subjects" name="subjects" multiple="true"
-                data-bind="options: subjects, selectedOptions: book.subjects, optionsText: 'name', optionsValue: 'id'">
+                data-bind="options: subjects, selectedOptions: book().subjects, optionsText: 'name', optionsValue: 'id'">
         </select>
 
         <label for="excerpt">Excerpt</label>

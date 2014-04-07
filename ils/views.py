@@ -37,6 +37,7 @@ def subjects_as_json(request):
     items_data = SubjectSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
+
 @login_required
 def books_as_json(request):
     items = Book.objects.all()
@@ -51,8 +52,8 @@ def acquisition(request):
     if request.GET.get('isbn'):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
-            # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://localhost/json/2.json')
+            response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
+            # response = urllib2.urlopen('http://localhost/json/3.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -122,6 +123,17 @@ def acquisition(request):
                 if data['data']['identifiers'].has_key('lccn'):
                     record.lccn_id = data['data']['identifiers']['lccn'][0]
 
+            if data['data'].has_key('by_statement'):
+                record.by_statement = data['data'].get('by_statement')
+
+            if data['data'].has_key('notes'):
+                record.notes = data['data'].get('notes')
+
+            if data['data'].has_key('excerpts'):
+                record.excerpt = data['data'].get('excerpts')[0].get('text')
+
+            record.book = book
+
             if data['details']['details'].has_key('languages'):
                 record.book.languages.clear()
                 for lang in data['details']['details']['languages']:
@@ -136,16 +148,6 @@ def acquisition(request):
                                 "Please add a language with code " + lang_key + " or " + lang_key[:-1] + " first!")
                     record.book.languages.add(book_lang)
 
-            if data['data'].has_key('by_statement'):
-                record.by_statement = data['data'].get('by_statement')
-
-            if data['data'].has_key('notes'):
-                record.notes = data['data'].get('notes')
-
-            if data['data'].has_key('excerpts'):
-                record.excerpt = data['data'].get('excerpts')[0].get('text')
-
-            record.book = book
             if new_record:
                 record.date_added = datetime.today()
             record.save()
@@ -220,24 +222,25 @@ def acquisition(request):
                 book_publisher.save()
             record.publisher = book_publisher
 
-            # cover_url = data['data']['cover']['large']
-            # result = urllib.urlretrieve(cover_url)
-            # record.large_cover.save(
-            #     os.path.basename(cover_url),
-            #     File(open(result[0]))
-            # )
-            # cover_url = data['data']['cover']['medium']
-            # result = urllib.urlretrieve(cover_url)
-            # record.medium_cover.save(
-            #     os.path.basename(cover_url),
-            #     File(open(result[0]))
-            # )
-            # cover_url = data['data']['cover']['small']
-            # result = urllib.urlretrieve(cover_url)
-            # record.small_cover.save(
-            #     os.path.basename(cover_url),
-            #     File(open(result[0]))
-            # )
+            cover_url = data['data']['cover']['large']
+            result = urllib.urlretrieve(cover_url)
+            record.large_cover.save(
+                os.path.basename(cover_url),
+                File(open(result[0]))
+            )
+            cover_url = data['data']['cover']['medium']
+            result = urllib.urlretrieve(cover_url)
+            record.medium_cover.save(
+                os.path.basename(cover_url),
+                File(open(result[0]))
+            )
+            cover_url = data['data']['cover']['small']
+            result = urllib.urlretrieve(cover_url)
+            record.small_cover.save(
+                os.path.basename(cover_url),
+                File(open(result[0]))
+            )
+            
             # thumbnail_url = data['details']['thumbnail_url']
             # result = urllib.urlretrieve(thumbnail_url)
             # record.thumbnail.save(
