@@ -92,7 +92,7 @@ class Record(models.Model):
         ('reference', 'Reference'),
         ('circulative', 'Circulative')
     )
-    type = models.CharField(choices=types, unique=True, max_length=11)
+    type = models.CharField(choices=types, max_length=11)
     book = models.ForeignKey(Book)
     openlibrary_url = models.URLField(blank=True, null=True)
     thumbnail = models.ImageField(blank=True, null=True, upload_to='ils/thumbnails/')
