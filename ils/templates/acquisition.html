@@ -22,32 +22,12 @@
 
     {{ data|jsonify }}
 
-    <form>
+    <form class="acquisition-form">
         <label for="isbn">ISBN</label>
         <input type="text" name="isbn" size="20" data-bind="value: isbn13" id="isbn">
     </form>
 
-    <form method="post">
-
-
-        <label for="date_of_publication">Date of Publication</label>
-        {#        <input type="text" data-bind="value: date_of_publication" id="date_of_publication">#}
-        <input type="text" data-bind="value: year" id="date_of_publication" placeholder="YYYY">
-        <input type="text" data-bind="value: month, visible: year()!=''" id="date_of_publication" placeholder="MM">
-        <input type="text" data-bind="value: day, visible: year()!='' && month()!=''" id="date_of_publication"
-               placeholder="DD">
-
-        <label for="lcc">LCC</label>
-        <input type="text" data-bind="value: lcc" id="lcc">
-
-        <label for="ddc">DDC</label>
-        <input type="text" data-bind="value: ddc" id="ddc">
-
-        <label for="excerpt">Excerpt</label>
-        <textarea data-bind="value: excerpt" id="excerpt"></textarea>
-
-        <label for="notes">Notes</label>
-        <textarea data-bind="value: notes" id="notes"></textarea>
+    <form method="post" class="acquisition-form">
 
         <input type="hidden" data-bind="value: isbn13">
 
@@ -57,51 +37,118 @@
         <label for="subtitle">Sub-title</label>
         <input type="text" data-bind="value: book.subtitle" id="subtitle">
 
-        <label for="edition">Edition</label>
-        <input type="text" data-bind="value: edition" id="edition">
-
-        <label for="pagination">Pagination</label>
-        <input type="text" data-bind="value: pagination" id="pagination">
-
-
-        <label for="price">Price</label>
-        <input type="text" data-bind="value: price" id="price">
-
-        <label for="quantity">Quantity</label>
-        <input type="text" data-bind="value: quantity" id="quantity">
-
-        <label for="quantity">Format</label>
-        <select id="format" name="format" data-bind="value: format">
-            <option value="paperback">Paperback</option>
-            <option value="hardcover">Hardcover</option>
-            <option value="ebook">Ebook</option>
+        <label for="authors">Authors</label>
+        <select id="authors" name="authors" multiple="true"
+                data-bind="options: authors, selectedOptions: book.authors, optionsText: 'name', optionsValue: 'id'">
         </select>
 
-        <label for="publisher">Publisher</label>
-        <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher"></select>
+        <div class="row">
 
-        <label for="languages">Languages</label>
-        <select data-bind="selectize: $root.languages, selectedOptions: book.languages" size="5" multiple="true">
-        </select>
+            <div class="column large-4">
+                <label for="edition">Edition</label>
+                <input type="text" data-bind="value: edition" id="edition">
+            </div>
+
+            <div class="column large-4">
+                <label for="price">Price</label>
+                <input type="text" data-bind="value: price" id="price">
+            </div>
+
+            <div class="column large-4">
+                <label for="quantity">Quantity</label>
+                <input type="text" data-bind="value: quantity" id="quantity">
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="column large-4">
+                <label for="languages">Languages</label>
+                <select data-bind="selectize: $root.languages, selectedOptions: book.languages" size="5"
+                        multiple="true">
+                </select>
+            </div>
+
+            <div class="column large-8">
+                <label for="date_of_publication">Date of Publication</label>
+                {#        <input type="text" data-bind="value: date_of_publication" id="date_of_publication">#}
+                <input type="text" data-bind="value: year" id="date_of_publication" placeholder="YYYY">
+                <input type="text" data-bind="value: month, visible: year()!=''" id="date_of_publication"
+                       placeholder="MM">
+                <input type="text" data-bind="value: day, visible: year()!='' && month()!=''" id="date_of_publication"
+                       placeholder="DD">
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="column large-4">
+                <label for="quantity">Format</label>
+                <select id="format" name="format" data-bind="value: format">
+                    <option value="paperback">Paperback</option>
+                    <option value="hardcover">Hardcover</option>
+                    <option value="ebook">Ebook</option>
+                </select>
+
+            </div>
+
+            <div class="column large-4">
+                <label for="pagination">Pagination</label>
+                <input type="text" data-bind="value: pagination" id="pagination">
+            </div>
+
+
+            <div class="column large-4">
+                <label for="publisher">Publisher</label>
+                <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher"></select>
+            </div>
+
+        </div>
+
 
         <label for="subjects">Subjects</label>
         <select id="subjects" name="subjects" multiple="true"
                 data-bind="options: subjects, selectedOptions: book.subjects, optionsText: 'name', optionsValue: 'id'">
         </select>
 
-        <label for="authors">Authors</label>
-        <select id="authors" name="authors" multiple="true"
-                data-bind="options: authors, selectedOptions: book.authors, optionsText: 'name', optionsValue: 'id'">
-        </select>
+        <label for="excerpt">Excerpt</label>
+        <textarea data-bind="value: excerpt" id="excerpt"></textarea>
 
-        <label id="id_small_cover">Small Cover</label>
-        {{ form.small_cover }}
+        <label for="notes">Notes</label>
+        <textarea data-bind="value: notes" id="notes"></textarea>
 
-        <label id="id_medium_cover">Medium Cover</label>
-        {{ form.medium_cover }}
+        <div class="row">
 
-        <label id="id_large_cover">Large Cover</label>
-        {{ form.large_cover }}
+            <div class="column large-4">
+                <label id="id_small_cover">Small Cover</label>
+                {{ form.small_cover }}
+            </div>
+
+            <div class="column large-4">
+                <label id="id_medium_cover">Medium Cover</label>
+                {{ form.medium_cover }}
+            </div>
+
+            <div class="column large-4">
+                <label id="id_large_cover">Large Cover</label>
+                {{ form.large_cover }}
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="column large-4">
+                <label for="lcc">LCC</label>
+                <input type="text" data-bind="value: lcc" id="lcc">
+            </div>
+
+            <div class="column large-8">
+                <label for="ddc">DDC</label>
+                <input type="text" data-bind="value: ddc" id="ddc">
+            </div>
+        </div>
+
 
     </form>
 
