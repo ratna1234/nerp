@@ -23,16 +23,18 @@
     {{ data|jsonify }}
 
     <form class="acquisition-form">
+        {% csrf_token %}
         <label for="isbn">ISBN</label>
         <input type="text" name="isbn" size="20" data-bind="value: isbn13" id="isbn">
     </form>
 
-    <form method="post" class="acquisition-form">
+    <form method="post" class="acquisition-form" action="{% url 'save_acquisition' %}">
+        {% csrf_token %}
 
         <input type="hidden" data-bind="value: isbn13">
 
-        <label for="title">Title</label>
-        <input type="text" data-bind="value: book.title" id="title">
+        <label for="title" class="required">Title</label>
+        <input type="text" data-bind="value: book.title" id="title" required>
 
         <label for="subtitle">Sub-title</label>
         <input type="text" data-bind="value: book.subtitle" id="subtitle">
@@ -55,8 +57,8 @@
             </div>
 
             <div class="column large-4">
-                <label for="quantity">Quantity</label>
-                <input type="text" data-bind="value: quantity" id="quantity">
+                <label for="quantity" class="required">Quantity</label>
+                <input type="text" data-bind="value: quantity" id="quantity" required>
             </div>
 
         </div>
@@ -148,6 +150,11 @@
                 <input type="text" data-bind="value: ddc" id="ddc">
             </div>
         </div>
+
+        <label for="ebooks">Ebooks</label>
+        <input type="file" id="ebook" multiple><br>
+
+        <input type="submit" class="button" value="Save">
 
 
     </form>
