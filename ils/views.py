@@ -4,7 +4,7 @@ from django.shortcuts import render
 from app.libr import title_case
 from core.models import Language
 from ils.forms import RecordForm
-from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer
+from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer, BookSerializer
 import isbn as isbnpy
 import urllib2, urllib
 import json
@@ -35,6 +35,12 @@ def publishers_as_json(request):
 def subjects_as_json(request):
     items = Subject.objects.all()
     items_data = SubjectSerializer(items).data
+    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+
+@login_required
+def books_as_json(request):
+    items = Book.objects.all()
+    items_data = BookSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
@@ -247,3 +253,7 @@ def acquisition(request):
     record_form = RecordForm(instance=record)
 
     return render(request, 'acquisition.html', {'data': record_data, 'form': record_form})
+
+
+def save_acquisition(request):
+    pass

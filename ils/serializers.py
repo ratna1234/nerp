@@ -22,7 +22,7 @@ class BookSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Book
-        exclude = ['id', 'slug']
+        exclude = ['slug']
 
 
 class RecordSerializer(serializers.ModelSerializer):
