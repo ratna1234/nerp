@@ -28,10 +28,10 @@
         <input type="text" name="isbn" size="20" data-bind="value: isbn13" id="isbn">
     </form>
 
-    <form method="post" class="acquisition-form" action="{% url 'save_acquisition' %}">
+    <form method="post" class="acquisition-form" action="{% url 'save_acquisition' %}" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <input type="hidden" data-bind="value: isbn13">
+        <input type="hidden" data-bind="value: isbn13" name="isbn">
 
         <label for="books" class="required">Title</label>
         {#        <input type="text" data-bind="value: book().title" id="title" required>#}
@@ -40,7 +40,7 @@
         </select>
 
         <label for="subtitle">Sub-title</label>
-        <input type="text" data-bind="value: book().subtitle" id="subtitle">
+        <input type="text" data-bind="value: book().subtitle" id="subtitle" name="subtitle">
 
         <label for="authors">Authors</label>
         <select id="authors" name="authors" multiple="true"
@@ -51,18 +51,18 @@
 
             <div class="column large-4">
                 <label for="edition">Edition</label>
-                <input type="text" data-bind="value: edition" id="edition">
+                <input type="text" data-bind="value: edition" id="edition" name="edition">
             </div>
 
             <div class="column large-4">
                 <label for="price">Price</label>
-                <input type="number" data-bind="value: price" id="price">
+                <input type="number" data-bind="value: price" id="price" name="price">
             </div>
 
             <div class="column large-4">
                 <label for="quantity" data-bind="css: format()!='ebook'?'required':'not-required'">Quantity</label>
                 <input type="text" data-bind="value: quantity, attr:{'required': format()!='ebook'}"
-                       id="quantity">
+                       id="quantity" name="quantity">
             </div>
 
         </div>
@@ -72,18 +72,18 @@
             <div class="column large-4">
                 <label for="languages">Languages</label>
                 <select data-bind="selectize: $root.languages, selectedOptions: book().languages" size="5"
-                        multiple="true">
+                        multiple="true" name="languages">
                 </select>
             </div>
 
             <div class="column large-8">
                 <label for="date_of_publication">Date of Publication</label>
                 {#        <input type="text" data-bind="value: date_of_publication" id="date_of_publication">#}
-                <input type="text" data-bind="value: year" id="date_of_publication" placeholder="YYYY">
+                <input type="text" data-bind="value: year" id="date_of_publication" placeholder="YYYY" name="year">
                 <input type="text" data-bind="value: month, visible: year()!=''" id="date_of_publication"
-                       placeholder="MM">
+                       placeholder="MM" name="month">
                 <input type="text" data-bind="value: day, visible: year()!='' && month()!=''" id="date_of_publication"
-                       placeholder="DD">
+                       placeholder="DD" name="day">
             </div>
         </div>
 
@@ -101,13 +101,13 @@
 
             <div class="column large-4">
                 <label for="pagination">Pagination</label>
-                <input type="text" data-bind="value: pagination" id="pagination">
+                <input type="text" data-bind="value: pagination" id="pagination" name="pagination">
             </div>
 
 
             <div class="column large-4">
                 <label for="publisher">Publisher</label>
-                <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher"></select>
+                <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher" name="publisher"></select>
             </div>
 
         </div>
@@ -119,10 +119,10 @@
         </select>
 
         <label for="excerpt">Excerpt</label>
-        <textarea data-bind="value: excerpt" id="excerpt"></textarea>
+        <textarea data-bind="value: excerpt" id="excerpt" name="excerpt"></textarea>
 
         <label for="notes">Notes</label>
-        <textarea data-bind="value: notes" id="notes"></textarea>
+        <textarea data-bind="value: notes" id="notes" name="notes"></textarea>
 
         <div class="row">
 
@@ -146,17 +146,17 @@
         <div class="row">
             <div class="column large-4">
                 <label for="lcc">LCC</label>
-                <input type="text" data-bind="value: lcc" id="lcc">
+                <input type="text" data-bind="value: lcc" id="lcc" name="lcc">
             </div>
 
             <div class="column large-8">
                 <label for="ddc">DDC</label>
-                <input type="text" data-bind="value: ddc" id="ddc">
+                <input type="text" data-bind="value: ddc" id="ddc" name="ddc">
             </div>
         </div>
 
         <label for="ebooks">Ebooks</label>
-        <input type="file" id="ebook" multiple><br>
+        <input type="file" id="ebook" name="ebook" multiple><br>
 
         <input type="submit" class="button" value="Save">
 

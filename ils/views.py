@@ -261,6 +261,97 @@ def acquisition(request):
 
 
 def save_acquisition(request):
+    if request.POST.get('book').isnumeric():
+        book = Book.objects.get(id=request.POST.get('book'))
+        new_book = False
+    else:
+        book = Book(title=request.POST.get('book'))
+        book.save()
+        new_book = True
+
+    if request.POST.get('isbn'):
+        isbn = request.POST.get('isbn')
+        if isbnpy.isValid(isbn):
+            if isbnpy.isI10(isbn):
+                isbn = isbnpy.convert(isbn)
+            try:
+                record = Record.objects.get(isbn13=isbn)
+                new_record = False
+            except Record.DoesNotExist:
+                record = Record(isbn13=isbn)
+                new_record = True
+    else:
+        if not new_book:
+            try:
+                record = Record.objects.get(book=book, edition=request.POST.get('book'))
+                new_record = False
+            except Record.DoesNotExist:
+                record = Record(book=book)
+                new_record = True
+        else:
+            record = Record(book=book)
+            new_record = True
+
+    record.book = book
+    record.format = request.POST.get('format')
+    if record.format != 'ebook':
+        if new_record:
+            record.quantity = request.POST.get('quantity')
+        else:
+            record.quantity += int(request.POST.get('quantity'))
+
+    book.subtitle = request.POST.get('subtitle')
+    record.excerpt = request.POST.get('excerpt')
+    record.edition = request.POST.get('edition')
+    record.notes = request.POST.get('notes')
+    record.ddc = request.POST.get('ddc')
+    record.lcc = request.POST.get('lcc')
+    record.pagination = request.POST.get('pagination')
+    record.format = request.POST.get('format')
+    if record.format != 'ebook':
+        record.quantity = request.POST.get('quantity')
+
+    record.publication_has_month = False
+    record.publication_has_day = False
+    if request.POST.get('year'):
+        dt = datetime(int(request.POST.get('year')), 1, 1)
+        if request.POST.get('month'):
+            record.publication_has_month = True
+            dt = dt.replace(month=int(request.POST.get('month')))
+            if request.POST.get('day'):
+                record.publication_has_day = True
+                dt = dt.replace(day=int(request.POST.get('day')))
+        record.date_of_publication = dt
+    else:
+        record.date_of_publication = None
+
+    if request.FILES.get('small_cover'):
+        record.small_cover = request.FILES.get('small_cover')
+    if request.FILES.get('medium_cover'):
+        record.medium_cover = request.FILES.get('medium_cover')
+    if request.FILES.get('large_cover'):
+        record.large_cover = request.FILES.get('large_cover')
+
+    record.save()
+
+    if request.FILES.get('ebook'):
+        ebooks = request.FILES.getlist('ebook')
+        for ebook in ebooks:
+            ebook_file = BookFile(record=record, file=ebook)
+            existing_files = record.ebooks(ebook_file.format)
+            for existing_file in existing_files:
+                existing_file.delete()
+            ebook_file.save()
+
+    
+    # subjects
+    # authors
+    # publisher
+
+
+
+
+    record.save()
     import pdb
 
     pdb.set_trace()
