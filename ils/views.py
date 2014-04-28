@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from app.libr import title_case
 from core.models import Language
 from ils.forms import RecordForm, OutgoingForm
@@ -13,6 +13,8 @@ from models import Record, Author, Publisher, Book, Subject, Place, BookFile, Tr
 import os
 from django.core.files import File
 from datetime import datetime
+from django.contrib import messages
+from django.core.urlresolvers import reverse_lazy
 
 pp = pprint.PrettyPrinter(indent=4).pprint
 
@@ -381,3 +383,28 @@ def outgoing(request):
     transaction = Transaction.new()
     form = OutgoingForm(instance=transaction)
     return render(request, 'outgoing.html', {'form': form})
+
+
+def save_outgoing(request):
+    error = False
+    transaction = Transaction.new()
+    transaction.user_id = request.POST.get('user')
+    transaction.borrow_date = request.POST.get('borrow_date')
+    transaction.due_date = request.POST.get('due_date')
+    transaction.record_id = request.POST.get('record')
+    if request.POST.get('isbn'):
+        isbn = request.POST.get('isbn')
+        if isbnpy.isValid(isbn):
+            if isbnpy.isI10(isbn):
+                isbn = isbnpy.convert(isbn)
+            try:
+                transaction.record = Record.objects.get(isbn13=isbn)
+            except Record.DoesNotExist:
+                error = 'No books with provided ISBN in library database.'
+        else:
+            error = 'Invalid ISBN!'
+        if error:
+            raise Exception(error)
+    transaction.save()
+    messages.success(request, 'Book Lent!')
+    return redirect(reverse_lazy('outgoing'))

@@ -7,6 +7,7 @@ import os
 import datetime
 
 
+
 class Subject(MPTTModel):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=254, null=True, blank=True)
@@ -165,8 +166,10 @@ class Transaction(models.Model):
         transaction = Transaction()
         transaction.borrow_date = datetime.datetime.today()
         from ils.models import LibrarySetting
+
         setting = LibrarySetting.get()
         transaction.due_date = transaction.borrow_date + datetime.timedelta(days=setting.borrow_days)
+        transaction.fine_per_day = setting.fine_per_day
         return transaction
 
 
