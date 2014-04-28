@@ -343,13 +343,32 @@ def save_acquisition(request):
                 existing_file.delete()
             ebook_file.save()
 
-    
-    # subjects
-    # authors
-    # publisher
+    book.subjects.clear()
+    for subject in request.POST.getlist('subjects'):
+        if subject.isnumeric():
+            book.subjects.add(Subject.objects.get(id=subject))
+        else:
+            new_subject = Subject(name=subject)
+            new_subject.save()
+            book.subjects.add(new_subject)
 
+    book.authors.clear()
+    for author in request.POST.getlist('authors'):
+        if author.isnumeric():
+            book.authors.add(Author.objects.get(id=author))
+        else:
+            new_author = Author(name=author)
+            new_author.save()
+            book.authors.add(new_author)
 
-
+    publisher = request.POST.get('publisher')
+    if publisher:
+        if not publisher.isnumeric():
+            record.publisher = publisher
+        else:
+            new_publisher = Publisher(name=publisher)
+            new_publisher.save()
+            record.publisher = new_publisher
 
     record.save()
     import pdb
