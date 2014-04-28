@@ -4,6 +4,7 @@ from core.models import Language
 from app.libr import unique_slugify
 from users.models import User
 import os
+import datetime
 
 
 class Subject(MPTTModel):
@@ -159,6 +160,15 @@ class Transaction(models.Model):
     fine_per_day = models.FloatField()
     fine_paid = models.FloatField(default=False)
 
+    @staticmethod
+    def new():
+        transaction = Transaction()
+        transaction.borrow_date = datetime.datetime.today()
+        from ils.models import LibrarySetting
+        setting = LibrarySetting.get()
+        transaction.due_date = transaction.borrow_date + datetime.timedelta(days=setting.borrow_days)
+        return transaction
+
 
 class LibrarySetting(models.Model):
     fine_per_day = models.FloatField()
@@ -168,3 +178,7 @@ class LibrarySetting(models.Model):
         ('circulative', 'Circulative')
     )
     default_type = models.CharField(choices=types, unique=True, max_length=11, default='circulative')
+
+    @staticmethod
+    def get():
+        return LibrarySetting.objects.all()[0]

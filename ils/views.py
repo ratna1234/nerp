@@ -3,13 +3,13 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from app.libr import title_case
 from core.models import Language
-from ils.forms import RecordForm
+from ils.forms import RecordForm, OutgoingForm
 from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer, BookSerializer
 import isbn as isbnpy
 import urllib2, urllib
 import json
 import pprint
-from models import Record, Author, Publisher, Book, Subject, Place, BookFile
+from models import Record, Author, Publisher, Book, Subject, Place, BookFile, Transaction
 import os
 from django.core.files import File
 from datetime import datetime
@@ -375,3 +375,9 @@ def save_acquisition(request):
 
     pdb.set_trace()
     pass
+
+
+def outgoing(request):
+    transaction = Transaction.new()
+    form = OutgoingForm(instance=transaction)
+    return render(request, 'outgoing.html', {'form': form})

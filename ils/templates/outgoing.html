@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+
+
+{% block title %} {% trans 'Outgoing' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <span> {% trans 'Outgoing' %}</span>
+{% endblock %}
+
+{% block head_end %}
+        <script src="{{ STATIC_URL }}js/ils/outgoing.js"></script>
+
+{% endblock %}
+
+{% block content %}
+    {#<form>#}
+    {#<label for="patron">Patron</label>#}
+    {#<input type="text" id="patron" name="patron"/>#}
+    {#<label for="isbn">ISBN</label>#}
+    {#<input type="text" id="isbn" name="isbn"/>#}
+    {#<label for="isbn">ISBN</label>#}
+    {#<input type="text" id="isbn" name="isbn"/>#}
+    {#</form>#}
+
+
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="isbn">ISBN</label>
+        <input type="text" id="isbn" name="isbn" size="30"/>
+
+        {{ form.as_p }}
+    </form>
+
+{% endblock %}
