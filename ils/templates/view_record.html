@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+
+
+{% block title %} {{ record }}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <span> {% trans 'Outgoing' %}</span>
+{% endblock %}
+
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/ils/view_record.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

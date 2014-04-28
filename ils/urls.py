@@ -13,6 +13,7 @@ urlpatterns = patterns('',
                        url(r'^acquisition/save/$', views.save_acquisition, name='save_acquisition'),
                        url(r'^outgoing/$', views.outgoing, name='outgoing'),
                        url(r'^outgoing/save$', views.save_outgoing, name='save_outgoing'),
+                       url(r'^record/(?P<pk>[0-9]+)/$', views.view_record, name='view_record'),
 
 
 )
