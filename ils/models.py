@@ -118,7 +118,12 @@ class Record(models.Model):
     excerpt = models.CharField(max_length=254, null=True, blank=True)
 
     def __unicode__(self):
-        return self.book.title
+        title = self.book.title
+        if self.edition:
+            title = title + ' ('+self.edition+')'
+        if self.format != 'paperback':
+            title = title + ' ['+self.format+']'
+        return title
 
     def ebooks(self, book_format=None):
         ebooks = BookFile.objects.filter(record=self)
