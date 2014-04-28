@@ -19,6 +19,13 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def by_group(self, group_name):
+        try:
+            group = Group.objects.get(name=group_name)
+            return self.filter(groups=group)
+        except Group.DoesNotExist:
+            return False
+
     def create_superuser(self, username, email, password=None, full_name=''):
         """
         Creates and saves a superuser with the given email, full name and password.

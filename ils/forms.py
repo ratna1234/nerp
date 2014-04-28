@@ -1,6 +1,7 @@
 from django import forms
 from app.libr import KOModelForm
 from models import Record, Transaction
+from users.models import User
 
 
 class RecordForm(forms.ModelForm):
@@ -14,6 +15,7 @@ class OutgoingForm(forms.ModelForm):
         self.fields['user'].label = 'Patron'
         self.fields['record'].empty_label = None
         self.fields['user'].empty_label = None
+        self.fields['user'].queryset = User.objects.by_group('Patron')
 
     class Meta:
         model = Transaction

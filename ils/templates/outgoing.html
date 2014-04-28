@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block head_end %}
-        <script src="{{ STATIC_URL }}js/ils/outgoing.js"></script>
+    <script src="{{ STATIC_URL }}js/ils/outgoing.js"></script>
 
 {% endblock %}
 
@@ -31,10 +31,37 @@
     <form method="post">
         {% csrf_token %}
 
-        <label for="isbn">ISBN</label>
-        <input type="text" id="isbn" name="isbn" size="30"/>
+        <label for="id_user">Patron:</label>
+        {{ form.user }}
 
-        {{ form.as_p }}
+        <div class="row">
+            <div class="column large-6 small-6 medium-6">
+                <label for="isbn">ISBN</label>
+                <input type="text" id="isbn" name="isbn" size="30"/>
+            </div>
+
+            <div class="column large-6 small-6 medium-6">
+                <label for="id_record">Item:</label>
+                {{ form.record }}
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="column large-6 small-6 medium-6">
+                <label for="borrow_date">Borrow Date</label>
+                {{ form.borrow_date }}
+            </div>
+
+            <div class="column large-6 small-6 medium-6">
+                <label for="due_date">Due Date</label>
+                {{ form.due_date }}
+            </div>
+
+        </div>
+
+        <input type="submit" value="Lend!" class="button">
+
     </form>
 
 {% endblock %}
