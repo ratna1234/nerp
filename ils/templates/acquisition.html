@@ -90,7 +90,7 @@
         <div class="row">
 
             <div class="column large-4">
-                <label for="quantity">Format</label>
+                <label for="format">Format</label>
                 <select id="format" name="format" data-bind="value: format">
                     <option value="paperback">Paperback</option>
                     <option value="hardcover">Hardcover</option>
@@ -107,7 +107,8 @@
 
             <div class="column large-4">
                 <label for="publisher">Publisher</label>
-                <select data-bind="options: $root.publishers, value: publisher_id, optionsText: 'name', optionsValue: 'id'" id="publisher" name="publisher"></select>
+                <select data-bind="options: $root.publishers, value: publisher_id, optionsText: 'name', optionsValue: 'id'"
+                        id="publisher" name="publisher"></select>
             </div>
 
         </div>
@@ -155,8 +156,23 @@
             </div>
         </div>
 
-        <label for="ebooks">Ebooks</label>
-        <input type="file" id="ebook" name="ebook" multiple><br>
+        <div class="row">
+            <div class="column large-6">
+                <label for="ebooks">Ebooks</label>
+                <input type="file" id="ebook" name="ebook" multiple><br>
+            </div>
+
+            <div class="column large-6">
+                <label for="type">Type</label>
+                <select id="type" name="type" data-bind="value: type">
+                    <option value="reference">Reference</option>
+                    <option value="circulative">Circulative</option>
+                </select>
+
+            </div>
+
+        </div>
+
 
         <input type="submit" class="button" value="Save">
 

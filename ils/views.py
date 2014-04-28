@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from app.libr import title_case
 from core.models import Language
 from ils.forms import RecordForm, OutgoingForm
+from ils.models import LibrarySetting
 from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer, BookSerializer
 import isbn as isbnpy
 import urllib2, urllib
@@ -149,6 +150,9 @@ def acquisition(request):
                             raise Exception(
                                 "Please add a language with code " + lang_key + " or " + lang_key[:-1] + " first!")
                     record.book.languages.add(book_lang)
+
+            setting = LibrarySetting.get()
+            record.type = setting.default_type
 
             if new_record:
                 record.date_added = datetime.today()
@@ -310,6 +314,7 @@ def save_acquisition(request):
     record.lcc = request.POST.get('lcc')
     record.pagination = request.POST.get('pagination')
     record.format = request.POST.get('format')
+    record.type = request.POST.get('type')
     if record.format != 'ebook':
         record.quantity = request.POST.get('quantity')
 
@@ -408,3 +413,9 @@ def save_outgoing(request):
     transaction.save()
     messages.success(request, 'Book Lent!')
     return redirect(reverse_lazy('outgoing'))
+
+
+def view_record(request, pk=None):
+    record = get_object_or_404(Record, pk=pk)
+    return render(request, 'view_record.html', {'record': record})
+
