@@ -107,7 +107,7 @@
 
             <div class="column large-4">
                 <label for="publisher">Publisher</label>
-                <select data-bind="selectize: $root.publishers, value: publisher_id" id="publisher" name="publisher"></select>
+                <select data-bind="options: $root.publishers, value: publisher_id, optionsText: 'name', optionsValue: 'id'" id="publisher" name="publisher"></select>
             </div>
 
         </div>

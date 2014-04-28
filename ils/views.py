@@ -363,8 +363,8 @@ def save_acquisition(request):
 
     publisher = request.POST.get('publisher')
     if publisher:
-        if not publisher.isnumeric():
-            record.publisher = publisher
+        if publisher.isnumeric():
+            record.publisher_id = publisher
         else:
             new_publisher = Publisher(name=publisher)
             new_publisher.save()
