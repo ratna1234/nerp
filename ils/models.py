@@ -7,7 +7,6 @@ import os
 import datetime
 
 
-
 class Subject(MPTTModel):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=254, null=True, blank=True)
@@ -62,7 +61,7 @@ class Publisher(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=254)
     subtitle = models.CharField(max_length=254, null=True, blank=True)
-    authors = models.ManyToManyField(Author)
+    authors = models.ManyToManyField(Author, blank=True)
     languages = models.ManyToManyField(Language)
     subjects = models.ManyToManyField(Subject)
     slug = models.SlugField(max_length=255, blank=True)
@@ -78,9 +77,9 @@ class Book(models.Model):
 class Record(models.Model):
     edition = models.CharField(max_length=254, null=True, blank=True)
     formats = (
-        ('paperback', 'Paperback'),
-        ('hardcover', 'Hardcover'),
-        ('ebook', 'eBook')
+        ('Paperback', 'Paperback'),
+        ('Hardcover', 'Hardcover'),
+        ('eBook', 'eBook')
     )
     format = models.CharField(max_length=10, default='Paperback', choices=formats)
     pagination = models.CharField(max_length=254, null=True, blank=True)
@@ -91,8 +90,8 @@ class Record(models.Model):
     price = models.FloatField(null=True, blank=True)
     quantity = models.PositiveIntegerField(null=True, blank=True, default=1)
     types = (
-        ('reference', 'Reference'),
-        ('circulative', 'Circulative')
+        ('Reference', 'Reference'),
+        ('Circulative', 'Circulative')
     )
     type = models.CharField(choices=types, max_length=11)
     book = models.ForeignKey(Book)
@@ -120,9 +119,9 @@ class Record(models.Model):
     def __unicode__(self):
         title = self.book.title
         if self.edition:
-            title = title + ' ('+self.edition+')'
-        if self.format != 'paperback':
-            title = title + ' ['+self.format+']'
+            title = title + ' (' + self.edition + ')'
+        if self.format != 'Paperback':
+            title = title + ' [' + self.format + ']'
         return title
 
     def ebooks(self, book_format=None):
@@ -135,6 +134,13 @@ class Record(models.Model):
             return books
         else:
             return ebooks
+
+    def published_date(self):
+        if self.publication_has_day:
+            return self.date_of_publication
+        elif self.publication_has_month:
+            return self.date_of_publication.strftime('%B %Y')
+
 
 
 class BookFile(models.Model):
@@ -182,8 +188,8 @@ class LibrarySetting(models.Model):
     fine_per_day = models.FloatField()
     borrow_days = models.PositiveIntegerField()
     types = (
-        ('reference', 'Reference'),
-        ('circulative', 'Circulative')
+        ('Reference', 'Reference'),
+        ('Circulative', 'Circulative')
     )
     default_type = models.CharField(choices=types, unique=True, max_length=11, default='circulative')
 

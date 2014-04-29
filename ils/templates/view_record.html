@@ -8,7 +8,7 @@
 {% block breadcrumbs %}
     {{ block.super }}
     {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
-    <span> {% trans 'Outgoing' %}</span>
+    <span> {{ record }}</span>
 {% endblock %}
 
 {% block head_end %}
@@ -17,5 +17,102 @@
 {% endblock %}
 
 {% block content %}
+
+    <div class="row">
+        <div class="column large-1">
+            <a href="{{ MEDIA_URL }}{{ record.large_cover }}" target="_blank"><img
+                    src="{{ MEDIA_URL }}{{ record.medium_cover }}"></a>
+        </div>
+        <div class="column large-8">
+            <h1>{{ record.book.title }}</h1>
+            {% if record.book.subtitle %}
+                <h4>{{ record.book.subtitle }}</h4>
+            {% endif %}
+            {% if record.book.authors.all %}
+                <h5>by {{ record.book.authors.all|join:', ' }}</h5>
+            {% endif %}
+            Published {{ record.published_date }}
+            {% if record.publisher %}
+                by {{ record.publisher }}
+            {% endif %}
+            {% if record.published_places.all %}
+                in {{ record.published_places.all|join:', ' }}
+            {% endif %}
+        </div>
+        <div class="column large-3">
+        </div>
+
+    </div>
+
+    <div class="rowz">
+        {% if record.excerpt %}
+            {{ record.excerpt }}
+            <br><br>
+        {% endif %}
+
+    </div>
+
+    <div class="rowz">
+        {% if record.notes %}
+            <strong>Notes: </strong>{{ record.notes }}
+            <br><br>
+        {% endif %}
+    </div>
+
+    {% if record.isbn13 %}
+        <strong>ISBN: </strong>{{ record.isbn13 }}
+        <br>
+    {% endif %}
+
+    {% if record.pagination %}
+        <strong>Pagination: </strong>{{ record.pagination }}
+        <br>
+    {% endif %}
+
+    {% if record.openlibrary_id %}
+        <strong>OpenLibrary: </strong>
+        {% if record.openlibrary_url %}
+            <a target="_blank" href="{{ record.openlibrary_url }}">{{ record.openlibrary_id }}</a>
+        {% else %}
+            {{ record.openlibrary_id }}
+        {% endif %}
+        <br>
+    {% endif %}
+
+    {% if record.goodreads_id %}
+        <strong>Goodreads: </strong>
+        <a target="_blank" href="{{ record.openlibrary_url }}">{{ record.openlibrary_id }}</a>
+        <br>
+    {% endif %}
+
+    {% if record.format %}
+        <strong>Format: </strong>{{ record.format }}
+        <br>
+    {% endif %}
+
+    {% if record.type %}
+        <strong>Type: </strong>{{ record.type }}
+        <br>
+    {% endif %}
+
+    {% if record.weight %}
+        <strong>Weight: </strong>{{ record.weight }}
+        <br>
+    {% endif %}
+
+    {% if record.dimensions %}
+        <strong>Dimensions: </strong>{{ record.dimensions }}
+        <br>
+    {% endif %}
+
+    {% if record.lcc %}
+        <strong>LCC: </strong>{{ record.lcc }}
+        <br>
+    {% endif %}
+
+    {% if record.ddc %}
+        <strong>DDC: </strong>{{ record.ddc }}
+        <br>
+    {% endif %}
 
 {% endblock %}

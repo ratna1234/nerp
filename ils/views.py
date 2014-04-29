@@ -73,6 +73,8 @@ def acquisition(request):
             else:
                 book = Book()
             book.title = data['data']['title']
+            if data['details']['details'].has_key('subtitle'):
+                book.subtitle = data['details']['details']['subtitle']
             book.save()
 
             if data['details']['details'].has_key('pagination'):
@@ -80,13 +82,10 @@ def acquisition(request):
             elif data['details']['details'].has_key('number_of_pages'):
                 record.pagination = str(data['data']['number_of_pages']) + ' p.'
 
-            if data['details']['details'].has_key('subtitle'):
-                book.subtitle = data['details']['details']['subtitle']
-
             if data['details']['details'].has_key('physical_format'):
-                record.format = data['details']['details']['physical_format'].lower()
+                record.format = data['details']['details']['physical_format']
                 if record.format.startswith('electronic'):
-                    record.format = 'ebook'
+                    record.format = 'eBook'
             record.openlibrary_url = data['data']['url']
 
             if data['details']['details'].has_key('weight'):
@@ -228,24 +227,24 @@ def acquisition(request):
                 book_publisher.save()
             record.publisher = book_publisher
 
-            # cover_url = data['data']['cover']['large']
-            # result = urllib.urlretrieve(cover_url)
-            # record.large_cover.save(
-            #     os.path.basename(cover_url),
-            #     File(open(result[0]))
-            # )
-            # cover_url = data['data']['cover']['medium']
-            # result = urllib.urlretrieve(cover_url)
-            # record.medium_cover.save(
-            #     os.path.basename(cover_url),
-            #     File(open(result[0]))
-            # )
-            # cover_url = data['data']['cover']['small']
-            # result = urllib.urlretrieve(cover_url)
-            # record.small_cover.save(
-            #     os.path.basename(cover_url),
-            #     File(open(result[0]))
-            # )
+            cover_url = data['data']['cover']['large']
+            result = urllib.urlretrieve(cover_url)
+            record.large_cover.save(
+                os.path.basename(cover_url),
+                File(open(result[0]))
+            )
+            cover_url = data['data']['cover']['medium']
+            result = urllib.urlretrieve(cover_url)
+            record.medium_cover.save(
+                os.path.basename(cover_url),
+                File(open(result[0]))
+            )
+            cover_url = data['data']['cover']['small']
+            result = urllib.urlretrieve(cover_url)
+            record.small_cover.save(
+                os.path.basename(cover_url),
+                File(open(result[0]))
+            )
 
 
 
@@ -315,7 +314,7 @@ def save_acquisition(request):
     record.pagination = request.POST.get('pagination')
     record.format = request.POST.get('format')
     record.type = request.POST.get('type')
-    if record.format != 'ebook':
+    if record.format != 'eBook':
         record.quantity = request.POST.get('quantity')
 
     record.publication_has_month = False
