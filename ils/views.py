@@ -416,7 +416,16 @@ def save_outgoing(request):
 
 def incoming(request, transaction_pk):
     transaction = Transaction.objects.get(id=transaction_pk)
-    # transaction
+    if request.POST:
+
+        form = IncomingForm(data=request.POST, instance=transaction)
+        transaction = form.save()
+        if not request.POST.get('return_date'):
+            transaction.return_date = datetime.today()
+        transaction.save()
+        messages.success(request, 'Book Returned!')
+        return redirect(reverse_lazy('view_record', kwargs={'pk': transaction.record_id}))
+
     form = IncomingForm(instance=transaction)
     data = TransactionSerializer(transaction).data
     return render(request, 'incoming.html', {'form': form, 'data': data})
