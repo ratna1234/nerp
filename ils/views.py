@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from app.libr import title_case
 from core.models import Language
-from ils.forms import RecordForm, OutgoingForm
+from ils.forms import RecordForm, OutgoingForm, IncomingForm
 from ils.models import LibrarySetting
-from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer, BookSerializer
+from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer, BookSerializer, TransactionSerializer
 import isbn as isbnpy
 import urllib2, urllib
 import json
@@ -414,7 +414,16 @@ def save_outgoing(request):
     return redirect(reverse_lazy('outgoing'))
 
 
+def incoming(request, transaction_pk):
+    transaction = Transaction.objects.get(id=transaction_pk)
+    # transaction
+    form = IncomingForm(instance=transaction)
+    data = TransactionSerializer(transaction).data
+    return render(request, 'incoming.html', {'form': form, 'data': data})
+
+
 def view_record(request, pk=None):
     record = get_object_or_404(Record, pk=pk)
-    return render(request, 'view_record.html', {'record': record})
+    transactions = Transaction.objects.filter(record=record)
+    return render(request, 'view_record.html', {'record': record, 'transactions': transactions})
 

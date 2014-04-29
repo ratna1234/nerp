@@ -12,6 +12,7 @@ urlpatterns = patterns('',
                        # # url(r'^receipt/(?P<id>[0-9]+)/delete/$', views.delete_receipt, name='delete_receipt'),
                        url(r'^acquisition/save/$', views.save_acquisition, name='save_acquisition'),
                        url(r'^outgoing/$', views.outgoing, name='outgoing'),
+                       url(r'^incoming/(?P<transaction_pk>[0-9]+)$', views.incoming, name='incoming'),
                        url(r'^outgoing/save$', views.save_outgoing, name='save_outgoing'),
                        url(r'^record/(?P<pk>[0-9]+)/$', views.view_record, name='view_record'),
 

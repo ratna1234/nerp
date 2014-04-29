@@ -115,4 +115,34 @@
         <br>
     {% endif %}
 
+    <h3>Transactions</h3>
+    <div class="transactions">
+        <table class="table-bordered">
+            <thead>
+            <tr>
+                <th>User</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Returned Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.user }}</td>
+                    <td>{{ transaction.borrow_date }}</td>
+                    <td>{{ transaction.due_date }}</td>
+                    <td> {% if transaction.return_date %}
+                        {{ transaction.return_date }}
+                    {% else %}
+
+                        <a href="{% url 'incoming' transaction_pk=transaction.id %}">Return</a>
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}
