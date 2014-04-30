@@ -22,5 +22,6 @@ urlpatterns = patterns('',
                        url(r'^authors/$', views.list_authors, name='list_authors'),
                        url(r'^publisher/(?P<slug>[a-zA-Z0-9_.-]+)/$', views.view_publisher, name='view_publisher'),
                        url(r'^publishers/$', views.list_publishers, name='list_publishers'),
+                       url(r'^isbn_to_record/$', views.isbn_to_record, name='isbn_to_record'),
 
 )

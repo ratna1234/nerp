@@ -87,7 +87,7 @@ def acquisition(request):
                 record.format = data['details']['details']['physical_format']
                 if record.format.startswith('electronic'):
                     record.format = 'eBook'
-                # record.openlibrary_url = data['data']['url']
+                    # record.openlibrary_url = data['data']['url']
 
             if data['details']['details'].has_key('weight'):
                 record.weight = data['details']['details'].get('weight')
@@ -487,5 +487,18 @@ def list_publishers(request):
     objects = Publisher.objects.all()
     return render(request, 'list_publishers.html', {'objects': objects})
 
+
 def index(request):
     return render(request, 'library_index.html')
+
+
+def isbn_to_record(request):
+    isbn = request.POST.get('isbn')
+    if isbn and isbnpy.isValid(isbn):
+        if isbnpy.isI10(isbn):
+            isbn = isbnpy.convert(isbn)
+        record = Record.objects.get(isbn13=isbn)
+        return redirect(reverse_lazy('view_record', kwargs={'pk': record.id}))
+    else:
+        messages.error(request, 'Invalid ISBN!')
+        return redirect(reverse_lazy('library_index'))

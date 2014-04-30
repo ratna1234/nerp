@@ -87,7 +87,11 @@
     {% block breadcrumbs %}
         <a href="/">{% trans 'Home' %}</a>
     {% endblock %}
-    <div class="right"><a href="javascript: window.print();">{% trans 'Print' %}</a></div>
+    <div class="right">
+        {% block breadcrumbs_right %}
+            <a href="javascript: window.print();">{% trans 'Print' %}</a>
+        {% endblock %}
+    </div>
 </nav>
 
 
