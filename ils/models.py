@@ -62,8 +62,6 @@ class Publisher(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=254)
     subtitle = models.CharField(max_length=254, null=True, blank=True)
-    authors = models.ManyToManyField(Author, blank=True)
-    languages = models.ManyToManyField(Language)
     subjects = models.ManyToManyField(Subject)
     slug = models.SlugField(max_length=255, blank=True)
 
@@ -85,6 +83,8 @@ class Record(models.Model):
     format = models.CharField(max_length=10, default='Paperback', choices=formats)
     pagination = models.CharField(max_length=254, null=True, blank=True)
     isbn13 = models.CharField(max_length=254, null=True, blank=True)
+    authors = models.ManyToManyField(Author, blank=True)
+    languages = models.ManyToManyField(Language)
     date_of_publication = models.DateField(null=True, blank=True)
     publication_has_month = models.BooleanField(default=True)
     publication_has_day = models.BooleanField(default=True)
