@@ -23,12 +23,11 @@
 
     {{ author.book_set.all }}
 
-    {% autosort author.book_set.all as sorted_objects %}
+    {% autosort author.record_set.all as sorted_objects %}
     {% autopaginate sorted_objects 20 as paginated_objects %}
 
     <ul>
         {% for record in paginated_objects %}
-            {{ record|debug }}
             <li>
                 <div class="row">
                     <div class="column large-1 medium-1 small-1">
@@ -37,7 +36,7 @@
                     </div>
                     <div class="column large-7 medium-7 small-7">
                         <a href="{{ record.get_absolute_url }}">{{ record }}</a>
-                        <br>by
+                        <br>Published by
                     </div>
                     <div class="column large-4 medium-4 small-4">
                     </div>

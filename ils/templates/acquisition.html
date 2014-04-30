@@ -44,7 +44,8 @@
 
         <label for="authors">Authors</label>
         <select id="authors" name="authors" multiple="true"
-                data-bind="options: authors, selectedOptions: authors, optionsText: 'name', optionsValue: 'id'">
+                data-bind="options: all_authors, selectedOptions: authors, optionsText: 'name', optionsValue: 'id'">
+
         </select>
 
         <div class="row">
@@ -71,7 +72,7 @@
 
             <div class="column large-4">
                 <label for="languages">Languages</label>
-                <select data-bind="selectize: $root.languages, selectedOptions: languages" size="5"
+                <select data-bind="selectize: $root.all_languages, selectedOptions: languages" size="5"
                         multiple="true" name="languages">
                 </select>
             </div>

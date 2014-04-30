@@ -30,8 +30,13 @@
                             <img src="{{ MEDIA_URL }}{{ record.small_cover }}"></a>
                     </div>
                     <div class="column large-7 medium-7 small-7">
-                        <a href="{{ record.get_absolute_url }}">{{ record }}</a>
-                        <br>by
+                        <a href="{{ record.get_absolute_url }}"><h3>{{ record }}</h3></a>
+                        {% if record.authors.all %}
+                            <h5>by {% for author in record.authors.all %}
+                                {{ author|linkify }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            </h5>
+                        {% endif %}
                     </div>
                     <div class="column large-4 medium-4 small-4">
                     </div>

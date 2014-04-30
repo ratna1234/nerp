@@ -30,8 +30,11 @@
             {% if record.book.subtitle %}
                 <h4>{{ record.book.subtitle }}</h4>
             {% endif %}
-            {% if record.book.authors.all %}
-                <h5>by {{ record.book.authors.all|join:', ' }}</h5>
+            {% if record.authors.all %}
+                <h5>by {% for author in record.authors.all %}
+                    {{ author|linkify }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+                </h5>
             {% endif %}
             Published {{ record.published_date }}
             {% if record.publisher %}

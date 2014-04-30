@@ -34,6 +34,9 @@ class Author(models.Model):
         unique_slugify(self, self.name)
         super(Author, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('view_author', kwargs={'slug': self.slug})
+
 
 class Place(models.Model):
     name = models.CharField(max_length=255)
@@ -84,7 +87,7 @@ class Record(models.Model):
     pagination = models.CharField(max_length=254, null=True, blank=True)
     isbn13 = models.CharField(max_length=254, null=True, blank=True)
     authors = models.ManyToManyField(Author, blank=True)
-    languages = models.ManyToManyField(Language)
+    languages = models.ManyToManyField(Language, blank=True)
     date_of_publication = models.DateField(null=True, blank=True)
     publication_has_month = models.BooleanField(default=True)
     publication_has_day = models.BooleanField(default=True)
@@ -110,7 +113,7 @@ class Record(models.Model):
     ddc = models.CharField(max_length=100, null=True, blank=True)
     lccn_id = models.CharField(max_length=100, null=True, blank=True)
     oclc_id = models.CharField(max_length=100, null=True, blank=True)
-    published_places = models.ManyToManyField(Place)
+    published_places = models.ManyToManyField(Place, blank=True)
     weight = models.CharField(max_length=254, null=True, blank=True)
     dimensions = models.CharField(max_length=254, null=True, blank=True)
     by_statement = models.CharField(max_length=254, null=True, blank=True)

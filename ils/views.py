@@ -57,7 +57,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://127.0.0.1/json/3.json')
+            response = urllib2.urlopen('http://127.0.0.1/json/2.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
@@ -137,6 +137,13 @@ def acquisition(request):
 
             record.book = book
 
+            setting = LibrarySetting.get()
+            record.type = setting.default_type
+
+            if new_record:
+                record.date_added = datetime.today()
+            record.save()
+
             if data['details']['details'].has_key('languages'):
                 record.languages.clear()
                 for lang in data['details']['details']['languages']:
@@ -150,13 +157,6 @@ def acquisition(request):
                             raise Exception(
                                 "Please add a language with code " + lang_key + " or " + lang_key[:-1] + " first!")
                     record.languages.add(book_lang)
-
-            setting = LibrarySetting.get()
-            record.type = setting.default_type
-
-            if new_record:
-                record.date_added = datetime.today()
-            record.save()
 
             if data['data'].has_key('publish_places'):
                 record.published_places.clear()
@@ -368,6 +368,10 @@ def save_acquisition(request):
             new_author.save()
             record.authors.add(new_author)
 
+    record.languages.clear()
+    for language in request.POST.getlist('languages'):
+        record.languages.add(Language.objects.get(id=language))
+
     publisher = request.POST.get('publisher')
     if publisher:
         if publisher.isnumeric():
@@ -378,7 +382,8 @@ def save_acquisition(request):
             record.publisher = new_publisher
 
     record.save()
-    #TODO language
+
+    return redirect(reverse_lazy('view_record', kwargs={'pk': record.id}))
 
 
 def outgoing(request):
