@@ -36,13 +36,19 @@
                 {% endfor %}
                 </h5>
             {% endif %}
-            Published {{ record.published_date }}
-            {% if record.publisher %}
-                by {{ record.publisher }}
+            {% if record.publisher or record.published_date or record.published_places.all %}
+                Published
+                {% if record.published_date %}
+                    {{ record.published_date }}
+                {% endif %}
+                {% if record.publisher %}
+                    by {{ record.publisher|linkify }}
+                {% endif %}
+                {% if record.published_places.all %}
+                    in {{ record.published_places.all|join:', ' }}
+                {% endif %}
             {% endif %}
-            {% if record.published_places.all %}
-                in {{ record.published_places.all|join:', ' }}
-            {% endif %}
+
         </div>
         <div class="column large-3">
         </div>

@@ -20,6 +20,9 @@
 {% block content %}
 
     <h3>Books written by {{ author }}</h3>
+    <div class="right">
+        Sort by {% anchor date_of_publication 'Published Date'%} | {% anchor publisher%}
+    </div>
 
     {% autosort author.record_set.all as sorted_objects %}
     {% autopaginate sorted_objects 20 as paginated_objects %}
@@ -34,8 +37,17 @@
                     </div>
                     <div class="column large-7 medium-7 small-7">
                         <h3><a href="{{ record.get_absolute_url }}">{{ record }}</a></h3>
-                        {% if record.publisher %}
-                            <h5>Published by {{ record.publisher|linkify }}</h5>
+                        {% if record.publisher or record.published_date or record.published_places.all %}
+                            Published
+                            {% if record.published_date %}
+                                {{ record.published_date }}
+                            {% endif %}
+                            {% if record.publisher %}
+                                by {{ record.publisher|linkify }}
+                            {% endif %}
+                            {% if record.published_places.all %}
+                                in {{ record.published_places.all|join:', ' }}
+                            {% endif %}
                         {% endif %}
                     </div>
                     <div class="column large-4 medium-4 small-4">
