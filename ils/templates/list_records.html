@@ -21,7 +21,7 @@
     {% autosort records as sorted_objects %}
     {% autopaginate sorted_objects 20 as paginated_objects %}
 
-    <ul>
+    <ul class="records">
         {% for record in paginated_objects %}
             <li>
                 <div class="row">

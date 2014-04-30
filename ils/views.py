@@ -473,4 +473,14 @@ def view_author(request, slug):
 
 def view_publisher(request, slug):
     publisher = Publisher.objects.get(slug=slug)
-    return render(request, 'view_publisher.html', {'author': publisher})
+    return render(request, 'view_publisher.html', {'publisher': publisher})
+
+
+def list_authors(request):
+    objects = Author.objects.all()
+    return render(request, 'list_authors.html', {'objects': objects})
+
+
+def list_publishers(request):
+    objects = Publisher.objects.all()
+    return render(request, 'list_publishers.html', {'objects': objects})

@@ -5,12 +5,12 @@
 {% load sorting_tags %}
 
 
-{% block title %} {{ author }}{% endblock %}
+{% block title %} {{ publisher }}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
     {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
-    <span> {{ author }}</span>
+    <span> {{ publisher }}</span>
 {% endblock %}
 
 {% block head_end %}
@@ -19,9 +19,9 @@
 
 {% block content %}
 
-    <h3>Books written by {{ author }}</h3>
+    <h3>Books published by {{ publisher }}</h3>
 
-    {% autosort author.record_set.all as sorted_objects %}
+    {% autosort publisher.record_set.all as sorted_objects %}
     {% autopaginate sorted_objects 20 as paginated_objects %}
 
     <ul class="records">
@@ -33,9 +33,12 @@
                             <img src="{{ MEDIA_URL }}{{ record.small_cover }}"></a>
                     </div>
                     <div class="column large-7 medium-7 small-7">
-                        <h3><a href="{{ record.get_absolute_url }}">{{ record }}</a></h3>
-                        {% if record.publisher %}
-                            <h5>Published by {{ record.publisher|linkify }}</h5>
+                        <a href="{{ record.get_absolute_url }}"><h3>{{ record }}</h3></a>
+                        {% if record.authors.all %}
+                            <h5>by {% for author in record.authors.all %}
+                                {{ author|linkify }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                            </h5>
                         {% endif %}
                     </div>
                     <div class="column large-4 medium-4 small-4">

@@ -20,5 +20,8 @@ urlpatterns = patterns('',
                        url(r'^transactions/$', views.list_transactions, name='list_transactions'),
                        url(r'^records/$', views.list_records, name='list_records'),
                        url(r'^author/(?P<slug>[a-zA-Z0-9_.-]+)/$', views.view_author, name='view_author'),
+                       url(r'^authors/$', views.list_authors, name='list_authors'),
+                       url(r'^publisher/(?P<slug>[a-zA-Z0-9_.-]+)/$', views.view_publisher, name='view_publisher'),
+                       url(r'^publishers/$', views.list_publishers, name='list_publishers'),
 
 )

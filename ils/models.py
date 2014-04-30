@@ -61,6 +61,9 @@ class Publisher(models.Model):
         unique_slugify(self, self.name)
         super(Publisher, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse('view_publisher', kwargs={'slug': self.slug})
+
 
 class Book(models.Model):
     title = models.CharField(max_length=254)

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+{% load pagination_tags %}
+{% load sorting_tags %}
+
+
+{% block title %} {% trans 'Publishers' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <span> {% trans 'Publishers' %}</span>
+{% endblock %}
+
+{% block head_end %}
+
+{% endblock %}
+
+{% block content %}
+    {% autosort objects as sorted_objects %}
+    {% autopaginate sorted_objects 20 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <tr>
+            <th>{% anchor id 'Publisher' %}</th>
+{#            <th>Books</th>#}
+            <th>Book Editions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in paginated_objects %}
+            <tr>
+                <td> {{ obj|linkify }}</td>
+{#                <td>{{ obj.record_set.count }}</td>#}
+                <td>{{ obj.record_set.count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% paginate %}
+
+
+{% endblock %}
