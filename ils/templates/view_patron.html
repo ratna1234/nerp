@@ -9,7 +9,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <a href="{% url 'list_patrons' %}">Patrons</a>
     <span> {{ patron }}</span>
 {% endblock %}
 
@@ -68,7 +68,7 @@
             {% endfor %}
             </tbody>
         </table>
-    {% paginate %}
+        {% paginate %}
     </div>
 
 {% endblock %}

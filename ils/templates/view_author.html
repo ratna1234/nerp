@@ -9,7 +9,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <a href="{% url 'list_authors' %}">Authors</a>
     <span> {{ author }}</span>
 {% endblock %}
 
@@ -21,7 +21,7 @@
 
     <h3>Books written by {{ author }}</h3>
     <div class="right">
-        Sort by {% anchor date_of_publication 'Published Date'%} | {% anchor publisher%}
+        Sort by {% anchor date_of_publication 'Published Date' %} | {% anchor publisher %}
     </div>
 
     {% autosort author.record_set.all as sorted_objects %}

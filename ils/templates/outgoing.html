@@ -7,7 +7,9 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    {% if form.instance.record %}
+        <span> <a href="{% url 'view_record' pk=form.instance.record.id %}">{{ form.instance.record }}</a></span>
+    {% endif %}
     <span> {% trans 'Outgoing' %}</span>
 {% endblock %}
 
