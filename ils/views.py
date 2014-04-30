@@ -455,5 +455,5 @@ def list_transactions(request):
 
 
 def list_records(request):
-    transactions = Transaction.objects.all()
-    return render(request, 'list_transactions.html', {'transactions': transactions})
+    records = Record.objects.all()
+    return render(request, 'list_records.html', {'records': records})

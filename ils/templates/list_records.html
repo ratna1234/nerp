@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+{% load pagination_tags %}
+{% load sorting_tags %}
+
+
+{% block title %} {% trans 'Books' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <span> {% trans 'Books' %}</span>
+{% endblock %}
+
+{% block head_end %}
+
+{% endblock %}
+
+{% block content %}
+    {% autosort records as sorted_objects %}
+    {% autopaginate sorted_objects 20 as paginated_objects %}
+
+    <ul>
+        {% for record in paginated_objects %}
+            <li>
+                <div class="row">
+                    <div class="column large-1 medium-1 small-1">
+                        <a href="{{ record.get_absolute_url }}">
+                            <img src="{{ MEDIA_URL }}{{ record.small_cover }}"></a>
+                    </div>
+                    <div class="column large-7 medium-7 small-7">
+                        <a href="{{ record.get_absolute_url }}">{{ record }}</a>
+                        <br>by
+                    </div>
+                    <div class="column large-4 medium-4 small-4">
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% paginate %}
+
+
+{% endblock %}

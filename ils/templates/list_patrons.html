@@ -37,17 +37,11 @@
                 <td>{{ patron.transactions.count }}</td>
                 <td>{{ patron.not_returned.count }}</td>
                 <td>{{ patron.past_due.count }}</td>
-                {#                <td> {% if transaction.return_date %}#}
-                {#                    {{ transaction.return_date }}#}
-                {#                {% else %}#}
-                {##}
-                {#                    <a href="{% url 'incoming' transaction_pk=transaction.id %}">Return</a>#}
-                {#                {% endif %}#}
-                {#                </td>#}
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    {% paginate %}
 
 
 {% endblock %}
