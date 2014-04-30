@@ -195,6 +195,9 @@ class Transaction(models.Model):
         transaction.fine_per_day = setting.fine_per_day
         return transaction
 
+    def __unicode__(self):
+        return unicode(self.record) + ' | ' + unicode(self.user)
+
 
 class LibrarySetting(models.Model):
     fine_per_day = models.FloatField()
@@ -204,6 +207,9 @@ class LibrarySetting(models.Model):
         ('Circulative', 'Circulative')
     )
     default_type = models.CharField(choices=types, unique=True, max_length=11, default='circulative')
+
+    def __unicode__(self):
+        return 'Library Setting ' + str(self.id)
 
     @staticmethod
     def get():
