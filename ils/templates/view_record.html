@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load filters %}
+{% load pagination_tags %}
+{% load sorting_tags %}
 
 
 {% block title %} {{ record }}{% endblock %}
@@ -120,14 +122,16 @@
         <table class="table-bordered">
             <thead>
             <tr>
-                <th>Patron</th>
-                <th>Borrow Date</th>
-                <th>Due Date</th>
-                <th>Returned Date</th>
+                <th>{% anchor user_id 'Patron' %}</th>
+                <th>{% anchor borrow_date 'Borrow Date' %}</th>
+                <th>{% anchor due_date 'Due Date' %}</th>
+                <th>{% anchor return_date 'Return Date' %}</th>
             </tr>
             </thead>
             <tbody>
-            {% for transaction in transactions %}
+            {% autosort transactions as sorted_objects %}
+            {% autopaginate sorted_objects 20 as paginated_objects %}
+            {% for transaction in paginated_objects %}
                 <tr>
                     <td><a href="{% url 'view_patron' pk=transaction.user.id %}">{{ transaction.user }}</a></td>
                     <td>{{ transaction.borrow_date }}</td>
@@ -143,6 +147,7 @@
             {% endfor %}
             </tbody>
         </table>
+        {% paginate %}
     </div>
 
 {% endblock %}

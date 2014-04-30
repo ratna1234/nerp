@@ -109,6 +109,8 @@ INSTALLED_APPS = (
     'pagination',
     'django_sorting',
     'rest_framework',
+    # If you're using Django 1.6.x or earlier
+    'debug_toolbar',
 
     'users',
     'inventory',
