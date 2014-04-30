@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 import views
 
 urlpatterns = patterns('',
-
+                       url(r'^$', views.index, name='library_index'),
                        url(r'^acquisition/$', views.acquisition, name='acquisition'),
                        url(r'^authors.json$', views.authors_as_json, name='authors_as_json'),
                        url(r'^publishers.json$', views.publishers_as_json, name='publishers_as_json'),

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "library_base.html" %}
 {% load i18n %}
 {% load filters %}
 
@@ -7,7 +7,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <span> <a href="{% url 'library_index' %}">{% trans 'Library' %}</a></span>
     <span> {% trans 'Acquisition' %}</span>
 {% endblock %}
 

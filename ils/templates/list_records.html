@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "library_base.html" %}
 {% load i18n %}
 {% load filters %}
 {% load pagination_tags %}
@@ -22,7 +22,7 @@
     {% autopaginate sorted_objects 20 as paginated_objects %}
 
     <div class="right">
-        Sort by {% anchor date_of_publication 'Published Date'%} | {% anchor publisher%} |
+        Sort by {% anchor date_of_publication 'Published Date' %} | {% anchor publisher %} |
     </div>
 
     <ul class="records">

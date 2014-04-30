@@ -486,3 +486,6 @@ def list_authors(request):
 def list_publishers(request):
     objects = Publisher.objects.all()
     return render(request, 'list_publishers.html', {'objects': objects})
+
+def index(request):
+    return render(request, 'library_index.html')

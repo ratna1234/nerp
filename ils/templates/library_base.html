@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <span> <a href="{% url 'library_index' %}">Library</a></span>
+{% endblock %}
