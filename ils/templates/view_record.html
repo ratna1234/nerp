@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block head_end %}
-    <script src="{{ STATIC_URL }}js/ils/view_record.js"></script>
+{#    <script src="{{ STATIC_URL }}js/ils/view_record.js"></script>#}
 
 {% endblock %}
 
@@ -70,61 +70,110 @@
         {% endif %}
     </div>
 
-    {% if record.isbn13 %}
-        <strong>ISBN: </strong>{{ record.isbn13 }}
-        <br>
-    {% endif %}
+    <div class="row">
+        <div class="column large-6 medium-6">
+            {% if record.isbn13 %}
+                <strong>ISBN: </strong>{{ record.isbn13 }}
+                <br>
+            {% endif %}
 
-    {% if record.pagination %}
-        <strong>Pagination: </strong>{{ record.pagination }}
-        <br>
-    {% endif %}
+            {% if record.pagination %}
+                <strong>Pagination: </strong>{{ record.pagination }}
+                <br>
+            {% endif %}
 
-    {% if record.openlibrary_id %}
-        <strong>OpenLibrary: </strong>
-        {% if record.openlibrary_url %}
-            <a target="_blank" href="{{ record.openlibrary_url }}">{{ record.openlibrary_id }}</a>
-        {% else %}
-            {{ record.openlibrary_id }}
-        {% endif %}
-        <br>
-    {% endif %}
+            {% if record.openlibrary_id %}
+                <strong>OpenLibrary: </strong>
+                <a target="_blank"
+                   href="https://openlibrary.org/books/{{ record.openlibrary_id }}/">{{ record.openlibrary_id }}</a>
+                <br>
+            {% endif %}
 
-    {% if record.goodreads_id %}
-        <strong>Goodreads: </strong>
-        <a target="_blank" href="{{ record.openlibrary_url }}">{{ record.openlibrary_id }}</a>
-        <br>
-    {% endif %}
+            {% if record.goodreads_id %}
+                <strong>Goodreads: </strong>
+                <a target="_blank"
+                   href="http://www.goodreads.com/book/show/{{ record.goodreads_id }}">{{ record.goodreads_id }}</a>
+                <br>
+            {% endif %}
 
-    {% if record.format %}
-        <strong>Format: </strong>{{ record.format }}
-        <br>
-    {% endif %}
+            {% if record.lccn_id %}
+                <strong>Library of Congress Control Number: </strong>
+                <a target="_blank"
+                   href="http://lccn.loc.gov/{{ record.lccn_id }}">{{ record.lccn_id }}</a>
+                <br>
+            {% endif %}
 
-    {% if record.type %}
-        <strong>Type: </strong>{{ record.type }}
-        <br>
-    {% endif %}
+            {% if record.oclc_id %}
+                <strong>OCLC WorldCat: </strong>
+                <a target="_blank"
+                   href="http://www.worldcat.org/oclc/{{ record.oclc_id }}?tab=details">{{ record.oclc_id }}</a>
+                <br>
+            {% endif %}
 
-    {% if record.weight %}
-        <strong>Weight: </strong>{{ record.weight }}
-        <br>
-    {% endif %}
+            {% if record.librarything_id %}
+                <strong>LibraryThing: </strong>
+                <a target="_blank"
+                   href="http://www.librarything.com/work/{{ record.librarything_id }}">{{ record.librarything_id }}</a>
+                <br>
+            {% endif %}
 
-    {% if record.dimensions %}
-        <strong>Dimensions: </strong>{{ record.dimensions }}
-        <br>
-    {% endif %}
+            {% if record.format %}
+                <strong>Format: </strong>{{ record.format }}
+                <br>
+            {% endif %}
 
-    {% if record.lcc %}
-        <strong>LCC: </strong>{{ record.lcc }}
-        <br>
-    {% endif %}
+            {% if record.type %}
+                <strong>Type: </strong>{{ record.type }}
+                <br>
+            {% endif %}
 
-    {% if record.ddc %}
-        <strong>DDC: </strong>{{ record.ddc }}
-        <br>
-    {% endif %}
+            {% if record.weight %}
+                <strong>Weight: </strong>{{ record.weight }}
+                <br>
+            {% endif %}
+
+            {% if record.dimensions %}
+                <strong>Dimensions: </strong>{{ record.dimensions }}
+                <br>
+            {% endif %}
+
+            {% if record.lcc %}
+                <strong>Library of Congress Classification: </strong>{{ record.lcc }}
+                <br>
+            {% endif %}
+
+            {% if record.ddc %}
+                <strong>Dewey Decimal Class: </strong>{{ record.ddc }}
+                <br>
+            {% endif %}
+
+        </div>
+
+        <div class="column large-6 medium-6">
+            <table>
+                <tr>
+                    <th>Total</th>
+                    <td>{{ record.quantity }}</td>
+                </tr>
+                <tr>
+                    <th>In Circulation</th>
+                    <td>{{ record.in_circulation.count }}</td>
+                </tr>
+                <tr>
+                    <th>Available</th>
+                    <td>{{ record.quantity|subtract:record.in_circulation.count }}</td>
+                </tr>
+                {% if record.quantity|subtract:record.in_circulation.count > 0 %}
+                    <tr>
+                        <th colspan="2">
+
+                            <a href="{% url 'outgoing' pk=record.id %}">Lend</a>
+                        </th>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
 
     <h3>Transactions</h3>
     <div class="transactions">

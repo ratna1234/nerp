@@ -10,6 +10,7 @@ class RecordForm(forms.ModelForm):
 
 
 class OutgoingForm(forms.ModelForm):
+    isbn= forms.CharField(label='ISBN')
     def __init__(self, *args, **kwargs):
         super(OutgoingForm, self).__init__(*args, **kwargs)
         self.fields['user'].label = 'Patron'

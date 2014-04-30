@@ -151,6 +151,9 @@ class Record(models.Model):
     def get_absolute_url(self):
         return reverse('view_record', kwargs={'pk': self.id})
 
+    def in_circulation(self):
+        return Transaction.objects.filter(record=self, return_date=None)
+
 
 class BookFile(models.Model):
     file = models.FileField(upload_to='ils/books/')

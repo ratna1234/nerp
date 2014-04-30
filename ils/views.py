@@ -87,7 +87,7 @@ def acquisition(request):
                 record.format = data['details']['details']['physical_format']
                 if record.format.startswith('electronic'):
                     record.format = 'eBook'
-            # record.openlibrary_url = data['data']['url']
+                # record.openlibrary_url = data['data']['url']
 
             if data['details']['details'].has_key('weight'):
                 record.weight = data['details']['details'].get('weight')
@@ -386,8 +386,10 @@ def save_acquisition(request):
     return redirect(reverse_lazy('view_record', kwargs={'pk': record.id}))
 
 
-def outgoing(request):
+def outgoing(request, pk=None):
     transaction = Transaction.new()
+    if pk:
+        transaction.record = Record.objects.get(id=pk)
     form = OutgoingForm(instance=transaction)
     return render(request, 'outgoing.html', {'form': form})
 
@@ -414,7 +416,7 @@ def save_outgoing(request):
             raise Exception(error)
     transaction.save()
     messages.success(request, 'Book Lent!')
-    return redirect(reverse_lazy('outgoing'))
+    return redirect(reverse_lazy('view_record', kwargs={'pk': transaction.record_id}))
 
 
 def incoming(request, transaction_pk):
