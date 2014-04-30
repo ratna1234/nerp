@@ -457,3 +457,18 @@ def list_transactions(request):
 def list_records(request):
     records = Record.objects.all()
     return render(request, 'list_records.html', {'records': records})
+
+
+def list_authors(request):
+    authors = Author.objects.all()
+    return render(request, 'list_authors.html', {'authors': authors})
+
+
+def view_author(request, slug):
+    author = Author.objects.get(slug=slug)
+    return render(request, 'view_author.html', {'author': author})
+
+
+def view_publisher(request, slug):
+    publisher = Publisher.objects.get(slug=slug)
+    return render(request, 'view_publisher.html', {'author': publisher})

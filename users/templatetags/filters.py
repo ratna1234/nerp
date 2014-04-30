@@ -75,7 +75,6 @@ def yesterday():
     return yesterday
 
 
-
 @register.tag()
 def ifusergroup(parser, token):
     """ Check to see if the currently logged in user belongs to one or more groups
@@ -241,3 +240,10 @@ def localize(text):
     for i, j in res.iteritems():
         text = text.replace(i, j)
     return text
+
+
+@register.filter
+def debug(value):
+    import pdb
+
+    pdb.set_trace()
