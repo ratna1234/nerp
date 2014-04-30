@@ -57,7 +57,7 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://127.0.0.1/json/2.json')
+            response = urllib2.urlopen('http://127.0.0.1/json/3.json')
             data = json.load(response)
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
