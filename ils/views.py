@@ -87,7 +87,7 @@ def acquisition(request):
                 record.format = data['details']['details']['physical_format']
                 if record.format.startswith('electronic'):
                     record.format = 'eBook'
-            record.openlibrary_url = data['data']['url']
+            # record.openlibrary_url = data['data']['url']
 
             if data['details']['details'].has_key('weight'):
                 record.weight = data['details']['details'].get('weight')

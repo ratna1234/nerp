@@ -102,7 +102,7 @@ class Record(models.Model):
     )
     type = models.CharField(choices=types, max_length=11)
     book = models.ForeignKey(Book)
-    openlibrary_url = models.URLField(blank=True, null=True)
+    # openlibrary_url = models.URLField(blank=True, null=True)
     # thumbnail = models.ImageField(blank=True, null=True, upload_to='ils/thumbnails/')
     small_cover = models.ImageField(blank=True, null=True, upload_to='ils/covers/small/')
     medium_cover = models.ImageField(blank=True, null=True, upload_to='ils/covers/medium/')
