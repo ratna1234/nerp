@@ -87,10 +87,7 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    #class Meta:
-    #    db_table = u'auth_user'
-
-    def __str__(self):
+    def __unicode__(self):
         return self.full_name
 
 

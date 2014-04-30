@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load filters %}
+{% load pagination_tags %}
+{% load sorting_tags %}
 
 
 {% block title %} {% trans 'Patrons' %}{% endblock %}
@@ -16,20 +18,22 @@
 {% endblock %}
 
 {% block content %}
+    {% autosort patrons as sorted_objects %}
+    {% autopaginate sorted_objects 20 as paginated_objects %}
 
     <table class="table-bordered">
         <thead>
         <tr>
-            <th>Patron</th>
+            <th>{% anchor id 'Patron' %}</th>
             <th>Total Borrowed</th>
             <th>Not Returned</th>
             <th>Past Due</th>
         </tr>
         </thead>
         <tbody>
-        {% for patron in patrons %}
+        {% for patron in paginated_objects %}
             <tr>
-                <td>{{ patron }}</td>
+                <td><a href="{% url 'view_patron' pk=patron.id %}">{{ patron }}</a></td>
                 <td>{{ patron.transactions.count }}</td>
                 <td>{{ patron.not_returned.count }}</td>
                 <td>{{ patron.past_due.count }}</td>
