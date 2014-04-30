@@ -11,27 +11,44 @@
 
 {% block content %}
 
-    <div>
-        <a href="{% url 'list_records' %}">Books</a>
-    </div>
-    <div>
-        <a href="{% url 'list_patrons' %}">Patrons</a>
-    </div>
-    <div>
-        <a href="{% url 'list_authors' %}">Authors</a>
-    </div>
-    <div>
-        <a href="{% url 'list_publishers' %}">Publishers</a>
-    </div>
-    <div>
-        <a href="{% url 'list_transactions' %}">Transactions</a>
-    </div>
-    <br>
-    <div>
-        <a href="{% url 'acquisition' %}">Acquisition</a>
-    </div>
-    <div>
-        <a href="{% url 'outgoing' %}">Lend a Book</a>
+    <div class="dashboard">
+
+        <div>
+            <a href="{% url 'list_records' %}">
+                <img src="{{ STATIC_URL }}img/icons/book.png">
+                Books</a>
+        </div>
+        <div>
+            <a href="{% url 'list_patrons' %}">
+                <img src="{{ STATIC_URL }}img/icons/user.png">
+                Patrons</a>
+        </div>
+        <div>
+            <a href="{% url 'list_authors' %}">
+                <img src="{{ STATIC_URL }}img/icons/write.png">
+                Authors</a>
+        </div>
+        <div>
+            <a href="{% url 'list_publishers' %}">
+                <img src="{{ STATIC_URL }}img/icons/print.png">
+                Publishers</a>
+        </div>
+        <div>
+            <a href="{% url 'list_transactions' %}">
+                <img src="{{ STATIC_URL }}img/icons/import.png">
+                Transactions</a>
+        </div>
+
+        <div>
+            <a href="{% url 'acquisition' %}">
+                <img src="{{ STATIC_URL }}img/icons/download.png">
+                Acquisition</a>
+        </div>
+        <div>
+            <a href="{% url 'outgoing' %}">
+                <img src="{{ STATIC_URL }}img/icons/export.png">
+                Lend a Book</a>
+        </div>
     </div>
 
 {% endblock %}
