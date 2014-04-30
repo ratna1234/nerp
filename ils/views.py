@@ -138,7 +138,7 @@ def acquisition(request):
             record.book = book
 
             if data['details']['details'].has_key('languages'):
-                record.book.languages.clear()
+                record.languages.clear()
                 for lang in data['details']['details']['languages']:
                     lang_key = lang['key'].replace('/languages/', '')
                     try:
@@ -149,7 +149,7 @@ def acquisition(request):
                         except Language.DoesNotExist:
                             raise Exception(
                                 "Please add a language with code " + lang_key + " or " + lang_key[:-1] + " first!")
-                    record.book.languages.add(book_lang)
+                    record.languages.add(book_lang)
 
             setting = LibrarySetting.get()
             record.type = setting.default_type
@@ -168,7 +168,7 @@ def acquisition(request):
                     published_place.save()
                     record.published_places.add(published_place)
 
-            record.book.authors.clear()
+            record.authors.clear()
             for author in data['details']['details']['authors']:
                 author_key = author['key'].replace('/authors/', '')
                 try:
@@ -177,7 +177,7 @@ def acquisition(request):
                     book_author = Author(identifier=author_key)
                 book_author.name = author['name']
                 book_author.save()
-                record.book.authors.add(book_author)
+                record.authors.add(book_author)
 
             if data['data'].has_key('ebooks'):
                 if data['data']['ebooks'][0].has_key('formats'):
@@ -359,14 +359,14 @@ def save_acquisition(request):
             new_subject.save()
             book.subjects.add(new_subject)
 
-    book.authors.clear()
+    record.authors.clear()
     for author in request.POST.getlist('authors'):
         if author.isnumeric():
-            book.authors.add(Author.objects.get(id=author))
+            record.authors.add(Author.objects.get(id=author))
         else:
             new_author = Author(name=author)
             new_author.save()
-            book.authors.add(new_author)
+            record.authors.add(new_author)
 
     publisher = request.POST.get('publisher')
     if publisher:
@@ -378,10 +378,7 @@ def save_acquisition(request):
             record.publisher = new_publisher
 
     record.save()
-    import pdb
-
-    pdb.set_trace()
-    pass
+    #TODO language
 
 
 def outgoing(request):
