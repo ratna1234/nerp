@@ -447,3 +447,13 @@ def view_patron(request, pk):
     patron = get_object_or_404(User, pk=pk)
     transactions = Transaction.objects.filter(user=patron)
     return render(request, 'view_patron.html', {'patron': patron, 'transactions': transactions})
+
+
+def list_transactions(request):
+    transactions = Transaction.objects.all()
+    return render(request, 'list_transactions.html', {'transactions': transactions})
+
+
+def list_records(request):
+    transactions = Transaction.objects.all()
+    return render(request, 'list_transactions.html', {'transactions': transactions})

@@ -17,4 +17,6 @@ urlpatterns = patterns('',
                        url(r'^record/(?P<pk>[0-9]+)/$', views.view_record, name='view_record'),
                        url(r'^patrons/$', views.list_patrons, name='list_patrons'),
                        url(r'^patron/(?P<pk>[0-9]+)/$', views.view_patron, name='view_patron'),
+                       url(r'^transactions/$', views.list_transactions, name='list_transactions'),
+                       url(r'^records/$', views.list_records, name='list_records'),
 )

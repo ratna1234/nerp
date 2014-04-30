@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load filters %}
+{% load pagination_tags %}
+{% load sorting_tags %}
+
+
+{% block title %} {% trans 'Transactions' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    {#    <a href="{% url "list_demand_forms" %}">{% trans 'Demand' %} {% trans 'Forms' %}</a>#}
+    <span> {% trans 'Transactions' %}</span>
+{% endblock %}
+
+{% block head_end %}
+
+{% endblock %}
+
+{% block content %}
+    {% autosort transactions as sorted_objects %}
+    {% autopaginate sorted_objects 20 as paginated_objects %}
+
+    <div class="transactions">
+        <table class="table-bordered">
+            <thead>
+            <tr>
+                <th>{% anchor record_id 'Book' %}</th>
+                <th>{% anchor user_id 'Patron' %}</th>
+                <th>{% anchor borrow_date 'Borrow Date' %}</th>
+                <th>{% anchor due_date 'Due Date' %}</th>
+                <th>{% anchor return_date 'Return Date' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in paginated_objects %}
+                <tr>
+                    <td>{{ transaction.record|linkify }}</td>
+                    <td><a href="{% url 'view_patron' pk=transaction.user.id %}">{{ transaction.user }}</a></td>
+                    <td>{{ transaction.borrow_date }}</td>
+                    <td>{{ transaction.due_date }}</td>
+                    <td> {% if transaction.return_date %}
+                        {{ transaction.return_date }}
+                    {% else %}
+
+                        <a href="{% url 'incoming' transaction_pk=transaction.id %}">Return</a>
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% paginate %}
+    </div>
+
+
+{% endblock %}
