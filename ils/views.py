@@ -437,7 +437,13 @@ def view_record(request, pk=None):
     transactions = Transaction.objects.filter(record=record)
     return render(request, 'view_record.html', {'record': record, 'transactions': transactions})
 
+
 def list_patrons(request):
     patrons = User.objects.by_group('Patron')
     return render(request, 'list_patrons.html', {'patrons': patrons})
 
+
+def view_patron(request, pk):
+    patron = get_object_or_404(User, pk=pk)
+    transactions = Transaction.objects.filter(user=patron)
+    return render(request, 'view_patron.html', {'patron': patron, 'transactions': transactions})

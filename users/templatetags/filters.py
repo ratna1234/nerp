@@ -75,14 +75,6 @@ def yesterday():
     return yesterday
 
 
-@register.filter
-def subtract(value, arg):
-    if value is None:
-        value = 0
-    if arg is None:
-        arg = 0
-    return value - arg
-
 
 @register.tag()
 def ifusergroup(parser, token):

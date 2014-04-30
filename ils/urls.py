@@ -16,6 +16,5 @@ urlpatterns = patterns('',
                        url(r'^outgoing/save$', views.save_outgoing, name='save_outgoing'),
                        url(r'^record/(?P<pk>[0-9]+)/$', views.view_record, name='view_record'),
                        url(r'^patrons/$', views.list_patrons, name='list_patrons'),
-
-
+                       url(r'^patron/(?P<pk>[0-9]+)/$', views.view_patron, name='view_patron'),
 )

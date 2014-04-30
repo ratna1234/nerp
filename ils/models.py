@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from core.models import Language
@@ -140,6 +141,9 @@ class Record(models.Model):
             return self.date_of_publication
         elif self.publication_has_month:
             return self.date_of_publication.strftime('%B %Y')
+
+    def get_absolute_url(self):
+        return reverse('view_record', kwargs={'pk': self.id})
 
 
 class BookFile(models.Model):
