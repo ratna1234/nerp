@@ -16,6 +16,7 @@ from django.core.files import File
 from datetime import datetime
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
+from users.models import User
 
 pp = pprint.PrettyPrinter(indent=4).pprint
 
@@ -435,4 +436,8 @@ def view_record(request, pk=None):
     record = get_object_or_404(Record, pk=pk)
     transactions = Transaction.objects.filter(record=record)
     return render(request, 'view_record.html', {'record': record, 'transactions': transactions})
+
+def list_patrons(request):
+    patrons = User.objects.by_group('Patron')
+    return render(request, 'list_patrons.html', {'patrons': patrons})
 

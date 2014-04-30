@@ -142,7 +142,6 @@ class Record(models.Model):
             return self.date_of_publication.strftime('%B %Y')
 
 
-
 class BookFile(models.Model):
     file = models.FileField(upload_to='ils/books/')
     record = models.ForeignKey(Record, related_name='files')
@@ -164,7 +163,7 @@ class BookFile(models.Model):
 
 class Transaction(models.Model):
     record = models.ForeignKey(Record)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='transactions')
     borrow_date = models.DateField()
     due_date = models.DateField()
     return_date = models.DateField(null=True, blank=True)
@@ -196,3 +195,18 @@ class LibrarySetting(models.Model):
     @staticmethod
     def get():
         return LibrarySetting.objects.all()[0]
+
+
+def not_returned(self):
+    transactions = Transaction.objects.filter(user=self, return_date=None)
+    return transactions
+
+
+def past_due(self):
+    transactions = Transaction.objects.filter(user=self, return_date=None, due_date__lt=datetime.datetime.today())
+    return transactions
+
+
+User.add_to_class('not_returned', not_returned)
+User.add_to_class('past_due', past_due)
+
