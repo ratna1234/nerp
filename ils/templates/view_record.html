@@ -22,8 +22,10 @@
 
     <div class="row">
         <div class="column large-1">
-            <a href="{{ MEDIA_URL }}{{ record.large_cover }}" target="_blank"><img
-                    src="{{ MEDIA_URL }}{{ record.medium_cover }}"></a>
+            {% if record.medium_cover %}
+                <a href="{{ MEDIA_URL }}{{ record.large_cover }}" target="_blank"><img
+                        src="{{ MEDIA_URL }}{{ record.medium_cover }}"></a>
+            {% endif %}
         </div>
         <div class="column large-8">
             <h1>{{ record.book.title }}</h1>

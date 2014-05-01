@@ -33,3 +33,5 @@ class IncomingForm(KOModelForm):
 
     class Meta:
         model = Transaction
+
+# class PatronForm

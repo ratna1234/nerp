@@ -510,3 +510,7 @@ def isbn_to_record(request):
 def list_ebooks(request):
     records = Record.objects.filter(files__isnull=False).distinct()
     return render(request, 'list_records.html', {'records': records})
+
+
+def add_patron(request):
+    return render(request, 'list_records.html', {})

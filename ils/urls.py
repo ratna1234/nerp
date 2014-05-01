@@ -24,5 +24,6 @@ urlpatterns = patterns('',
                        url(r'^publishers/$', views.list_publishers, name='list_publishers'),
                        url(r'^isbn_to_record/$', views.isbn_to_record, name='isbn_to_record'),
                        url(r'^ebooks/$', views.list_ebooks, name='list_ebooks'),
+                       url(r'^add_patron/$', views.add_patron, name='add_patron'),
 
 )
