@@ -272,8 +272,9 @@ def save_acquisition(request):
         new_book = False
     else:
         book = Book(title=request.POST.get('book'))
-        book.save()
         new_book = True
+    book.subtitle = request.POST.get('subtitle')
+    book.save()
 
     if request.POST.get('isbn'):
         isbn = request.POST.get('isbn')
@@ -306,7 +307,6 @@ def save_acquisition(request):
         else:
             record.quantity += int(request.POST.get('quantity'))
 
-    book.subtitle = request.POST.get('subtitle')
     record.excerpt = request.POST.get('excerpt')
     record.edition = request.POST.get('edition')
     record.notes = request.POST.get('notes')
@@ -338,6 +338,9 @@ def save_acquisition(request):
         record.medium_cover = request.FILES.get('medium_cover')
     if request.FILES.get('large_cover'):
         record.large_cover = request.FILES.get('large_cover')
+
+    if not record.date_added:
+        record.date_added = datetime.today()
 
     record.save()
 
@@ -502,3 +505,8 @@ def isbn_to_record(request):
     else:
         messages.error(request, 'Invalid ISBN!')
         return redirect(reverse_lazy('library_index'))
+
+
+def list_ebooks(request):
+    records = Record.objects.filter(files__isnull=False).distinct()
+    return render(request, 'list_records.html', {'records': records})
