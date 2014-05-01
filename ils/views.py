@@ -56,9 +56,15 @@ def acquisition(request):
     if request.GET.get('isbn'):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
-            # response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
-            response = urllib2.urlopen('http://127.0.0.1/json/3.json')
+            response = urllib2.urlopen('http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn)
+            # response = urllib2.urlopen('http://127.0.0.1/json/3.json')
             data = json.load(response)
+            # import pdb
+            #
+            # pdb.set_trace()
+            if data == {}:
+                record_form = RecordForm(instance=record)
+                return render(request, 'acquisition.html', {'data': record_data, 'form': record_form})
             data = data.itervalues().next()['records'].itervalues().next()
             if isbnpy.isI10(isbn):
                 isbn = isbnpy.convert(isbn)
@@ -418,7 +424,7 @@ def save_outgoing(request):
         if error:
             raise Exception(error)
     transaction.save()
-    messages.success(request, 'Book Lent!')
+    messages.success(request, 'Checked Out!')
     return redirect(reverse_lazy('view_record', kwargs={'pk': transaction.record_id}))
 
 
@@ -500,7 +506,11 @@ def isbn_to_record(request):
     if isbn and isbnpy.isValid(isbn):
         if isbnpy.isI10(isbn):
             isbn = isbnpy.convert(isbn)
-        record = Record.objects.get(isbn13=isbn)
+        try:
+            record = Record.objects.get(isbn13=isbn)
+        except Record.DoesNotExist:
+            messages.error(request, 'Book not added yet, add it first!')
+            return redirect(reverse_lazy('acquisition') + '?isbn=' + isbn)
         return redirect(reverse_lazy('view_record', kwargs={'pk': record.id}))
     else:
         messages.error(request, 'Invalid ISBN!')

@@ -7,7 +7,6 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <span> <a href="{% url 'library_index' %}">{% trans 'Library' %}</a></span>
     <span> {% trans 'Acquisition' %}</span>
 {% endblock %}
 
@@ -61,9 +60,11 @@
             </div>
 
             <div class="column large-4">
-                <label for="quantity" data-bind="css: format()!='ebook'?'required':'not-required'">Quantity</label>
-                <input type="text" data-bind="value: quantity, attr:{'required': format()!='ebook'}"
+                <!-- ko if:format()!='eBook' -->
+                <label for="quantity" data-bind="css: format()!='eBook'?'required':'not-required'">Quantity</label>
+                <input type="text" data-bind="value: quantity, attr:{'required': format()!='eBook'}"
                        id="quantity" name="quantity">
+                <!-- /ko-->
             </div>
 
         </div>
@@ -164,11 +165,13 @@
             </div>
 
             <div class="column large-6">
+                <!-- ko if:format()!='eBook' -->
                 <label for="type">Type</label>
                 <select id="type" name="type" data-bind="value: type">
                     <option value="Reference">Reference</option>
                     <option value="Circulative">Circulative</option>
                 </select>
+                <!-- /ko -->
 
             </div>
 
