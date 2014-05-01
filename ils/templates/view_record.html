@@ -122,9 +122,11 @@
                 <br>
             {% endif %}
 
-            {% if record.type %}
-                <strong>Type: </strong>{{ record.type }}
-                <br>
+            {% if record.format != 'eBook' %}
+                {% if record.type %}
+                    <strong>Type: </strong>{{ record.type }}
+                    <br>
+                {% endif %}
             {% endif %}
 
             {% if record.weight %}
@@ -149,31 +151,34 @@
 
         </div>
 
-        <div class="column large-6 medium-6">
-            <table>
-                <tr>
-                    <th>Total</th>
-                    <td>{{ record.quantity }}</td>
-                </tr>
-                <tr>
-                    <th>In Circulation</th>
-                    <td>{{ record.in_circulation.count }}</td>
-                </tr>
-                <tr>
-                    <th>Available</th>
-                    <td>{{ record.quantity|subtract:record.in_circulation.count }}</td>
-                </tr>
-                {% if record.quantity|subtract:record.in_circulation.count > 0 %}
+        {% if record.format != 'eBook' %}
+            <div class="column large-6 medium-6">
+                <table>
                     <tr>
-                        <th colspan="2">
-
-                            <a href="{% url 'outgoing' pk=record.id %}">Lend</a>
-                        </th>
+                        <th>Total</th>
+                        <td>{{ record.quantity }}</td>
                     </tr>
-                {% endif %}
-            </table>
-        </div>
+                    <tr>
+                        <th>In Circulation</th>
+                        <td>{{ record.in_circulation.count }}</td>
+                    </tr>
+                    <tr>
+                        <th>Available</th>
+                        <td>{{ record.quantity|subtract:record.in_circulation.count }}</td>
+                    </tr>
+                    {% if record.quantity|subtract:record.in_circulation.count > 0 %}
+                        <tr>
+                            <th colspan="2">
+
+                                <a href="{% url 'outgoing' pk=record.id %}">Lend</a>
+                            </th>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        {% endif %}
     </div>
+
 
     {% if record.ebooks %}
         <h3>E-books</h3>
@@ -183,38 +188,40 @@
         {% endfor %}
 
     {% endif %}
-
-    <h3>Transactions</h3>
-    <div class="transactions">
-        <table class="table-bordered">
-            <thead>
-            <tr>
-                <th>{% anchor user_id 'Patron' %}</th>
-                <th>{% anchor borrow_date 'Borrow Date' %}</th>
-                <th>{% anchor due_date 'Due Date' %}</th>
-                <th>{% anchor return_date 'Return Date' %}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% autosort transactions as sorted_objects %}
-            {% autopaginate sorted_objects 20 as paginated_objects %}
-            {% for transaction in paginated_objects %}
+    {% if record.format != 'eBook' %}
+        <h3>Transactions</h3>
+        <div class="transactions">
+            <table class="table-bordered">
+                <thead>
                 <tr>
-                    <td><a href="{% url 'view_patron' pk=transaction.user.id %}">{{ transaction.user }}</a></td>
-                    <td>{{ transaction.borrow_date }}</td>
-                    <td>{{ transaction.due_date }}</td>
-                    <td> {% if transaction.return_date %}
-                        {{ transaction.return_date }}
-                    {% else %}
-
-                        <a href="{% url 'incoming' transaction_pk=transaction.id %}">Return</a>
-                    {% endif %}
-                    </td>
+                    <th>{% anchor user_id 'Patron' %}</th>
+                    <th>{% anchor borrow_date 'Borrow Date' %}</th>
+                    <th>{% anchor due_date 'Due Date' %}</th>
+                    <th>{% anchor return_date 'Return Date' %}</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        {% paginate %}
-    </div>
+                </thead>
+                <tbody>
+                {% autosort transactions as sorted_objects %}
+                {% autopaginate sorted_objects 20 as paginated_objects %}
+                {% for transaction in paginated_objects %}
+                    <tr>
+                        <td><a href="{% url 'view_patron' pk=transaction.user.id %}">{{ transaction.user }}</a></td>
+                        <td>{{ transaction.borrow_date }}</td>
+                        <td>{{ transaction.due_date }}</td>
+                        <td> {% if transaction.return_date %}
+                            {{ transaction.return_date }}
+                        {% else %}
+
+                            <a href="{% url 'incoming' transaction_pk=transaction.id %}">Return</a>
+                        {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% paginate %}
+        </div>
+    {% endif %}
+
 
 {% endblock %}
