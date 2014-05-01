@@ -1,0 +1,46 @@
+{% extends "library_base.html" %}
+{% load i18n %}
+{% load filters %}
+
+
+{% block title %} {{ scenario }} Patron{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url 'list_patrons' %}">Patrons</a>
+    <span> {{ scenario }} Patron</span>
+{% endblock %}
+
+{% block content %}
+    {{ form.errors }}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <p><label for="id_username">Username:</label>
+            {{ form.username }}
+        </p>
+
+        <p><label for="id_full_name">Full Name:</label>
+            {{ form.full_name }}
+        </p>
+
+        <p><label for="id_email">Email Address:</label>
+            {{ form.email }}
+        </p>
+
+        <p><label for="id_password">Password:</label>
+            <input type="password" name="password" maxlength="128" id="id_password">
+        </p>
+
+        <p><label for="id_password1">Password Again:</label>
+            <input type="password" name="password1" maxlength="128" id="id_password1">
+        </p>
+
+        <input type="submit" value="Save!" class="button">
+
+    </form>
+
+
+
+{% endblock %}

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from app.libr import title_case
 from core.models import Language
-from ils.forms import RecordForm, OutgoingForm, IncomingForm
+from ils.forms import RecordForm, OutgoingForm, IncomingForm, PatronForm
 from ils.models import LibrarySetting
 from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSerializer, SubjectSerializer, BookSerializer, TransactionSerializer
 import isbn as isbnpy
@@ -522,5 +522,33 @@ def list_ebooks(request):
     return render(request, 'list_records.html', {'records': records})
 
 
-def add_patron(request):
-    return render(request, 'list_records.html', {})
+def patron_form(request, pk=None):
+    if pk:
+        item = get_object_or_404(User, id=pk)
+        scenario = 'Edit'
+    else:
+        item = User()
+        scenario = 'Add'
+    if request.POST:
+        form = PatronForm(data=request.POST, instance=item)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.save()
+            item.set_password(form.cleaned_data['password'])
+            item.save()
+            if not item.add_to_group('Patron'):
+                raise Exception('Add group Patron first!')
+                # if request.is_ajax():
+            #     return render(request, 'callback.html', {'obj': ItemSerializer(item).data})
+            return redirect('list_patrons')
+    else:
+        form = PatronForm(instance=item)
+        # if request.is_ajax():
+    #     base_template = 'modal.html'
+    # else:
+    #     base_template = 'base.html'
+    return render(request, 'patron_form.html', {
+        'scenario': scenario,
+        'form': form,
+        # 'base_template': base_template,
+    })

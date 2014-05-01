@@ -85,6 +85,14 @@ class User(AbstractBaseUser):
         except Group.DoesNotExist:
             return False
 
+    def add_to_group(self, group_name):
+        try:
+            group = Group.objects.get(name=group_name)
+            self.groups.add(group)
+            return True
+        except Group.DoesNotExist:
+            return False
+
     objects = UserManager()
 
     def __unicode__(self):

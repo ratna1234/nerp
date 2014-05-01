@@ -2,6 +2,7 @@ from django import forms
 from app.libr import KOModelForm
 from models import Record, Transaction
 from users.models import User
+from django.utils.translation import ugettext_lazy as _
 
 
 class RecordForm(forms.ModelForm):
@@ -10,7 +11,8 @@ class RecordForm(forms.ModelForm):
 
 
 class OutgoingForm(forms.ModelForm):
-    isbn= forms.CharField(label='ISBN')
+    isbn = forms.CharField(label='ISBN')
+
     def __init__(self, *args, **kwargs):
         super(OutgoingForm, self).__init__(*args, **kwargs)
         self.fields['user'].label = 'Patron'
@@ -34,4 +36,49 @@ class IncomingForm(KOModelForm):
     class Meta:
         model = Transaction
 
-# class PatronForm
+
+class PatronForm(forms.ModelForm):
+    password1 = forms.CharField(max_length=128, widget=forms.PasswordInput, label=_("Password (again)"))
+
+    class Meta:
+        model = User
+        exclude = ['last_login', 'is_active', 'is_staff', 'is_superuser', 'groups']
+
+
+    def clean_username(self):
+        """
+        Validate that the username is alphanumeric and is not already
+        in use.
+
+        """
+        existing = User.objects.filter(username__iexact=self.cleaned_data['username'])
+        if existing.exists():
+            raise forms.ValidationError(_("A user with that username already exists."))
+        else:
+            return self.cleaned_data['username']
+
+    def clean_email(self):
+        """
+        Validate that the username is alphanumeric and is not already
+        in use.
+
+        """
+        existing = User.objects.filter(email__iexact=self.cleaned_data['email'])
+        if existing.exists():
+            raise forms.ValidationError(_("A user with that email already exists."))
+        else:
+            return self.cleaned_data['email']
+
+
+    def clean(self):
+        """
+        Verify that the values entered into the two password fields
+        match. Note that an error here will end up in
+        ``non_field_errors()`` because it doesn't apply to a single
+        field.
+
+        """
+        if 'password' in self.cleaned_data and 'password1' in self.cleaned_data:
+            if self.cleaned_data['password1'] != self.cleaned_data['password']:
+                raise forms.ValidationError(_("The two password fields didn't match."))
+        return self.cleaned_data
