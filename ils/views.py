@@ -17,6 +17,7 @@ from datetime import datetime
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from users.models import User
+from haystack.query import SearchQuerySet
 
 pp = pprint.PrettyPrinter(indent=4).pprint
 
@@ -552,3 +553,10 @@ def patron_form(request, pk=None):
         'form': form,
         # 'base_template': base_template,
     })
+
+
+def search(request, keyword):
+    if keyword == '':
+        keyword = request.GET.get('q') or ''
+    results = SearchQuerySet().filter(content=keyword)
+    print results

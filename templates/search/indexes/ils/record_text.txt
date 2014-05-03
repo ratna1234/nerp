@@ -1,0 +1,2 @@
+{{ object.isbn13 }}
+{{ object.book.title }}
