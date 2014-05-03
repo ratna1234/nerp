@@ -1,2 +1,12 @@
-{{ object.isbn13 }}
+{{ object.book.isbn13 }}
 {{ object.book.title }}
+{{ object.book.subtitle }}
+{{ object.publisher.name }}
+{{ object.notes }}
+{{ object.excerpt }}
+{{ object.lcc }}
+{{ object.ddc }}
+
+{% for author in object.authors.all %}
+    {{ author.name }}
+{% endfor %}

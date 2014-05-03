@@ -1,6 +1,7 @@
 from haystack import indexes
 from ils.models import Record
 
+
 class RecordIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     isbn13 = indexes.CharField(model_attr='isbn13', null=True)
