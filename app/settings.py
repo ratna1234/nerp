@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     'account',
     'core',
     'ils',
+    'haystack',
 
 
     'django.contrib.admin',
@@ -186,3 +187,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.contrib.messages.context_processors.messages',
 )
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
