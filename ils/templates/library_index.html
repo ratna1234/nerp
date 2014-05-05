@@ -51,4 +51,18 @@
         </div>
     </div>
 
+    <div class="dashboard-search">
+        <form method="get" action="{% url 'search' %}">
+
+            <input type="text" name="q" id="id_q" placeholder="Search">
+
+            {{ form.models }}
+
+{#            {{ form.as_p }}#}
+
+            <input type="submit" value="Search!" class="tiny button">
+
+        </form>
+    </div>
+
 {% endblock %}

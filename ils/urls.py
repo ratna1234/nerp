@@ -26,5 +26,6 @@ urlpatterns = patterns('',
                        url(r'^ebooks/$', views.list_ebooks, name='list_ebooks'),
                        url(r'^add_patron/$', views.patron_form, name='add_patron'),
                        url(r'^search/(?P<keyword>.*)$', views.search, name='search'),
+                       url(r'^search/$', views.search, name='search'),
 
 )

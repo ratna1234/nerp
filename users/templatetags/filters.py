@@ -206,6 +206,9 @@ def linebreaks(obj):
 
 @register.filter
 def linkify(obj):
+    # import pdb
+    #
+    # pdb.set_trace()
     if obj:
         return mark_safe('<a href="' + obj.get_absolute_url() + '">' + unicode(obj) + '</a>')
 

@@ -3,6 +3,7 @@ from app.libr import KOModelForm
 from models import Record, Transaction
 from users.models import User
 from django.utils.translation import ugettext_lazy as _
+from haystack.forms import SearchForm, ModelSearchForm
 
 
 class RecordForm(forms.ModelForm):
@@ -82,3 +83,31 @@ class PatronForm(forms.ModelForm):
             if self.cleaned_data['password1'] != self.cleaned_data['password']:
                 raise forms.ValidationError(_("The two password fields didn't match."))
         return self.cleaned_data
+
+
+class LibrarySearchForm(ModelSearchForm):
+    # start_date = forms.DateField(required=False)
+    # end_date = forms.DateField(required=False)
+
+    def search(self):
+        # First, store the SearchQuerySet received from other processing.
+        sqs = super(LibrarySearchForm, self).search()
+
+        if not self.is_valid():
+            return self.no_query_found()
+
+        # Check to see if a start_date was chosen.
+        # if self.cleaned_data['start_date']:
+        #     sqs = sqs.filter(pub_date__gte=self.cleaned_data['start_date'])
+        #
+        # # Check to see if an end_date was chosen.
+        # if self.cleaned_data['end_date']:
+        #     sqs = sqs.filter(pub_date__lte=self.cleaned_data['end_date'])
+
+        return sqs
+
+    def __init__(self, *args, **kwargs):
+        super(LibrarySearchForm, self).__init__(*args, **kwargs)
+        aa, bb = self.fields['models'].choices[2]
+        self.fields['models'].choices[2] = (aa, 'Books')
+        self.fields['models'].initial = ['ils.record']

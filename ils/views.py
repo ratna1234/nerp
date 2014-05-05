@@ -18,6 +18,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from users.models import User
 from haystack.query import SearchQuerySet
+from ils.forms import LibrarySearchForm
 
 pp = pprint.PrettyPrinter(indent=4).pprint
 
@@ -499,7 +500,8 @@ def list_publishers(request):
 
 
 def index(request):
-    return render(request, 'library_index.html')
+    form = LibrarySearchForm()
+    return render(request, 'library_index.html', {'form': form})
 
 
 def isbn_to_record(request):
@@ -555,8 +557,14 @@ def patron_form(request, pk=None):
     })
 
 
-def search(request, keyword):
-    if keyword == '':
-        keyword = request.GET.get('q') or ''
-    results = SearchQuerySet().filter(content=keyword)
-    print results
+def search(request, keyword=None):
+    # if keyword:
+    #     results = SearchQuerySet().filter(content=keyword)
+    # print results
+    if request.GET:
+        form = LibrarySearchForm(data=request.GET)
+        import pdb
+        # pdb.set_trace()
+    else:
+        form = LibrarySearchForm()
+    return render(request, 'library_search.html', {'form': form})

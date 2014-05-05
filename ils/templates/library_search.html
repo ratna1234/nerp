@@ -1,0 +1,40 @@
+{% extends "library_base.html" %}
+{% load i18n %}
+{% load filters %}
+
+
+{% block title %} Search{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <span> Search</span>
+{% endblock %}
+
+{% block content %}
+    {{ form.errors }}
+
+    <form method="get" action="{% url 'search' %}">
+        {#        {% csrf_token %}#}
+        {#        <p>#}
+        {#            <label for="id_q">Search:</label> <input id="id_q" name="q" value="asd" type="text">#}
+        {#            <input type="submit" value="Search!" class="button">#}
+        {#        </p>#}
+
+        {{ form.as_p }}
+
+        <input type="submit" value="Search!" class="button">
+
+    </form>
+
+    {% if request.GET %}
+        {{ form.search.count }} results
+        <br>
+        {% for item in form.search %}
+            {{ item.object|linkify }}
+            <br/>
+        {% endfor %}
+    {% endif %}
+
+
+
+{% endblock %}
