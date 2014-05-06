@@ -245,7 +245,7 @@ def save_purchase_order(request):
             row['budget_title_no'] = None
         values = {'sn': index + 1, 'item_id': row.get('item_id'),
                   'specification': row.get('specification'), 'rate': row.get('rate'),
-                  'quantity': row.get('quantity'), 'unit': row.get('unit'),
+                  'quantity': row.get('quantity'), 'unit': row.get('unit'), 'vattable': row.get('vattable'),
                   'budget_title_no': row.get('budget_title_no'), 'remarks': row.get('remarks'),
                   'purchase_order': obj}
         submodel, created = model.objects.get_or_create(id=row.get('id'), defaults=values)
