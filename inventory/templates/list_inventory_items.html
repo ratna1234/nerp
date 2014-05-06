@@ -43,9 +43,9 @@
 
     <table class="table-bordered">
         <thead>
-        <th>{% anchor name %}</th>
-        <th>{% anchor account__account_no 'Account No.' %}</th>
-        <th>{% anchor purchase_price 'Purchase Price' %}</th>
+        <th>{% anchor name _("Name") %}</th>
+        <th>{% anchor account__account_no _('Account No.') %}</th>
+        <th>{% anchor purchase_price _('Purchase Price') %}</th>
         </thead>
         <tbody>
         {% for item in paginated_objects %}

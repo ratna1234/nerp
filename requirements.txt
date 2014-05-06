@@ -7,7 +7,7 @@ bpython
 django-mptt
 linaro-django-pagination
 django-filter
--e git://github.com/camilonova/django-sorting.git#egg=django_sorting
+webstack-django-sorting
 djangorestframework
 Pillow
 django-haystack

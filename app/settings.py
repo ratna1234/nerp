@@ -107,7 +107,8 @@ INSTALLED_APPS = (
     'south',
     'mptt',
     'linaro_django_pagination',
-    'django_sorting',
+    # 'django_sorting',
+    'webstack_django_sorting',
     'rest_framework',
     # If you're using Django 1.6.x or earlier
     'debug_toolbar',
@@ -197,7 +198,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'linaro_django_pagination.middleware.PaginationMiddleware',
-    'django_sorting.middleware.SortingMiddleware',
+    'webstack_django_sorting.middleware.SortingMiddleware',
     'core.middleware.SettingMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
