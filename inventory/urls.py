@@ -2,6 +2,8 @@ from django.conf.urls import patterns, url
 import views
 
 urlpatterns = patterns('',
+                       url(r'^$', views.index, name='inventory_index'),
+
                        url(r'^items/$', views.list_inventory_items, name='list_inventory_items'),
                        url(r'^create/$', views.item_form, name='create_inventory_item'),
                        url(r'^item/delete/(?P<id>[0-9]+)/$', views.delete_inventory_item, name='delete_inventory_item'),

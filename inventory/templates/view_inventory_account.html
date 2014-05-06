@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "inventory_base.html" %}
 {% load i18n %}
 
 {% block title %}{{ obj.name }}{% endblock %}
@@ -48,7 +48,7 @@
     <br>
 
     <table class="table-bordered">
-    <thead>
+        <thead>
         <tr>
             <th rowspan="2">{% trans 'Date' %}</th>
             <th rowspan="2">{% trans 'Entry No.' %}/{% trans 'Release No.' %}</th>

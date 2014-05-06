@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "inventory_base.html" %}
 {% load i18n %}
 {% load filters %}
 
@@ -7,6 +7,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
+    <a href="{% url "list_purchase_orders" %}">{% trans 'Purchase' %} {% trans 'Orders' %}</a>
     <span> {% trans scenario %} {% trans 'Purchase Order' %}</span>
 {% endblock %}
 

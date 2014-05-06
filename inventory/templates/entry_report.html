@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "inventory_base.html" %}
 {% load i18n %}
 {% load filters %}
 
@@ -7,6 +7,7 @@
 
 {% block breadcrumbs %}
     {{ block.super }}
+    <a href="{% url "list_entry_reports" %}">{% trans 'Entry' %} {% trans 'Reports' %}</a>
     <span> {% trans scenario %} {% trans 'Entry Report' %}</span>
 {% endblock %}
 
@@ -30,7 +31,9 @@
         <input type="hidden" name="table_model" data-bind="value: ko.toJSON($data.demand_rows, null, 2)">
 
 
-        {% trans 'Entry Report' %} {% trans 'No.' %}: <input type="number" name="entry_report_no" min="0" id="id_entry_report_no" data-bind="value: entry_report_no, localize: 1">
+        {% trans 'Entry Report' %} {% trans 'No.' %}: <input type="number" name="entry_report_no" min="0"
+                                                             id="id_entry_report_no"
+                                                             data-bind="value: entry_report_no, localize: 1">
         {{ form.entry_report.errors }}
 
 
@@ -103,26 +106,29 @@
                href="{% url 'delete_entry_report' form.instance.id %}">{% trans 'Delete!' %}</a>
         {% endif %}
 
-    {% if form.instance.source|get_class == 'PurchaseOrder' %}
-        <a class="small secondary button" target="_blank"
+        {% if form.instance.source|get_class == 'PurchaseOrder' %}
+            <a class="small secondary button" target="_blank"
                href="{% url 'update_purchase_order' form.instance.source.id %}">{% trans 'Purchase Order' %}</a>
-    {% else %}
-        <a class="small secondary button" target="_blank"
+        {% else %}
+            <a class="small secondary button" target="_blank"
                href="{% url 'update_handover' form.instance.source.id %}">{% trans 'Handover' %}</a>
-    {% endif %}
+        {% endif %}
 
 
     </form>
     {% if form.instance.source|get_class == 'PurchaseOrder' %}
-        माथि उल्लेखित सामानहरु खरिद आदेश नम्बर <b>{{ form.instance.source.order_no|localize }}</b> मिति <b>{{ form.instance.source.date|date:"Y-m-d"|localize }}</b>
+        माथि उल्लेखित सामानहरु खरिद आदेश नम्बर <b>{{ form.instance.source.order_no|localize }}</b> मिति
+        <b>{{ form.instance.source.date|date:"Y-m-d"|localize }}</b>
         अनुसार श्री
         {{ form.instance.source.party }} बाट प्राप्त हुन आएको हुँदा जाँची गन्ती गरी हेर्दा ठीक दुरुस्त भएकोले खातामा
         आम्दानी
         बाँधेको प्रमाणित गर्दछु ।
     {% else %}
-        माथि उल्लेखित सामानहरु हस्तान्तरण फारम नम्बर<b>{{ form.instance.source.voucher_no|localize }}</b> मिति <b>{{ form.instance.source.date|date:"Y-m-d"|localize }}</b>
+        माथि उल्लेखित सामानहरु हस्तान्तरण फारम नम्बर<b>{{ form.instance.source.voucher_no|localize }}</b> मिति
+        <b>{{ form.instance.source.date|date:"Y-m-d"|localize }}</b>
         अनुसार श्री
-        .................................................. बाट प्राप्त हुन आएको हुँदा जाँची गन्ती गरी हेर्दा ठीक दुरुस्त भएकोले खातामा
+        .................................................. बाट प्राप्त हुन आएको हुँदा जाँची गन्ती गरी हेर्दा ठीक दुरुस्त
+        भएकोले खातामा
         आम्दानी
         बाँधेको प्रमाणित गर्दछु ।
     {% endif %}

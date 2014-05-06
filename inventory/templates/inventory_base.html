@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url 'inventory_index' %}">{% trans 'Inventory' %}</a>
+{% endblock %}

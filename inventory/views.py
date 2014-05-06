@@ -37,7 +37,7 @@ def item_form(request, id=None):
     if request.is_ajax():
         base_template = 'modal.html'
     else:
-        base_template = 'base.html'
+        base_template = 'inventory_base.html'
     return render(request, 'item_form.html', {
         'scenario': scenario,
         'form': form,
@@ -105,7 +105,7 @@ def create_category(request):
     if request.is_ajax():
         base_template = 'modal.html'
     else:
-        base_template = 'base.html'
+        base_template = 'inventory_base.html'
     return render(request, 'inventory_category_create_form.html', {
         'form': form,
         'base_template': base_template,
@@ -126,7 +126,7 @@ def update_category(request, id):
     if request.is_ajax():
         base_template = 'modal.html'
     else:
-        base_template = 'base.html'
+        base_template = 'inventory_base.html'
     return render(request, 'inventory_category_update_form.html', {
         'form': form,
         'base_template': base_template
@@ -608,3 +608,6 @@ def save_account(request):
                   'remaining_total_cost_price': row.get('remaining_total_cost_price')}
         account_row = save_model(account_row, values)
     return HttpResponse(json.dumps(dct), mimetype="application/json")
+
+def index(request):
+    return render(request, 'inventory_index.html')
