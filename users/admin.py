@@ -3,7 +3,8 @@ from django.contrib.auth.admin import UserAdmin, UserChangeForm as DjangoUserCha
 from django.contrib.sites.models import Site
 from django import forms
 
-from users.models import User
+from users.models import User, GroupProxy
+from django.contrib.auth.models import Group
 
 
 class UserCreationForm(DjangoUserCreationForm):
@@ -88,3 +89,6 @@ admin.site.register(User, CustomUserAdmin)
 
 # Removing default apps
 admin.site.unregister(Site)
+admin.site.unregister(Group)
+
+admin.site.register(GroupProxy)

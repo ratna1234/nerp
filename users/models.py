@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test
+from django.utils.translation import ugettext_lazy as _
 
 
 class UserManager(BaseUserManager):
@@ -111,3 +112,9 @@ def group_required(*group_names):
         return False
 
     return user_passes_test(in_groups)
+
+class GroupProxy(Group):
+    class Meta:
+        proxy = True
+        verbose_name = _('Group')
+        # verbose_name_plural = _('Groups')
