@@ -18,7 +18,7 @@ class ItemForm(KOModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(ItemForm, self).__init__(*args, **kwargs)
-        self.fields['vattable'].label = _('Vattable')
+        # self.fields['vattable'].label = _('Vattable')
         self.fields['type'].label = _('Type')
         self.fields['account_no'].initial = InventoryAccount.get_next_account_no()
         if not self.user.in_group('Store Keeper'):
