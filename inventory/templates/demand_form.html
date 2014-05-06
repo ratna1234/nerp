@@ -57,7 +57,7 @@
 
             <span class="right column large-3 small-3 print-only">
                 {% trans 'Fiscal Year' %}:
-                {{ request.setting.fiscal_year }}
+                {{ request.setting.fiscal_year|localize }}
             </span>
         </div>
 
