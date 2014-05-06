@@ -96,7 +96,7 @@ class Item(models.Model):
     type_choices = [('consumable', _('Consumable')), ('non-consumable', _('Non-Consumable'))]
     type = models.CharField(choices=type_choices, max_length=15, default='consumable')
     unit = models.CharField(max_length=50, default=_('pieces'))
-    vattable = models.BooleanField(default=True)
+    # vattable = models.BooleanField(default=True)
     property_classification_reference_number = models.CharField(max_length=20, blank=True, null=True)
 
     def save(self, *args, **kwargs):
