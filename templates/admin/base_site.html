@@ -2,10 +2,10 @@
 {% load i18n %}
 {% load filters %}
 
-{% block title %}{{ title }} | {{ 'app'|setting:'title' }}{% endblock %}
+{% block title %}{{ 'app_name'|setting }}{% endblock %}
 
 {% block branding %}
-    <h1 id="site-name">{{ 'app'|setting:'title' }}</h1>
+    <h1 id="site-name">{{ 'app_name'|setting }}</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

@@ -2,8 +2,7 @@
 
 import json
 from datetime import date, timedelta
-import re
-
+from core.models import AppSetting
 from django.core import serializers
 from django.db.models.query import QuerySet
 from django.template import Library
@@ -140,9 +139,9 @@ class GroupCheckNode(template.Node):
 
 
 @register.filter
-def setting(group, key):
-    # return mark_safe(config_value(group, key).replace("\n", "<br/>"))
-    return key
+def setting(key):
+    setting = AppSetting.objects.get()
+    return getattr(setting, key)
 
 
 @register.tag

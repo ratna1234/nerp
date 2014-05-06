@@ -7,4 +7,11 @@ admin.site.register(Record)
 admin.site.register(Subject)
 admin.site.register(Author)
 admin.site.register(Transaction)
-admin.site.register(LibrarySetting)
+# admin.site.register(LibrarySetting)
+
+class SettingsAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+
+admin.site.register(LibrarySetting, SettingsAdmin)
