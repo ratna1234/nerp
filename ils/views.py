@@ -16,42 +16,42 @@ from django.core.files import File
 from datetime import datetime
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
-from users.models import User
+from users.models import User, group_required
 from haystack.query import SearchQuerySet
 from ils.forms import LibrarySearchForm
 
 pp = pprint.PrettyPrinter(indent=4).pprint
 
 
-@login_required
+@group_required('Librarian')
 def authors_as_json(request):
     items = Author.objects.all()
     items_data = AuthorSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
-@login_required
+@group_required('Librarian')
 def publishers_as_json(request):
     items = Publisher.objects.all()
     items_data = PublisherSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
-@login_required
+@group_required('Librarian')
 def subjects_as_json(request):
     items = Subject.objects.all()
     items_data = SubjectSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
-@login_required
+@group_required('Librarian')
 def books_as_json(request):
     items = Book.objects.all()
     items_data = BookSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
-# Create your views here.
+@group_required('Librarian')
 def acquisition(request):
     record_data = {}
     record = None
@@ -273,7 +273,7 @@ def acquisition(request):
 
     return render(request, 'acquisition.html', {'data': record_data, 'form': record_form})
 
-
+@group_required('Librarian')
 def save_acquisition(request):
     if request.POST.get('book').isnumeric():
         book = Book.objects.get(id=request.POST.get('book'))
@@ -396,7 +396,7 @@ def save_acquisition(request):
 
     return redirect(reverse_lazy('view_record', kwargs={'pk': record.id}))
 
-
+@group_required('Librarian')
 def outgoing(request, pk=None):
     transaction = Transaction.new()
     if pk:
@@ -404,7 +404,7 @@ def outgoing(request, pk=None):
     form = OutgoingForm(instance=transaction)
     return render(request, 'outgoing.html', {'form': form})
 
-
+@group_required('Librarian')
 def save_outgoing(request):
     error = False
     transaction = Transaction.new()
@@ -429,7 +429,7 @@ def save_outgoing(request):
     messages.success(request, 'Checked Out!')
     return redirect(reverse_lazy('view_record', kwargs={'pk': transaction.record_id}))
 
-
+@group_required('Librarian')
 def incoming(request, transaction_pk):
     transaction = Transaction.objects.get(id=transaction_pk)
     if request.POST:
@@ -452,18 +452,19 @@ def view_record(request, pk=None):
     transactions = Transaction.objects.filter(record=record)
     return render(request, 'view_record.html', {'record': record, 'transactions': transactions})
 
-
+@group_required('Librarian')
 def list_patrons(request):
     patrons = User.objects.by_group('Patron')
     return render(request, 'list_patrons.html', {'patrons': patrons})
 
-
+#TODO allow self
+@group_required('Librarian')
 def view_patron(request, pk):
     patron = get_object_or_404(User, pk=pk)
     transactions = Transaction.objects.filter(user=patron)
     return render(request, 'view_patron.html', {'patron': patron, 'transactions': transactions})
 
-
+@group_required('Librarian')
 def list_transactions(request):
     transactions = Transaction.objects.all()
     return render(request, 'list_transactions.html', {'transactions': transactions})
@@ -487,11 +488,6 @@ def view_author(request, slug):
 def view_publisher(request, slug):
     publisher = Publisher.objects.get(slug=slug)
     return render(request, 'view_publisher.html', {'publisher': publisher})
-
-
-def list_authors(request):
-    objects = Author.objects.all()
-    return render(request, 'list_authors.html', {'objects': objects})
 
 
 def list_publishers(request):
@@ -524,7 +520,7 @@ def list_ebooks(request):
     records = Record.objects.filter(files__isnull=False).distinct()
     return render(request, 'list_records.html', {'records': records})
 
-
+@group_required('Librarian')
 def patron_form(request, pk=None):
     if pk:
         item = get_object_or_404(User, id=pk)

@@ -1,5 +1,6 @@
 {% extends "library_base.html" %}
 {% load i18n %}
+{% load filters %}
 
 {% block title %} {% trans 'Integrated Library System' %}{% endblock %}
 
@@ -18,11 +19,13 @@
                 <img src="{{ STATIC_URL }}img/icons/book.png">
                 Books</a>
         </div>
-        <div>
-            <a href="{% url 'list_patrons' %}">
-                <img src="{{ STATIC_URL }}img/icons/user.png">
-                Patrons</a>
-        </div>
+        {% ifusergroup 'Librarian' %}
+            <div>
+                <a href="{% url 'list_patrons' %}">
+                    <img src="{{ STATIC_URL }}img/icons/user.png">
+                    Patrons</a>
+            </div>
+        {% endifusergroup %}
         <div>
             <a href="{% url 'list_authors' %}">
                 <img src="{{ STATIC_URL }}img/icons/write.png">
@@ -33,22 +36,25 @@
                 <img src="{{ STATIC_URL }}img/icons/print.png">
                 Publishers</a>
         </div>
-        <div>
-            <a href="{% url 'list_transactions' %}">
-                <img src="{{ STATIC_URL }}img/icons/import.png">
-                Transactions</a>
-        </div>
 
-        <div>
-            <a href="{% url 'acquisition' %}">
-                <img src="{{ STATIC_URL }}img/icons/download.png">
-                Acquisition</a>
-        </div>
-        <div>
-            <a href="{% url 'outgoing' %}">
-                <img src="{{ STATIC_URL }}img/icons/export.png">
-                Checkout</a>
-        </div>
+        {% ifusergroup 'Librarian' %}
+            <div>
+                <a href="{% url 'list_transactions' %}">
+                    <img src="{{ STATIC_URL }}img/icons/import.png">
+                    Transactions</a>
+            </div>
+
+            <div>
+                <a href="{% url 'acquisition' %}">
+                    <img src="{{ STATIC_URL }}img/icons/download.png">
+                    Acquisition</a>
+            </div>
+            <div>
+                <a href="{% url 'outgoing' %}">
+                    <img src="{{ STATIC_URL }}img/icons/export.png">
+                    Checkout</a>
+            </div>
+        {% endifusergroup %}
     </div>
 
     <div class="dashboard-search">
@@ -58,7 +64,7 @@
 
             {{ form.models }}
 
-{#            {{ form.as_p }}#}
+            {#            {{ form.as_p }}#}
 
             <input type="submit" value="Search!" class="tiny button">
 
