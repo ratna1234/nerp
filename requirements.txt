@@ -5,7 +5,7 @@ south
 django-debug-toolbar
 bpython
 django-mptt
-django-pagination
+linaro-django-pagination
 django-filter
 -e git://github.com/camilonova/django-sorting.git#egg=django_sorting
 djangorestframework

@@ -106,7 +106,7 @@ INSTALLED_APPS = (
 
     'south',
     'mptt',
-    'pagination',
+    'linaro_django_pagination',
     'django_sorting',
     'rest_framework',
     # If you're using Django 1.6.x or earlier
@@ -186,6 +186,21 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
     'django.core.context_processors.i18n',
     'django.contrib.messages.context_processors.messages',
+)
+
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'linaro_django_pagination.middleware.PaginationMiddleware',
+    'django_sorting.middleware.SortingMiddleware',
+    'core.middleware.SettingMiddleware',
+    # Uncomment the next line for simple clickjacking protection:
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 HAYSTACK_CONNECTIONS = {
