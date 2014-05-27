@@ -118,6 +118,8 @@ INSTALLED_APPS = (
     'account',
     'core',
     'ils',
+    'training',
+
     'haystack',
 
 
