@@ -7,6 +7,9 @@ class Category(MPTTModel):
     description = models.CharField(max_length=254, null=True, blank=True)
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children')
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
 
 class TargetGroup(MPTTModel):
     name = models.CharField(max_length=255)
