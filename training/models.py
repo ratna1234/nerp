@@ -16,10 +16,16 @@ class TargetGroup(MPTTModel):
     description = models.CharField(max_length=254, null=True, blank=True)
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children')
 
+    def __str__(self):
+        return self.name
+
 
 class Organization(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Participant(models.Model):
@@ -29,6 +35,9 @@ class Participant(models.Model):
     phone_no = models.CharField(blank=True, null=True, max_length=50)
     email = models.EmailField(blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class ResourcePerson(models.Model):
     name = models.CharField(max_length=255)
@@ -36,6 +45,9 @@ class ResourcePerson(models.Model):
     address = models.TextField(blank=True, null=True)
     phone_no = models.CharField(blank=True, null=True, max_length=50)
     email = models.EmailField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Training(models.Model):
@@ -54,9 +66,15 @@ class Training(models.Model):
     resource_persons = models.ManyToManyField(ResourcePerson, related_name='trainings')
     participants = models.ManyToManyField(Participant, related_name='trainings')
 
+    def __str__(self):
+        return self.title
+
 
 class File(models.Model):
     title = models.CharField(max_length=254)
     description = models.TextField(blank=True, null=True)
     file = models.FileField(blank=True, null=True, upload_to='training/files/')
     training = models.ForeignKey(Training)
+
+    def __str__(self):
+        return self.title
