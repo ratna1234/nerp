@@ -20,61 +20,9 @@
     <form method="post">
         {% csrf_token %}
 
-        <div>
-
-            <label for="id_title">Title:</label>
-            {{ form.title }}
-
-            <label for="id_description">Description:</label>
-            {{ form.description }}
-
-
-            <label for="id_starts">Starts:</label>
-            {{ form.starts }}
-
-            <label for="id_ends">Ends:</label>
-            {{ form.ends }}
-
-            <label for="id_categories">Categories:</label>
-            {{ form.categories }}
-            <a href="#" data-reveal-id="add-category">Add New Category</a>
-
-
-            <label for="id_target_groups">Target groups:</label>
-            {{ form.target_groups }}
-            <a href="#" data-reveal-id="add-target-group">Add New Target Group</a>
-
-            <label for="id_criteria_for_selection">Criteria for selection:</label>
-            {{ form.criteria_for_selection }}
-
-
-            <label for="id_objective">Objective:</label>
-            {{ form.objective }}
-
-            <label for="id_output">Output:</label>
-            {{ form.output }}
-
-            <label for="id_conclusion">Conclusion:</label>
-            {{ form.conclusion }}
-
-            <label for="id_feedback">Feedback:</label>
-            {{ form.feedback }}
-
-            <label for="id_curriculum">Curriculum:</label>
-            {{ form.curriculum }}
-
-            <label for="id_resource_persons">Resource persons:</label>
-            {{ form.resource_persons }}
-
-                        <label for="id_participants">Participants:</label>
-                        {{ form.participants }}
-
-
-        </div>
-
-        <div class="row">
+        <div class="right">
             <div class="span12">
-                <button type="submit" value="Submit" class="small secondary button">
+                <button type="submit" value="Save!" class="small secondary button">
                     {% trans 'Submit' %}</button>
                 {% if scenario == 'Update' %}
                     <a class="small secondary button alert"
@@ -82,6 +30,82 @@
                 {% endif %}
             </div>
         </div>
+
+        <ul class="tabs" data-tab id="training-tab">
+            <li class="tab-title active"><a href="#basic">Basic</a></li>
+            <li class="tab-title"><a href="#detail">Detail</a></li>
+            <li class="tab-title"><a href="#participants">Participants</a></li>
+            <li class="tab-title"><a href="#files">Files </a></li>
+        </ul>
+
+
+        <div class="tabs-content">
+            <div class="content active" id="basic">
+                <label for="id_title">Title:</label>
+                {{ form.title }}
+
+                <label for="id_description">Description:</label>
+                {{ form.description }}
+
+
+                <label for="id_starts">Starts:</label>
+                {{ form.starts }}
+
+                <label for="id_ends">Ends:</label>
+                {{ form.ends }}
+
+                <label for="id_categories">Categories:</label>
+                {{ form.categories }}
+                <a href="#" data-reveal-id="add-category">Add New Category</a>
+
+
+                <label for="id_target_groups">Target groups:</label>
+                {{ form.target_groups }}
+                <a href="#" data-reveal-id="add-target-group">Add New Target Group</a>
+
+                <label for="id_resource_persons">Resource persons:</label>
+                {{ form.resource_persons }}
+
+            </div>
+            <div class="content" id="detail">
+                <label for="id_criteria_for_selection">Criteria for selection:</label>
+                {{ form.criteria_for_selection }}
+
+
+                <label for="id_objective">Objective:</label>
+                {{ form.objective }}
+
+                <label for="id_output">Output:</label>
+                {{ form.output }}
+
+                <label for="id_conclusion">Conclusion:</label>
+                {{ form.conclusion }}
+
+                <label for="id_feedback">Feedback:</label>
+                {{ form.feedback }}
+
+                <label for="id_curriculum">Curriculum:</label>
+                {{ form.curriculum }}
+
+
+            </div>
+            <div class="content" id="participants">
+
+                <label for="id_participants">Participants:</label>
+                {{ form.participants }}
+
+            </div>
+            <div class="content" id="files">
+
+            </div>
+        </div>
+
+        <div>
+
+
+        </div>
+
+
     </form>
 
     <div id="add-category" class="reveal-modal" data-reveal><h2>Add Category</h2>
