@@ -8,6 +8,10 @@
     {#    <a href="{% url "list_inventory_items" %}">{% trans 'Inventory' %} {% trans 'Items' %}</a>#}
     <span>{% trans scenario %} {% trans 'Training' %} </span>
 {% endblock %}
+{% block head_end %}
+    <script src="{{ STATIC_URL }}js/training/form.js"></script>
+
+{% endblock %}
 
 {% block content %}
 
@@ -19,51 +23,53 @@
         <div>
 
             <label for="id_title">Title:</label>
-            <input type="text" required name="title" maxlength="254" id="id_title" data-bind="value: title">
+            {{ form.title }}
 
             <label for="id_description">Description:</label>
-            <textarea rows="10" name="description" id="id_description" data-bind="value: description"
-                      cols="40"></textarea>
+            {{ form.description }}
 
 
-            <label for="id_starts">Starts:</label> <input type="text" name="starts" id="id_starts"
-                                                          data-bind="value: starts">
+            <label for="id_starts">Starts:</label>
+            {{ form.starts }}
 
             <label for="id_ends">Ends:</label>
-            <input type="text" name="ends" id="id_ends" data-bind="value: ends">
-
+            {{ form.ends }}
 
             <label for="id_categories">Categories:</label>
             {{ form.categories }}
+
+            <a href="#" data-reveal-id="add-category">Add New Category</a>
+
 
             <label for="id_target_groups">Target groups:</label>
             {{ form.target_groups }}
 
             <label for="id_criteria_for_selection">Criteria for selection:</label>
-            <textarea rows="10" name="criteria_for_selection" id="id_criteria_for_selection" cols="40"
-                      data-bind="value: criteria_for_selection"></textarea>
+            {{ form.criteria_for_selection }}
 
 
             <label for="id_objective">Objective:</label>
-            <textarea rows="10" name="objective" id="id_objective" cols="40" data-bind="value: objective"></textarea>
+            {{ form.objective }}
 
             <label for="id_output">Output:</label>
-            <textarea rows="10" name="output" id="id_output" cols="40" data-bind="value: output"></textarea></p>
+            {{ form.output }}
 
             <label for="id_conclusion">Conclusion:</label>
-            <textarea rows="10" name="conclusion" id="id_conclusion" data-bind="value: conclusion" cols="40"></textarea>
+            {{ form.conclusion }}
 
             <label for="id_feedback">Feedback:</label>
-            <textarea rows="10" name="feedback" id="id_feedback" data-bind="value: feedback" cols="40"></textarea>
+            {{ form.feedback }}
 
-            <label for="id_curriculum">Curriculum:</label> <textarea rows="10" name="curriculum" id="id_curriculum"
-                                                                     data-bind="value: curriculum" cols="40"></textarea>
+            <label for="id_curriculum">Curriculum:</label>
+            {{ form.curriculum }}
 
             <label for="id_resource_persons">Resource persons:</label>
             {{ form.resource_persons }}
 
-            <label for="id_participants">Participants:</label>
-            {{ form.participants }}
+            {#            <label for="id_participants">Participants:</label>#}
+            {#            {{ form.participants }}#}
+
+
         </div>
 
         <div class="row">
@@ -77,4 +83,14 @@
             </div>
         </div>
     </form>
+
+    <div id="add-category" class="reveal-modal" data-reveal><h2>Add Category</h2>
+
+        <form method="post" action="{% url 'add_category' %}">
+            {% csrf_token %}
+            {{ category_form.as_p }}
+            <input type="submit" value="Add" class="tiny button">
+        </form>
+    </div>
+
 {% endblock %}
