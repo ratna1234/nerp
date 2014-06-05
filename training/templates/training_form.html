@@ -10,10 +10,15 @@
 {% endblock %}
 {% block head_end %}
     <script src="{{ STATIC_URL }}js/training/form.js"></script>
+    <script>
+    participants = {{ participants }}
+    </script>
 
 {% endblock %}
 
 {% block content %}
+
+
 
     {{ form.non_field_errors }}
     {{ form.errors }}

@@ -23,6 +23,7 @@ def training_form(request, pk=None):
     else:
         item = Training()
         scenario = 'Add'
+
     if request.POST:
         form = TrainingForm(data=request.POST, instance=item)
         if form.is_valid():
@@ -42,6 +43,7 @@ def training_form(request, pk=None):
         'category_form': category_form,
         'resource_person_form': resource_person_form,
         'target_group_form': target_group_form,
+        'participants': [x.id for x in item.participants.all()]
     })
 
 
