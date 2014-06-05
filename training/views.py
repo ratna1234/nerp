@@ -1,12 +1,19 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm
-from training.models import Training, Category, ResourcePerson, TargetGroup
+from training.models import Training, Category, ResourcePerson, TargetGroup, Participant
 import json
+from training.serializers import ParticipantSerializer
 
 
 def index(request):
     pass
+
+
+def participants_as_json(request):
+    items = Participant.objects.all()
+    items_data = ParticipantSerializer(items).data
+    return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
 def training_form(request, pk=None):

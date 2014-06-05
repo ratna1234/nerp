@@ -22,8 +22,8 @@
 
         <div class="right">
             <div class="span12">
-                <button type="submit" value="Save!" class="small secondary button">
-                    {% trans 'Submit' %}</button>
+                <button type="submit" value="submit" class="small secondary button">
+                    {% trans 'Save' %}</button>
                 {% if scenario == 'Update' %}
                     <a class="small secondary button alert"
                        href="{% url 'delete_inventory_item' form.instance.id %}">{% trans 'Delete' %}!</a>
@@ -33,7 +33,7 @@
 
         <ul class="tabs" data-tab id="training-tab">
             <li class="tab-title active"><a href="#basic">Basic</a></li>
-            <li class="tab-title"><a href="#detail">Detail</a></li>
+            <li class="tab-title"><a href="#detail">Details</a></li>
             <li class="tab-title"><a href="#participants">Participants</a></li>
             <li class="tab-title"><a href="#files">Files </a></li>
         </ul>
