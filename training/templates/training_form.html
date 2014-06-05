@@ -37,12 +37,12 @@
 
             <label for="id_categories">Categories:</label>
             {{ form.categories }}
-
             <a href="#" data-reveal-id="add-category">Add New Category</a>
 
 
             <label for="id_target_groups">Target groups:</label>
             {{ form.target_groups }}
+            <a href="#" data-reveal-id="add-target-group">Add New Target Group</a>
 
             <label for="id_criteria_for_selection">Criteria for selection:</label>
             {{ form.criteria_for_selection }}
@@ -66,8 +66,8 @@
             <label for="id_resource_persons">Resource persons:</label>
             {{ form.resource_persons }}
 
-            {#            <label for="id_participants">Participants:</label>#}
-            {#            {{ form.participants }}#}
+                        <label for="id_participants">Participants:</label>
+                        {{ form.participants }}
 
 
         </div>
@@ -89,6 +89,24 @@
         <form method="post" action="{% url 'add_category' %}">
             {% csrf_token %}
             {{ category_form.as_p }}
+            <input type="submit" value="Add" class="tiny button">
+        </form>
+    </div>
+
+    <div id="add-target-group" class="reveal-modal" data-reveal><h2>Add Target Group</h2>
+
+        <form method="post" action="{% url 'add_target_group' %}">
+            {% csrf_token %}
+            {{ target_group_form.as_p }}
+            <input type="submit" value="Add" class="tiny button">
+        </form>
+    </div>
+
+    <div id="add-resource-person" class="reveal-modal" data-reveal><h2>Add Resource Person</h2>
+
+        <form method="post" action="{% url 'add_resource_person' %}">
+            {% csrf_token %}
+            {{ resource_person_form.as_p }}
             <input type="submit" value="Add" class="tiny button">
         </form>
     </div>
