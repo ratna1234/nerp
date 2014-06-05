@@ -4,7 +4,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 
 class Category(MPTTModel):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=254, null=True, blank=True)
+    description = models.TextField(max_length=254, null=True, blank=True)
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children')
 
     class Meta:
@@ -66,8 +66,8 @@ class Training(models.Model):
     conclusion = models.TextField(blank=True, null=True)
     feedback = models.TextField(blank=True, null=True)
     curriculum = models.TextField(blank=True, null=True)
-    resource_persons = models.ManyToManyField(ResourcePerson, related_name='trainings')
-    participants = models.ManyToManyField(Participant, related_name='trainings')
+    resource_persons = models.ManyToManyField(ResourcePerson, related_name='trainings', blank=True, null=True)
+    participants = models.ManyToManyField(Participant, related_name='trainings', blank=True, null=True)
 
     def __str__(self):
         return self.title
