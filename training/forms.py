@@ -1,9 +1,5 @@
 from django import forms
-
-from app.libr import KOModelForm, UserModelChoiceField
-from models import Training, Category, TargetGroup, ResourcePerson
-from users.models import User
-from django.utils.translation import ugettext_lazy as _
+from models import Training, Category, TargetGroup, ResourcePerson, Participant
 
 
 class TrainingForm(forms.ModelForm):
@@ -26,3 +22,8 @@ class ResourcePersonForm(forms.ModelForm):
 class TargetGroupForm(forms.ModelForm):
     class Meta:
         model = TargetGroup
+
+
+class ParticipantForm(forms.ModelForm):
+    class Meta:
+        model = Participant

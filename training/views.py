@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm
+from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm
 from training.models import Training, Category, ResourcePerson, TargetGroup, Participant
 import json
 from training.serializers import ParticipantSerializer
@@ -126,6 +126,28 @@ def target_group_form(request, pk=None):
     else:
         form = TargetGroupForm(instance=item)
     return render(request, 'target_group_form.html', {
+        'scenario': scenario,
+        'form': form,
+        'base_template': 'base.html',
+    })
+
+def participant_form(request, pk=None):
+    if pk:
+        item = get_object_or_404(Participant, pk=pk)
+        scenario = 'Update'
+    else:
+        item = Participant()
+        scenario = 'Create'
+    if request.POST:
+        form = ParticipantForm(data=request.POST, instance=item)
+        if form.is_valid():
+            item = form.save()
+            if request.is_ajax():
+                return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
+            return redirect('/inventory/items/')
+    else:
+        form = ParticipantForm(instance=item)
+    return render(request, 'participant_form.html', {
         'scenario': scenario,
         'form': form,
         'base_template': 'base.html',
