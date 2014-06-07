@@ -1,5 +1,5 @@
 from django import forms
-from models import Training, Category, TargetGroup, ResourcePerson, Participant
+from models import Training, Category, TargetGroup, ResourcePerson, Participant, Organization
 
 
 class TrainingForm(forms.ModelForm):
@@ -27,3 +27,7 @@ class TargetGroupForm(forms.ModelForm):
 class ParticipantForm(forms.ModelForm):
     class Meta:
         model = Participant
+
+class OrganizationForm(forms.ModelForm):
+    class Meta:
+        model = Organization
