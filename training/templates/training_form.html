@@ -1,5 +1,6 @@
 {% extends base_template %}
 {% load i18n %}
+{% load filters %}
 
 {% block title %}{{ scenario }} {% trans 'Training' %}{% endblock %}
 
@@ -12,14 +13,14 @@
     <script src="{{ STATIC_URL }}js/training/form.js"></script>
     <script>
         participants =
-        {{ participants }}
+        {{ participants }};
+        vm_files =
+        {{ files|jsonify }}
     </script>
 
 {% endblock %}
 
 {% block content %}
-
-    {{ files }}
 
     {{ form.non_field_errors }}
     {{ form.errors }}
@@ -105,7 +106,7 @@
                 <button data-bind="click: add_participant">Add</button>
                 <a href="#" data-reveal-id="add-participant">Create New Participant</a>
 
-                <table>
+                <table class="table table-bordered">
                     <thead>
                     <th>Name</th>
                     <th>Organization</th>
@@ -132,35 +133,57 @@
             </div>
             <div class="content" id="files">
 
-                <form class="attachment-form" data-type="other">
-                    <div class="row-fluid">
-                        {% for attachment in training_files %}
-                            <div class="span3">
-                                <a target="_blank"
-                                   href="{{ MEDIA_URL }}{{ attachment.attachment }}">{{ attachment.description }}</a>
-                                <button class="close delete-attachment" data-type="other" data-id="{{ attachment.id }}">
-                                    <span class="icon-trash"></span>
-                                </button>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <br>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {#                    {% for file in training_files %}#}
+                    {#                        <tr>#}
+                    {##}
+                    {##}
+                    {#                            <td>#}
+                    {#                                <input type="hidden" name="id[]" value="{{ file.id }}">#}
+                    {#                                <a target="_blank" href="{{ MEDIA_URL }}{{ file.file }}">{{ file.description }}</a>#}
+                    {#                                <input type="checkbox" name="clear[]">#}
+                    {##}
+                    {##}
+                    {#                            </td>#}
+                    {#                            <td>#}
+                    {##}
+                    {#                                <input type="text" name="description[]">#}
+                    {#                            </td>#}
+                    {#                        <td></td>#}
+                    {##}
+                    {#                        </tr>#}
+                    {#                    {% endfor %}#}
+                    <!-- ko foreach: files -->
+                    <tr>
+                        <td>
+                            <input type="hidden" name="id[]" data-bind="value: id">
+                            <!-- ko if: file() -->
+                            Currently: <a target="_blank"
+                                          data-bind="attr: {'href': '{{ MEDIA_URL }}'+file()}, text: file()"></a>
 
-                    <div class="attach_file_field">
-                        <label>
-                            <b>Add File: </b>
-                            <input type="file" name="attachments" required class="attachments"/>
-                        </label>
-                        <label>
-                            <b>Description: </b>
-                            <input type="text" name="captions" required class="captions">
-                        </label>
-                    </div>
+                            <input type="checkbox" name="clear[]"> Clear<br>
+                            Change:<!-- /ko --><input type="file" name="file[]">
 
-                    <p><input type="button" class="btn add_file" value="Add Another File"/> <input type="submit"
-                                                                                                   value="Save"
-                                                                                                   class="btn"/></p>
-                </form>
+                        </td>
+                        <td>
+                            <input type="text" name="description[]" data-bind="value: description">
+                        </td>
+                        <td class="hide-on-print">
+                            <a href="#" class="close tiny secondary" data-bind="click: $parent.remove_row">x</a>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                    </tbody>
+                </table>
+                <button data-bind="click: add_row">Add File</button>
 
             </div>
         </div>
