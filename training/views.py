@@ -24,13 +24,29 @@ def training_form(request, pk=None):
         item = Training()
         scenario = 'Add'
 
+    # import pdb
+    # pdb.set_trace()
+
     if request.POST:
+
+
         form = TrainingForm(data=request.POST, instance=item)
         if form.is_valid():
             item = form.save()
-            # if request.is_ajax():
-            #     return render(request, 'callback.html', {'obj': ItemSerializer(item).data})
-            # return redirect('/inventory/items/')
+            # import pdb
+            #
+            # pdb.set_trace()
+            item.participants.clear()
+            participants = request.POST.get('selected_participants').split(',')
+            for participant in participants:
+                if participant == u'':
+                    continue
+                participant_obj = Participant.objects.get(pk=participant)
+                item.participants.add(participant_obj)
+
+                # if request.is_ajax():
+                #     return render(request, 'callback.html', {'obj': ItemSerializer(item).data})
+                # return redirect('/inventory/items/')
     else:
         form = TrainingForm(instance=item)
     category_form = CategoryForm(instance=Category())

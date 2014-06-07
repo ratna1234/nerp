@@ -98,7 +98,7 @@
             <div class="content" id="participants">
 
                 <label for="id_participants">Participants:</label>
-                {{ form.participants }}
+{#                {{ form.participants }}#}
 
                 <select id="available"
                         data-bind="options: $root.participants_available, value: selected_participant, optionsText: 'name', optionsValue: 'id'"></select>
@@ -111,7 +111,7 @@
                     <th></th>
                     </thead>
                     <tbody>
-                    <!-- ko foreach: participants -->
+                    <!-- ko foreach: selected_participants -->
                     <tr>
                         <td data-bind="text: name"></td>
                         <td>
@@ -127,6 +127,8 @@
                     <!-- /ko -->
                     </tbody>
                 </table>
+
+                <input type="hidden" name="selected_participants" data-bind="value: participants">
 
             </div>
             <div class="content" id="files">
