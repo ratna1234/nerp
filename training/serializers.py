@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from training.models import Participant, Organization
+from training.models import Participant, Organization, File
 
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -14,3 +14,7 @@ class ParticipantSerializer(serializers.ModelSerializer):
         model = Participant
 
 
+class FileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = File

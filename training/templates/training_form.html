@@ -19,7 +19,7 @@
 
 {% block content %}
 
-
+    {{ files }}
 
     {{ form.non_field_errors }}
     {{ form.errors }}
@@ -132,6 +132,36 @@
             </div>
             <div class="content" id="files">
 
+                <form class="attachment-form" data-type="other">
+                    <div class="row-fluid">
+                        {% for attachment in training_files %}
+                            <div class="span3">
+                                <a target="_blank"
+                                   href="{{ MEDIA_URL }}{{ attachment.attachment }}">{{ attachment.description }}</a>
+                                <button class="close delete-attachment" data-type="other" data-id="{{ attachment.id }}">
+                                    <span class="icon-trash"></span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+
+                    <div class="attach_file_field">
+                        <label>
+                            <b>Add File: </b>
+                            <input type="file" name="attachments" required class="attachments"/>
+                        </label>
+                        <label>
+                            <b>Description: </b>
+                            <input type="text" name="captions" required class="captions">
+                        </label>
+                    </div>
+
+                    <p><input type="button" class="btn add_file" value="Add Another File"/> <input type="submit"
+                                                                                                   value="Save"
+                                                                                                   class="btn"/></p>
+                </form>
+
             </div>
         </div>
 
@@ -170,7 +200,6 @@
             {% csrf_token %}
             {{ resource_person_form.as_p }}
             <input type="submit" value="Add" class="tiny button">
-            <a href="#" data-reveal-id="add-target-group">Add New Target Group</a>
         </form>
     </div>
 

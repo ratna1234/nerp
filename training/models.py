@@ -77,7 +77,7 @@ class File(models.Model):
     title = models.CharField(max_length=254)
     description = models.TextField(blank=True, null=True)
     file = models.FileField(blank=True, null=True, upload_to='training/files/')
-    training = models.ForeignKey(Training)
+    training = models.ForeignKey(Training, related_name='files')
 
     def __str__(self):
         return self.title

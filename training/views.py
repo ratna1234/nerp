@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm, OrganizationForm
 from training.models import Training, Category, ResourcePerson, TargetGroup, Participant, Organization
 import json
-from training.serializers import ParticipantSerializer, OrganizationSerializer
+from training.serializers import ParticipantSerializer, OrganizationSerializer, FileSerializer
 
 
 def index(request):
@@ -24,18 +24,10 @@ def training_form(request, pk=None):
         item = Training()
         scenario = 'Add'
 
-    # import pdb
-    # pdb.set_trace()
-
     if request.POST:
-
-
         form = TrainingForm(data=request.POST, instance=item)
         if form.is_valid():
             item = form.save()
-            # import pdb
-            #
-            # pdb.set_trace()
             item.participants.clear()
             participants = request.POST.get('selected_participants').split(',')
             for participant in participants:
@@ -43,31 +35,28 @@ def training_form(request, pk=None):
                     continue
                 participant_obj = Participant.objects.get(pk=participant)
                 item.participants.add(participant_obj)
-
-                # if request.is_ajax():
-                #     return render(request, 'callback.html', {'obj': ItemSerializer(item).data})
                 # return redirect('/inventory/items/')
     else:
         form = TrainingForm(instance=item)
-    category_form = CategoryForm(instance=Category())
-    resource_person_form = ResourcePersonForm(instance=ResourcePerson())
-    target_group_form = TargetGroupForm(instance=TargetGroup())
-    participant_form = ParticipantForm(instance=Participant())
-    organization_form = OrganizationForm(instance=Organization())
     if scenario == 'Update':
         participants = [x.id for x in item.participants.all()]
+        training_files = item.files.all()
     else:
         participants = []
+        training_files = []
+    files = FileSerializer(training_files).data
     return render(request, 'training_form.html', {
         'scenario': scenario,
         'form': form,
         'base_template': 'base.html',
-        'category_form': category_form,
-        'resource_person_form': resource_person_form,
-        'target_group_form': target_group_form,
-        'participant_form': participant_form,
-        'organization_form': organization_form,
-        'participants': participants
+        'category_form': CategoryForm(instance=Category()),
+        'resource_person_form': ResourcePersonForm(instance=ResourcePerson()),
+        'target_group_form': TargetGroupForm(instance=TargetGroup()),
+        'participant_form': ParticipantForm(instance=Participant()),
+        'organization_form': OrganizationForm(instance=Organization()),
+        'participants': participants,
+        'files': files,
+        'training_files': training_files,
     })
 
 
