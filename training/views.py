@@ -52,6 +52,7 @@ def training_form(request, pk=None):
     category_form = CategoryForm(instance=Category())
     resource_person_form = ResourcePersonForm(instance=ResourcePerson())
     target_group_form = TargetGroupForm(instance=TargetGroup())
+    participant_form = ParticipantForm(instance=Participant())
     return render(request, 'training_form.html', {
         'scenario': scenario,
         'form': form,
@@ -59,6 +60,7 @@ def training_form(request, pk=None):
         'category_form': category_form,
         'resource_person_form': resource_person_form,
         'target_group_form': target_group_form,
+        'participant_form': participant_form,
         'participants': [x.id for x in item.participants.all()]
     })
 
@@ -131,6 +133,7 @@ def target_group_form(request, pk=None):
         'base_template': 'base.html',
     })
 
+
 def participant_form(request, pk=None):
     if pk:
         item = get_object_or_404(Participant, pk=pk)
@@ -143,7 +146,7 @@ def participant_form(request, pk=None):
         if form.is_valid():
             item = form.save()
             if request.is_ajax():
-                return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
+                return HttpResponse(json.dumps(ParticipantSerializer(item).data), mimetype="application/json")
             return redirect('/inventory/items/')
     else:
         form = ParticipantForm(instance=item)

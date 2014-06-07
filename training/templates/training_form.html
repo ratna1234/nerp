@@ -97,12 +97,13 @@
             </div>
             <div class="content" id="participants">
 
-                <label for="id_participants">Participants:</label>
-{#                {{ form.participants }}#}
+                {#                <label for="id_participants">Participants:</label>#}
+                {#                {{ form.participants }}#}
 
                 <select id="available"
                         data-bind="options: $root.participants_available, value: selected_participant, optionsText: 'name', optionsValue: 'id'"></select>
                 <button data-bind="click: add_participant">Add</button>
+                <a href="#" data-reveal-id="add-participant">Create New Participant</a>
 
                 <table>
                     <thead>
@@ -115,10 +116,8 @@
                     <tr>
                         <td data-bind="text: name"></td>
                         <td>
-                            <span data-bind="if: organization">
-                                <span data-bind="text: organization.name">
-                                </span>
-                                </span>
+                            <span data-bind="text: get_organization_name()">
+                            </span>
                         </td>
                         <td class="hide-on-print">
                             <a href="#" class="close tiny secondary" data-bind="click: $parent.remove_row">x</a>
@@ -167,6 +166,15 @@
         <form method="post" action="{% url 'add_resource_person' %}">
             {% csrf_token %}
             {{ resource_person_form.as_p }}
+            <input type="submit" value="Add" class="tiny button">
+        </form>
+    </div>
+
+    <div id="add-participant" class="reveal-modal" data-reveal><h2>Add Participant</h2>
+
+        <form method="post" action="{% url 'add_participant' %}">
+            {% csrf_token %}
+            {{ participant_form.as_p }}
             <input type="submit" value="Add" class="tiny button">
         </form>
     </div>
