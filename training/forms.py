@@ -1,4 +1,5 @@
 from django import forms
+from django.core.urlresolvers import reverse_lazy
 from models import Training, Category, TargetGroup, ResourcePerson, Participant, Organization
 
 
@@ -15,6 +16,9 @@ class CategoryForm(forms.ModelForm):
 
 
 class ResourcePersonForm(forms.ModelForm):
+    organization = forms.ModelChoiceField(Organization.objects.all(), widget=forms.Select(
+        attrs={'class': 'selectize', 'data-url': reverse_lazy('add_organization')}))
+
     class Meta:
         model = ResourcePerson
 
@@ -25,8 +29,12 @@ class TargetGroupForm(forms.ModelForm):
 
 
 class ParticipantForm(forms.ModelForm):
+    organization = forms.ModelChoiceField(Organization.objects.all(), widget=forms.Select(
+        attrs={'class': 'selectize', 'data-url': reverse_lazy('add_organization')}))
+
     class Meta:
         model = Participant
+
 
 class OrganizationForm(forms.ModelForm):
     class Meta:

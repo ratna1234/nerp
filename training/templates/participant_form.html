@@ -9,6 +9,15 @@
     <span>{% trans scenario %} {% trans 'Participant' %}</span>
 {% endblock %}
 
+{% block head_end %}
+    <script>
+        $(document).ready(function () {
+            var $select = $('.selectize').selectize()[0].selectize;
+            init_selectize($select);
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
 
     {{ form.non_field_errors }}

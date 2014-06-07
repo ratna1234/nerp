@@ -53,7 +53,6 @@
                 <label for="id_description">Description:</label>
                 {{ form.description }}
 
-
                 <label for="id_starts">Starts:</label>
                 {{ form.starts }}
 
@@ -71,6 +70,7 @@
 
                 <label for="id_resource_persons">Resource persons:</label>
                 {{ form.resource_persons }}
+                <a href="#" data-reveal-id="add-resource-person">Add New Resource Person</a>
 
             </div>
             <div class="content" id="detail">
@@ -144,6 +144,7 @@
     </form>
 
     <div id="add-category" class="reveal-modal" data-reveal><h2>Add Category</h2>
+        <a class="close-reveal-modal">&#215;</a>
 
         <form method="post" action="{% url 'add_category' %}">
             {% csrf_token %}
@@ -153,6 +154,7 @@
     </div>
 
     <div id="add-target-group" class="reveal-modal" data-reveal><h2>Add Target Group</h2>
+        <a class="close-reveal-modal">&#215;</a>
 
         <form method="post" action="{% url 'add_target_group' %}">
             {% csrf_token %}
@@ -162,19 +164,32 @@
     </div>
 
     <div id="add-resource-person" class="reveal-modal" data-reveal><h2>Add Resource Person</h2>
+        <a class="close-reveal-modal">&#215;</a>
 
         <form method="post" action="{% url 'add_resource_person' %}">
             {% csrf_token %}
             {{ resource_person_form.as_p }}
             <input type="submit" value="Add" class="tiny button">
+            <a href="#" data-reveal-id="add-target-group">Add New Target Group</a>
         </form>
     </div>
 
     <div id="add-participant" class="reveal-modal" data-reveal><h2>Add Participant</h2>
+        <a class="close-reveal-modal">&#215;</a>
 
         <form method="post" action="{% url 'add_participant' %}">
             {% csrf_token %}
             {{ participant_form.as_p }}
+            <input type="submit" value="Add" class="tiny button">
+        </form>
+    </div>
+
+    <div id="add-organization" class="reveal-modal" data-reveal><h2>Add Organization</h2>
+        <a class="close-reveal-modal">&#215;</a>
+
+        <form method="post" action="{% url 'add_organization' %}">
+            {% csrf_token %}
+            {{ organization_form.as_p }}
             <input type="submit" value="Add" class="tiny button">
         </form>
     </div>

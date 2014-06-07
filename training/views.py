@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm, OrganizationForm
 from training.models import Training, Category, ResourcePerson, TargetGroup, Participant, Organization
 import json
-from training.serializers import ParticipantSerializer
+from training.serializers import ParticipantSerializer, OrganizationSerializer
 
 
 def index(request):
@@ -53,6 +53,11 @@ def training_form(request, pk=None):
     resource_person_form = ResourcePersonForm(instance=ResourcePerson())
     target_group_form = TargetGroupForm(instance=TargetGroup())
     participant_form = ParticipantForm(instance=Participant())
+    organization_form = OrganizationForm(instance=Organization())
+    if scenario == 'Update':
+        participants = [x.id for x in item.participants.all()]
+    else:
+        participants = []
     return render(request, 'training_form.html', {
         'scenario': scenario,
         'form': form,
@@ -61,7 +66,8 @@ def training_form(request, pk=None):
         'resource_person_form': resource_person_form,
         'target_group_form': target_group_form,
         'participant_form': participant_form,
-        'participants': [x.id for x in item.participants.all()]
+        'organization_form': organization_form,
+        'participants': participants
     })
 
 
@@ -169,12 +175,17 @@ def organization_form(request, pk=None):
         if form.is_valid():
             item = form.save()
             if request.is_ajax():
-                return HttpResponse(json.dumps(ParticipantSerializer(item).data), mimetype="application/json")
+                # return HttpResponse(json.dumps(OrganizationSerializer(item).data), mimetype="application/json")
+                return render(request, 'callback.html', {'obj': OrganizationSerializer(item).data})
             return redirect('/inventory/items/')
     else:
         form = OrganizationForm(instance=item)
+    if request.is_ajax():
+        base_template = 'modal.html'
+    else:
+        base_template = 'base.html'
     return render(request, 'organization_form.html', {
         'scenario': scenario,
         'form': form,
-        'base_template': 'base.html',
+        'base_template': base_template,
     })
