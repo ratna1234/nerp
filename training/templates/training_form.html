@@ -11,7 +11,8 @@
 {% block head_end %}
     <script src="{{ STATIC_URL }}js/training/form.js"></script>
     <script>
-    participants = {{ participants }}
+        participants =
+        {{ participants }}
     </script>
 
 {% endblock %}
@@ -98,6 +99,34 @@
 
                 <label for="id_participants">Participants:</label>
                 {{ form.participants }}
+
+                <select id="available"
+                        data-bind="options: $root.participants_available, value: selected_participant, optionsText: 'name', optionsValue: 'id'"></select>
+                <button data-bind="click: add_participant">Add</button>
+
+                <table>
+                    <thead>
+                    <th>Name</th>
+                    <th>Organization</th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <!-- ko foreach: participants -->
+                    <tr>
+                        <td data-bind="text: name"></td>
+                        <td>
+                            <span data-bind="if: organization">
+                                <span data-bind="text: organization.name">
+                                </span>
+                                </span>
+                        </td>
+                        <td class="hide-on-print">
+                            <a href="#" class="close tiny secondary" data-bind="click: $parent.remove_row">x</a>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                    </tbody>
+                </table>
 
             </div>
             <div class="content" id="files">
