@@ -24,7 +24,7 @@
 
     {{ form.non_field_errors }}
     {{ form.errors }}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="right">
@@ -47,7 +47,7 @@
 
 
         <div class="tabs-content">
-            <div class="content active" id="basic">
+            <div class="content" id="basic">
                 <label for="id_title">Title:</label>
                 {{ form.title }}
 
@@ -131,7 +131,7 @@
                 <input type="hidden" name="selected_participants" data-bind="value: participants">
 
             </div>
-            <div class="content" id="files">
+            <div class="content active" id="files">
 
                 <table class="table table-bordered">
                     <thead>
@@ -164,17 +164,18 @@
                     <!-- ko foreach: files -->
                     <tr>
                         <td>
-                            <input type="hidden" name="id[]" data-bind="value: id">
+                            <input type="hidden" name="indices" data-bind="value: $index()">
+                            <input type="hidden" name="file_ids" data-bind="value: id">
                             <!-- ko if: file() -->
                             Currently: <a target="_blank"
                                           data-bind="attr: {'href': '{{ MEDIA_URL }}'+file()}, text: file()"></a>
 
-                            <input type="checkbox" name="clear[]"> Clear<br>
-                            Change:<!-- /ko --><input type="file" name="file[]">
+                            <input type="checkbox" data-bind="attr:{name: 'clears['+$index()+']'}"> Clear<br>
+                            Change:<!-- /ko --><input type="file" data-bind="attr:{name: 'files['+$index()+']'}">
 
                         </td>
                         <td>
-                            <input type="text" name="description[]" data-bind="value: description">
+                            <input type="text" name="descriptions" data-bind="value: description">
                         </td>
                         <td class="hide-on-print">
                             <a href="#" class="close tiny secondary" data-bind="click: $parent.remove_row">x</a>
