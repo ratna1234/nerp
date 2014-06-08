@@ -11,7 +11,7 @@
 {% endblock %}
 {% block head_end %}
     <script src="{{ STATIC_URL }}js/vendors/foundation-datepicker.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/foundation-datepicker.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/vendors/foundation-datepicker.css">
     <script src="{{ STATIC_URL }}js/training/form.js"></script>
 
     <script>
@@ -58,10 +58,12 @@
                 <textarea rows="3" name="description" id="id_description" cols="40"></textarea>
 
                 <label for="id_starts">Starts:</label>
-                {{ form.starts }}
+                <input type="text" name="starts" id="id_starts" data-date-format="yyyy-mm-dd">
+
+                <span id="duration"></span>
 
                 <label for="id_ends">Ends:</label>
-                {{ form.ends }}
+                <input type="text" name="ends" id="id_ends" data-date-format="yyyy-mm-dd">
 
                 <label for="id_categories">Categories:</label>
                 {{ form.categories }}
