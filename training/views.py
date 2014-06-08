@@ -39,9 +39,11 @@ def training_form(request, pk=None):
                 # return redirect('/inventory/items/')
         descriptions = request.POST.getlist('descriptions')
         file_ids = request.POST.getlist('file_ids')
-        print request.POST
-        print ''
-        import pdb;pdb.set_trace()
+        if request.POST.get('deleted_files') == '':
+            deleted_files = []
+        else:
+            deleted_files = request.POST.get('deleted_files').split(',')
+
         for index in request.POST.getlist('indices'):
             ind = int(index)
             file_id = file_ids[ind]
@@ -50,12 +52,20 @@ def training_form(request, pk=None):
             else:
                 the_file = File.objects.get(id=file_id)
             the_file.description = descriptions[ind]
-            if request.FILES.get('files['+index+']'):
-                the_file.file = request.FILES.get('files['+index+']')
-            elif request.POST.get('clears['+index+']'):
+            if request.FILES.get('files[' + index + ']'):
+                the_file.file = request.FILES.get('files[' + index + ']')
+            elif request.POST.get('clears[' + index + ']'):
                 the_file.file = None
             the_file.training = item
             the_file.save()
+        for deleted_file_id in deleted_files:
+            # if deleted_file_id == '':
+            #     continue
+            # try:
+            the_file = File.objects.get(id=deleted_file_id)
+            the_file.delete()
+            # except File.DoesNotExist:
+            #     pass
 
 
     else:
