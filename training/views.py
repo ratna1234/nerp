@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm, OrganizationForm
-from training.models import Training, Category, ResourcePerson, TargetGroup, Participant, Organization
+from training.models import Training, Category, ResourcePerson, TargetGroup, Participant, Organization, File
 import json
 from training.serializers import ParticipantSerializer, OrganizationSerializer, FileSerializer
 
@@ -25,6 +25,7 @@ def training_form(request, pk=None):
         scenario = 'Add'
 
     if request.POST:
+
         form = TrainingForm(data=request.POST, instance=item)
         if form.is_valid():
             item = form.save()
@@ -36,6 +37,27 @@ def training_form(request, pk=None):
                 participant_obj = Participant.objects.get(pk=participant)
                 item.participants.add(participant_obj)
                 # return redirect('/inventory/items/')
+        descriptions = request.POST.getlist('descriptions')
+        file_ids = request.POST.getlist('file_ids')
+        print request.POST
+        print ''
+        import pdb;pdb.set_trace()
+        for index in request.POST.getlist('indices'):
+            ind = int(index)
+            file_id = file_ids[ind]
+            if file_id == u'':
+                the_file = File()
+            else:
+                the_file = File.objects.get(id=file_id)
+            the_file.description = descriptions[ind]
+            if request.FILES.get('files['+index+']'):
+                the_file.file = request.FILES.get('files['+index+']')
+            elif request.POST.get('clears['+index+']'):
+                the_file.file = None
+            the_file.training = item
+            the_file.save()
+
+
     else:
         form = TrainingForm(instance=item)
     if scenario == 'Update':
