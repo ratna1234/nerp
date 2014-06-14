@@ -1,0 +1,41 @@
+{% extends "training_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Organizations' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_organizations" %}">{% trans 'Organizations' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load pagination_tags %}
+    {% load sorting_tags %}
+
+    {% autosort objects as sorted_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor name _('Name') %}</th>
+        <th>{% anchor address _('Address') %}</th>
+        </thead>
+        <tbody>
+        {% for item in paginated_objects %}
+            <tr>
+                <td>
+                    {{ item.name }}
+                </td>
+                <td>{{ item.address }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% paginate %}
+
+    <a class="small secondary button"
+       href="{% url 'create_inventory_item' %}">{% trans 'New' %} {% trans 'Inventory' %} {% trans 'Item' %}</a>
+
+{% endblock %}
