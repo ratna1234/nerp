@@ -247,7 +247,38 @@ def list_files(request):
     items = File.objects.all()
     return render(request, 'list_files.html', {'objects': items})
 
+
 def delete_training(request, pk):
     obj = get_object_or_404(Training, pk=pk)
     obj.delete()
     return redirect(reverse('list_trainings'))
+
+
+def delete_participant(request, pk):
+    obj = get_object_or_404(Participant, pk=pk)
+    obj.delete()
+    return redirect(reverse('list_participants'))
+
+
+def delete_organization(request, pk):
+    obj = get_object_or_404(Organization, pk=pk)
+    obj.delete()
+    return redirect(reverse('list_organizations'))
+
+
+def delete_category(request, pk):
+    obj = get_object_or_404(Category, pk=pk)
+    obj.delete()
+    return redirect(reverse('list_categories'))
+
+
+def delete_target_group(request, pk):
+    obj = get_object_or_404(TargetGroup, pk=pk)
+    obj.delete()
+    return redirect(reverse('list_target_groups'))
+
+
+def delete_resource_person(request, pk):
+    obj = get_object_or_404(ResourcePerson, pk=pk)
+    obj.delete()
+    return redirect(reverse('list_resource_persons'))
