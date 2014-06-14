@@ -27,6 +27,10 @@ class TargetGroup(MPTTModel):
 class Organization(models.Model):
     name = models.CharField(max_length=255)
     address = models.TextField(blank=True, null=True)
+    phone_no = models.CharField(blank=True, null=True, max_length=50)
+    email = models.EmailField(blank=True, null=True)
+    fax = models.CharField(blank=True, null=True, max_length=50)
+    website = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return self.name
