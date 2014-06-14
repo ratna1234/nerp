@@ -1,11 +1,11 @@
 {% extends "training_base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'Trainings' %}{% endblock %}
+{% block title %}{% trans 'Files' %}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <a href="{% url "list_trainings" %}">{% trans 'Trainings' %}</a>
+    <a href="{% url "list_files" %}">{% trans 'Files' %}</a>
 {% endblock %}
 
 {% block content %}
@@ -13,27 +13,25 @@
     {% load pagination_tags %}
     {% load sorting_tags %}
 
-    {% autosort items.qs as sorted_objects %}
+    {% autosort objects as sorted_objects %}
     {% autopaginate sorted_objects 25 as paginated_objects %}
 
     <table class="table-bordered">
         <thead>
-        <th>{% anchor name _("Name") %}</th>
-        <th>{% anchor account__account_no _('Account No.') %}</th>
-        <th>{% anchor purchase_price _('Purchase Price') %}</th>
+        <th>{% trans 'File' %}</th>
+        <th>{% anchor description _('Description') %}</th>
+        <th>{% anchor training__title _('Training') %}</th>
         </thead>
         <tbody>
         {% for item in paginated_objects %}
             <tr>
                 <td>
-                    <a href="{% url 'update_inventory_item' item.id %}">{{ item.name }}</a>
+                    <a href="{{ MEDIA_URL }}{{ item.file }}">{{ item.filename }}</a>
                 </td>
                 <td>
-                    <a href="{% url 'view_inventory_account' item.account.id %}">
-                    {{ item.account.account_no }}
-                    </a>
+                    {{ item.description }}
                 </td>
-                <td>{{ item.purchase_price }}</td>
+                <td>{{ item.training.title }}</td>
             </tr>
         {% endfor %}
         </tbody>
