@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm, OrganizationForm
@@ -245,3 +246,8 @@ def list_categories(request):
 def list_files(request):
     items = File.objects.all()
     return render(request, 'list_files.html', {'objects': items})
+
+def delete_training(request, pk):
+    obj = get_object_or_404(Training, pk=pk)
+    obj.delete()
+    return redirect(reverse('list_trainings'))
