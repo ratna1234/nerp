@@ -1,0 +1,47 @@
+{% extends "training_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Trainings' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_trainings" %}">{% trans 'Trainings' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load pagination_tags %}
+    {% load sorting_tags %}
+
+    {% autosort items.qs as sorted_objects %}
+    {% autopaginate sorted_objects 25 as paginated_objects %}
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor name _("Name") %}</th>
+        <th>{% anchor account__account_no _('Account No.') %}</th>
+        <th>{% anchor purchase_price _('Purchase Price') %}</th>
+        </thead>
+        <tbody>
+        {% for item in paginated_objects %}
+            <tr>
+                <td>
+                    <a href="{% url 'update_inventory_item' item.id %}">{{ item.name }}</a>
+                </td>
+                <td>
+                    <a href="{% url 'view_inventory_account' item.account.id %}">
+                    {{ item.account.account_no }}
+                    </a>
+                </td>
+                <td>{{ item.purchase_price }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% paginate %}
+
+    <a class="small secondary button"
+       href="{% url 'create_inventory_item' %}">{% trans 'New' %} {% trans 'Inventory' %} {% trans 'Item' %}</a>
+
+{% endblock %}
