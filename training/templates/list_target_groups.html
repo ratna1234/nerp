@@ -1,11 +1,11 @@
 {% extends "training_base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'Categories' %}{% endblock %}
+{% block title %}{% trans 'Target Groups' %}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
-    <a href="{% url "list_training_categories" %}">{% trans 'Categories' %}</a>
+    <a href="{% url "list_target_groups" %}">{% trans 'Target Groups' %}</a>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
     <ul>
         {% recursetree objects %}
             <li>
-                <a href="{% url 'update_training_category' node.id %}">{{ node.name }}</a>
+                <a href="{% url 'update_target_group' node.id %}">{{ node.name }}</a>
                 {% if node.description %}
                     : {{ node.description }}
                 {% endif %}
