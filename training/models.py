@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 
@@ -74,10 +75,12 @@ class Training(models.Model):
 
 
 class File(models.Model):
-    title = models.CharField(max_length=254)
     description = models.TextField(blank=True, null=True)
     file = models.FileField(blank=True, null=True, upload_to='training/files/')
     training = models.ForeignKey(Training, related_name='files')
 
+    def filename(self):
+        return os.path.basename(self.file.name)
+
     def __str__(self):
-        return self.title
+        return self.description
