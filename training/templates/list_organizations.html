@@ -20,14 +20,20 @@
         <thead>
         <th>{% anchor name _('Name') %}</th>
         <th>{% anchor address _('Address') %}</th>
+        <th>{% anchor phone _('Phone') %}</th>
+        <th>{% anchor fax _('Fax') %}</th>
+        <th>{% anchor email _('Email') %}</th>
+        <th>{% anchor website _('Website') %}</th>
         </thead>
         <tbody>
         {% for item in paginated_objects %}
             <tr>
-                <td>
-                    {{ item.name }}
-                </td>
+                <td>{{ item.name }}</td>
                 <td>{{ item.address }}</td>
+                <td>{{ item.phone }}</td>
+                <td>{{ item.fax }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.website }}</td>
             </tr>
         {% endfor %}
         </tbody>
