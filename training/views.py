@@ -210,3 +210,38 @@ def organization_form(request, pk=None):
         'form': form,
         'base_template': base_template,
     })
+
+
+def list_trainings(request):
+    items = Training.objects.all()
+    return render(request, 'list_trainings.html', {'objects': items})
+
+
+def list_participants(request):
+    items = Participant.objects.all()
+    return render(request, 'list_participants.html', {'objects': items})
+
+
+def list_organizations(request):
+    items = Organization.objects.all()
+    return render(request, 'list_organizations.html', {'objects': items})
+
+
+def list_resource_persons(request):
+    items = ResourcePerson.objects.all()
+    return render(request, 'list_resource_persons.html', {'objects': items})
+
+
+def list_target_groups(request):
+    items = TargetGroup.objects.all()
+    return render(request, 'list_target_groups.html', {'objects': items})
+
+
+def list_categories(request):
+    items = Category.objects.all()
+    return render(request, 'list_categories.html', {'objects': items})
+
+
+def list_files(request):
+    items = File.objects.all()
+    return render(request, 'list_files.html', {'objects': items})

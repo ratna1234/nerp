@@ -4,6 +4,7 @@ import views
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='training_index'),
                        url(r'^add/$', views.training_form, name='add_training'),
+                       url(r'^list/$', views.trainings, name='list_trainings'),
                        url(r'^(?P<pk>[0-9]+)/$', views.training_form, name='update_training'),
                        url(r'^category/add/$', views.category_form, name='add_category'),
                        url(r'^category/(?P<pk>[0-9]+)/$', views.category_form, name='update_category'),
