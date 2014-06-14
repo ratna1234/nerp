@@ -229,7 +229,6 @@ def list_organizations(request):
 
 def list_resource_persons(request):
     items = ResourcePerson.objects.all()
-    return render(request, 'list_resource_persons.html', {'objects': items})
 
 
 def list_target_groups(request):
