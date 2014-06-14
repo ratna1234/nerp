@@ -1,0 +1,30 @@
+{% extends "training_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Categories' %}{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "list_training_categories" %}">{% trans 'Categories' %}</a>
+{% endblock %}
+
+{% block content %}
+
+    {% load mptt_tags %}
+    <ul>
+        {% recursetree objects %}
+            <li>
+                <a href="{% url 'update_training_category' node.id %}">{{ node.name }}</a>
+                {% if not node.is_leaf_node %}
+                    <ul class="children">
+                        {{ children }}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endrecursetree %}
+    </ul>
+
+    <a class="small secondary button"
+       href="{% url 'create_inventory_item' %}">{% trans 'New' %} {% trans 'Inventory' %} {% trans 'Item' %}</a>
+
+{% endblock %}

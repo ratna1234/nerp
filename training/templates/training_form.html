@@ -206,7 +206,7 @@
     <div id="add-category" class="reveal-modal" data-reveal><h2>Add Category</h2>
         <a class="close-reveal-modal">&#215;</a>
 
-        <form method="post" action="{% url 'add_category' %}">
+        <form method="post" action="{% url 'add_training_category' %}">
             {% csrf_token %}
             {{ category_form.as_p }}
             <input type="submit" value="Add" class="tiny button">
