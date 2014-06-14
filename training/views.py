@@ -106,7 +106,7 @@ def category_form(request, pk=None):
             item = form.save()
             if request.is_ajax():
                 return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
-            return redirect('/inventory/items/')
+            return redirect(reverse('list_categories'))
     else:
         form = CategoryForm(instance=item)
     return render(request, 'category_form.html', {
@@ -129,7 +129,7 @@ def resource_person_form(request, pk=None):
             item = form.save()
             if request.is_ajax():
                 return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
-            return redirect('/inventory/items/')
+            return redirect(reverse('list_resource_persons'))
     else:
         form = ResourcePersonForm(instance=item)
     return render(request, 'resource_person_form.html', {
@@ -152,7 +152,7 @@ def target_group_form(request, pk=None):
             item = form.save()
             if request.is_ajax():
                 return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
-            return redirect('/inventory/items/')
+            return redirect(reverse('list_target_groups'))
     else:
         form = TargetGroupForm(instance=item)
     return render(request, 'target_group_form.html', {
@@ -175,7 +175,7 @@ def participant_form(request, pk=None):
             item = form.save()
             if request.is_ajax():
                 return HttpResponse(json.dumps(ParticipantSerializer(item).data), mimetype="application/json")
-            return redirect('/inventory/items/')
+            return redirect(reverse('list_participants'))
     else:
         form = ParticipantForm(instance=item)
     return render(request, 'participant_form.html', {
@@ -199,7 +199,7 @@ def organization_form(request, pk=None):
             if request.is_ajax():
                 # return HttpResponse(json.dumps(OrganizationSerializer(item).data), mimetype="application/json")
                 return render(request, 'callback.html', {'obj': OrganizationSerializer(item).data})
-            return redirect('/inventory/items/')
+            return redirect(reverse('list_organizations'))
     else:
         form = OrganizationForm(instance=item)
     if request.is_ajax():
