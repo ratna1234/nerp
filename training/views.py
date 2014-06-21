@@ -193,7 +193,7 @@ def participant_form(request, pk=None):
             item = form.save()
             if request.is_ajax():
                 return HttpResponse(json.dumps(ParticipantSerializer(item).data), mimetype="application/json")
-            return redirect(reverse('list_participants'))
+            return redirect(reverse('training_index'))
     else:
         form = ParticipantForm(instance=item)
     return render(request, 'participant_form.html', {
