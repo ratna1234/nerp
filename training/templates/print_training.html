@@ -1,8 +1,8 @@
-{% extends base_template %}
+{% extends 'training_base.html' %}
 {% load i18n %}
 {% load filters %}
 
-{% block title %}{{ scenario }} {% trans 'Training' %}{% endblock %}
+{% block title %} {{ obj.title }}{% endblock %}
 
 {% block breadcrumbs %}
     {{ block.super }}
@@ -10,235 +10,133 @@
     <span>{% trans scenario %} {% trans 'Training' %} </span>
 {% endblock %}
 {% block head_end %}
-    <script src="{{ STATIC_URL }}js/vendors/foundation-datepicker.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/vendors/foundation-datepicker.css">
-    <script src="{{ STATIC_URL }}js/training/form.js"></script>
 
-    <script>
-        participants =
-        {{ participants }};
-        vm_files =
-        {{ files|jsonify }}
-    </script>
+    <script src="{{ STATIC_URL }}js/training/print.js"></script>
 
 {% endblock %}
 
 {% block breadcrumbs_right %}
-    {% if scenario == 'Update' %}
-        <a href="{% url 'print_training' form.instance.id %}">{% trans 'Print' %}</a>
-    {% endif %}
 {% endblock %}
 
 
 {% block content %}
 
-    {{ form.non_field_errors }}
-    {{ form.errors }}
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-
-        <div class="right">
-            <div class="span12">
-                <button type="submit" value="submit" class="small secondary button">
-                    {% trans 'Save' %}</button>
-                {% if scenario == 'Update' %}
-                    <a class="small secondary button alert"
-                       href="{% url 'delete_training' form.instance.id %}">{% trans 'Delete' %}!</a>
-                {% endif %}
-            </div>
-        </div>
-
-        <ul class="tabs" data-tab id="training-tab">
-            <li class="tab-title active"><a href="#basic">Basic</a></li>
-            <li class="tab-title"><a href="#detail">Details</a></li>
-            <li class="tab-title"><a href="#participants">Participants</a></li>
-            <li class="tab-title"><a href="#files">Files </a></li>
-        </ul>
+    <h1>{{ obj.title }}</h1>
 
 
-        <div class="tabs-content">
-            <div class="content active" id="basic">
-                <label for="id_title">Title:</label>
-                {{ form.title }}
+    {% if obj.starts %}
+        From: <span id="id_starts">{{ obj.starts }}</span>
+    {% endif %}
+    &nbsp;&nbsp;&nbsp;
+    {% if obj.ends %}
+        To: <span id="id_ends">{{ obj.ends }}</span>
+    {% endif %}
+    &nbsp;&nbsp;&nbsp;
+    <span id="duration"></span>
+    <br><br>
 
-                <label for="id_description">Description:</label>
-                {{ form.description }}
+    {{ obj.description|linebreaks }}
+    <br><br>
 
-                <label for="id_starts">Starts:</label>
-                {#                <input type="text" name="starts" id="id_starts" data-date-format="yyyy-mm-dd">#}
-                {{ form.starts }}
-
-                <span id="duration"></span>
-
-                <label for="id_ends">Ends:</label>
-                {#                <input type="text" name="ends" id="id_ends" data-date-format="yyyy-mm-dd">#}
-                {{ form.ends }}
-
-                <label for="id_categories">Categories:</label>
-                {{ form.categories }}
-                <a href="#" data-reveal-id="add-category">Add New Category</a>
-
-
-                <label for="id_target_groups">Target groups:</label>
-                {{ form.target_groups }}
-                <a href="#" data-reveal-id="add-target-group">Add New Target Group</a>
-
-                <label for="id_resource_persons">Resource persons:</label>
-                {{ form.resource_persons }}
-                <a href="#" data-reveal-id="add-resource-person">Add New Resource Person</a>
-
-            </div>
-            <div class="content" id="detail">
-                <label for="id_criteria_for_selection">Criteria for selection:</label>
-                {{ form.criteria_for_selection }}
+    {% if obj.categories.count %}
+        {% if obj.categories.count == 1 %}
+            <b>Category:</b>
+        {% else %}
+            <b>Categories:</b>
+        {% endif %}
+        {{ obj.categories.all|join:', ' }}
+        <br><br>
+    {% endif %}
 
 
-                <label for="id_objective">Objective:</label>
-                {{ form.objective }}
+    {% if obj.target_groups.count %}
+        {% if obj.target_groups.count == 1 %}
+            <b>Target Group:</b>
+        {% else %}
+            <b>Target Groups:</b>
+        {% endif %}
+        {{ obj.target_groups.all|join:', ' }}
+        <br><br>
+    {% endif %}
 
-                <label for="id_output">Output:</label>
-                {{ form.output }}
-
-                <label for="id_conclusion">Conclusion:</label>
-                {{ form.conclusion }}
-
-                <label for="id_feedback">Feedback:</label>
-                {{ form.feedback }}
-
-                <label for="id_curriculum">Curriculum:</label>
-                {{ form.curriculum }}
+    {% if obj.resource_persons.count %}
+        {% if obj.resource_persons.count == 1 %}
+            <b>Resource Person:</b>
+        {% else %}
+            <b>Resource Persons:</b>
+        {% endif %}
+        {{ obj.resource_persons.all|join:', ' }}
+        <br><br>
+    {% endif %}
 
 
-            </div>
-            <div class="content" id="participants">
+    {% if obj.criteria_for_selection %}
+        <b>Criteria for Selection:</b>
+        {{ obj.criteria_for_selection|linebreaks }}
+        <br><br>
+    {% endif %}
 
-                {#                <label for="id_participants">Participants:</label>#}
-                {#                {{ form.participants }}#}
+    {% if obj.objective %}
+        <b>Objective:</b>
+        {{ obj.objective|linebreaks }}
+        <br><br>
+    {% endif %}
 
-                <select id="available"
-                        data-bind="options: $root.participants_available, value: selected_participant, optionsText: 'name', optionsValue: 'id'"></select>
-                <button data-bind="click: add_participant">Add</button>
-                <a href="#" data-reveal-id="add-participant">Create New Participant</a>
+    {% if obj.output %}
+        <b>Output:</b>
+        {{ obj.output|linebreaks }}
+        <br><br>
+    {% endif %}
 
-                <table class="table table-bordered">
-                    <thead>
-                    <th>Name</th>
-                    <th>Organization</th>
-                    <th></th>
-                    </thead>
-                    <tbody>
-                    <!-- ko foreach: selected_participants -->
-                    <tr>
-                        <td data-bind="text: name"></td>
-                        <td>
-                            <span data-bind="text: get_organization_name()">
-                            </span>
-                        </td>
-                        <td class="hide-on-print">
-                            <a href="#" class="close tiny secondary" data-bind="click: $parent.remove_row">x</a>
-                        </td>
-                    </tr>
-                    <!-- /ko -->
-                    </tbody>
-                </table>
+    {% if obj.conclusion %}
+        <b>Conclusion:</b>
+        {{ obj.conclusion|linebreaks }}
+        <br><br>
+    {% endif %}
 
-                <input type="hidden" name="selected_participants" data-bind="value: participants">
+    {% if obj.feedback %}
+        <b>Feedback:</b>
+        {{ obj.feedback|linebreaks }}
+        <br><br>
+    {% endif %}
 
-            </div>
-            <div class="content" id="files">
+    {% if obj.curriculum %}
+        <b>Curriculum:</b>
+        {{ obj.curriculum|linebreaks }}
+        <br><br>
+    {% endif %}
 
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>File</th>
-                        <th>Description</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <!-- ko foreach: files -->
-                    <tr>
-                        <td>
-                            <input type="hidden" name="indices" data-bind="value: $index()">
-                            <input type="hidden" name="file_ids" data-bind="value: id">
-                            <!-- ko if: file() -->
-                            Currently: <a target="_blank"
-                                          data-bind="attr: {'href': '{{ MEDIA_URL }}'+file()}, text: file()"></a>
+    {% load pagination_tags %}
+    {% load sorting_tags %}
 
-                            <input type="checkbox" data-bind="attr:{name: 'clears['+$index()+']'}"> Clear<br>
-                            Change:<!-- /ko --><input type="file" data-bind="attr:{name: 'files['+$index()+']'}">
+    {% autosort obj.participants.all as sorted_objects %}
 
-                        </td>
-                        <td>
-                            <input type="text" name="descriptions" data-bind="value: description">
-                        </td>
-                        <td class="hide-on-print">
-                            <a href="#" class="close tiny secondary" data-bind="click: $parent.remove_row">x</a>
-                        </td>
-                    </tr>
-                    <!-- /ko -->
-                    </tbody>
-                </table>
-                <button data-bind="click: add_row">Add File</button>
-                <input type="hidden" name="deleted_files" data-bind="value: deleted_rows()">
+    <h3>Participants</h3>
 
-            </div>
-        </div>
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor name _('Name') %}</th>
+        <th>{% anchor address _('Address') %}</th>
+        <th>{% anchor phone_no _('Phone') %}</th>
+        <th>{% anchor email _('Email') %}</th>
+        <th>{% anchor organization__name _('Organization') %}</th>
 
-        <div>
-
-        </div>
-
-    </form>
-
-    <div id="add-category" class="reveal-modal" data-reveal><h2>Add Category</h2>
-        <a class="close-reveal-modal">&#215;</a>
-
-        <form method="post" action="{% url 'add_training_category' %}">
-            {% csrf_token %}
-            {{ category_form.as_p }}
-            <input type="submit" value="Add" class="tiny button">
-        </form>
-    </div>
-
-    <div id="add-target-group" class="reveal-modal" data-reveal><h2>Add Target Group</h2>
-        <a class="close-reveal-modal">&#215;</a>
-
-        <form method="post" action="{% url 'add_target_group' %}">
-            {% csrf_token %}
-            {{ target_group_form.as_p }}
-            <input type="submit" value="Add" class="tiny button">
-        </form>
-    </div>
-
-    <div id="add-resource-person" class="reveal-modal" data-reveal><h2>Add Resource Person</h2>
-        <a class="close-reveal-modal">&#215;</a>
-
-        <form method="post" action="{% url 'add_resource_person' %}">
-            {% csrf_token %}
-            {{ resource_person_form.as_p }}
-            <input type="submit" value="Add" class="tiny button">
-        </form>
-    </div>
-
-    <div id="add-participant" class="reveal-modal" data-reveal><h2>Add Participant</h2>
-        <a class="close-reveal-modal">&#215;</a>
-
-        <form method="post" action="{% url 'add_participant' %}">
-            {% csrf_token %}
-            {{ participant_form.as_p }}
-            <input type="submit" value="Add" class="tiny button">
-        </form>
-    </div>
-
-    <div id="add-organization" class="reveal-modal" data-reveal><h2>Add Organization</h2>
-        <a class="close-reveal-modal">&#215;</a>
-
-        <form method="post" action="{% url 'add_organization' %}">
-            {% csrf_token %}
-            {{ organization_form.as_p }}
-            <input type="submit" value="Add" class="tiny button">
-        </form>
-    </div>
+        </thead>
+        <tbody>
+        {% for item in sorted_objects %}
+            <tr>
+                <td><a href="{% url 'update_participant' item.id %}">{{ item.name }}</a></td>
+                <td>{{ item.address }}</td>
+                <td>{{ item.phone }}</td>
+                <td>{{ item.email|mailto }}</td>
+                <td>
+                    {% if item.organization %}
+                        <a href="{% url 'update_organization' item.organization.id %}">{{ item.organization.name }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

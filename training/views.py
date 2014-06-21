@@ -17,6 +17,11 @@ def participants_as_json(request):
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
+def print_training(request, pk):
+    item = get_object_or_404(Training, pk=pk)
+    return render(request, 'print_training.html', {'obj': item})
+
+
 def training_form(request, pk=None):
     if pk:
         item = get_object_or_404(Training, pk=pk)
@@ -29,7 +34,13 @@ def training_form(request, pk=None):
 
         form = TrainingForm(data=request.POST, instance=item)
         if form.is_valid():
-            item = form.save()
+            item = form.save(commit=False)
+            if item.starts == '':
+                item.starts = None
+            if item.ends == '':
+                item.ends = None
+            item.save()
+            form.save_m2m()
             item.participants.clear()
             participants = request.POST.get('selected_participants').split(',')
             for participant in participants:
@@ -81,7 +92,7 @@ def training_form(request, pk=None):
     return render(request, 'training_form.html', {
         'scenario': scenario,
         'form': form,
-        'base_template': 'base.html',
+        'base_template': 'training_base.html',
         'category_form': CategoryForm(instance=Category()),
         'resource_person_form': ResourcePersonForm(instance=ResourcePerson()),
         'target_group_form': TargetGroupForm(instance=TargetGroup()),
@@ -112,7 +123,7 @@ def category_form(request, pk=None):
     return render(request, 'category_form.html', {
         'scenario': scenario,
         'form': form,
-        'base_template': 'base.html',
+        'base_template': 'training_base.html',
     })
 
 
@@ -135,7 +146,7 @@ def resource_person_form(request, pk=None):
     return render(request, 'resource_person_form.html', {
         'scenario': scenario,
         'form': form,
-        'base_template': 'base.html',
+        'base_template': 'training_base.html',
     })
 
 
@@ -158,7 +169,7 @@ def target_group_form(request, pk=None):
     return render(request, 'target_group_form.html', {
         'scenario': scenario,
         'form': form,
-        'base_template': 'base.html',
+        'base_template': 'training_base.html',
     })
 
 
@@ -181,7 +192,7 @@ def participant_form(request, pk=None):
     return render(request, 'participant_form.html', {
         'scenario': scenario,
         'form': form,
-        'base_template': 'base.html',
+        'base_template': 'training_base.html',
     })
 
 
@@ -205,7 +216,7 @@ def organization_form(request, pk=None):
     if request.is_ajax():
         base_template = 'modal.html'
     else:
-        base_template = 'base.html'
+        base_template = 'training_base.html'
     return render(request, 'organization_form.html', {
         'scenario': scenario,
         'form': form,
