@@ -123,16 +123,28 @@
                 <table class="table table-bordered">
                     <thead>
                     <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
                     <th>Organization</th>
                     <th></th>
                     </thead>
                     <tbody>
                     <!-- ko foreach: selected_participants -->
                     <tr>
-                        <td data-bind="text: name"></td>
-                        <td>
-                            <span data-bind="text: get_organization_name()">
+                        <td><a target="_blank" data-bind="attr: {'href': '/training/participant/'+id +'/'}"><span
+                                data-bind="text: name"></span></a></td>
+                        <td data-bind="text: address"></td>
+                        <td data-bind="text: phone_no"></td>
+                        <td data-bind="text: email"></td>
+                        <td><!-- ko if: organization -->
+                            <a target="_blank"
+                               data-bind="attr: {'href': '/training/organization/'+organization.id +'/'}">
+                                <span data-bind="text: organization.name">
                             </span>
+                            </a>
+
+                            <!-- /ko -->
                         </td>
                         <td class="hide-on-print">
                             <a href="#" class="close tiny secondary" data-bind="click: $parent.remove_row">x</a>
