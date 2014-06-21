@@ -74,18 +74,22 @@
                 {#                <input type="text" name="ends" id="id_ends" data-date-format="yyyy-mm-dd">#}
                 {{ form.ends }}
 
-                <label for="id_categories">Categories:</label>
-                {{ form.categories }}
-                <a href="#" data-reveal-id="add-category">Add New Category</a>
+                <div class="inline-add">
+
+                    <label for="id_categories">Categories:</label>
+                    {{ form.categories }}
+                    <a href="#" class="tiny secondary button" data-reveal-id="add-category">+</a>
 
 
-                <label for="id_target_groups">Target groups:</label>
-                {{ form.target_groups }}
-                <a href="#" data-reveal-id="add-target-group">Add New Target Group</a>
+                    <label for="id_target_groups">Target groups:</label>
+                    {{ form.target_groups }}
+                    <a href="#" class="tiny secondary button" data-reveal-id="add-target-group">+</a>
 
-                <label for="id_resource_persons">Resource persons:</label>
-                {{ form.resource_persons }}
-                <a href="#" data-reveal-id="add-resource-person">Add New Resource Person</a>
+                    <label for="id_resource_persons">Resource persons:</label>
+                    {{ form.resource_persons }}
+                    <a href="#" class="tiny secondary button" data-reveal-id="add-resource-person">+</a>
+
+                </div>
 
             </div>
             <div class="content" id="detail">
@@ -117,8 +121,8 @@
 
                 <select id="available"
                         data-bind="options: $root.participants_available, value: selected_participant, optionsText: 'name', optionsValue: 'id'"></select>
-                <button data-bind="click: add_participant">Add</button>
-                <a href="#" data-reveal-id="add-participant">Create New Participant</a>
+                <button class="small secondary" data-bind="click: add_participant">↓ Add</button>
+                <a href="#" class="small secondary button" data-reveal-id="add-participant">+ Create New</a>
 
                 <table class="table table-bordered">
                     <thead>
@@ -191,7 +195,7 @@
                     <!-- /ko -->
                     </tbody>
                 </table>
-                <button data-bind="click: add_row">Add File</button>
+                <button class="small secondary" data-bind="click: add_row">+ Add File</button>
                 <input type="hidden" name="deleted_files" data-bind="value: deleted_rows()">
 
             </div>
