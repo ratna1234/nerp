@@ -1,28 +1,31 @@
 from django.core.urlresolvers import reverse
-from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm, OrganizationForm
 from training.models import Training, Category, ResourcePerson, TargetGroup, Participant, Organization, File
 import json
 from training.serializers import ParticipantSerializer, OrganizationSerializer, FileSerializer
+from users.models import group_required
 
 
 def index(request):
     return render(request, 'training_index.html')
 
 
+@group_required('Trainer')
 def participants_as_json(request):
     items = Participant.objects.all()
     items_data = ParticipantSerializer(items).data
     return HttpResponse(json.dumps(items_data), mimetype="application/json")
 
 
+@group_required('Trainer')
 def print_training(request, pk):
     item = get_object_or_404(Training, pk=pk)
     return render(request, 'print_training.html', {'obj': item})
 
 
+@group_required('Trainer')
 def training_form(request, pk=None):
     if pk:
         item = get_object_or_404(Training, pk=pk)
@@ -105,6 +108,7 @@ def training_form(request, pk=None):
     })
 
 
+@group_required('Trainer')
 def category_form(request, pk=None):
     if pk:
         item = get_object_or_404(Category, pk=pk)
@@ -128,6 +132,7 @@ def category_form(request, pk=None):
     })
 
 
+@group_required('Trainer')
 def resource_person_form(request, pk=None):
     if pk:
         item = get_object_or_404(ResourcePerson, pk=pk)
@@ -151,6 +156,7 @@ def resource_person_form(request, pk=None):
     })
 
 
+@group_required('Trainer')
 def target_group_form(request, pk=None):
     if pk:
         item = get_object_or_404(TargetGroup, pk=pk)
@@ -173,7 +179,7 @@ def target_group_form(request, pk=None):
         'base_template': 'training_base.html',
     })
 
-
+# @group_required('Trainer')
 def participant_form(request, pk=None):
     if pk:
         item = get_object_or_404(Participant, pk=pk)
@@ -197,6 +203,7 @@ def participant_form(request, pk=None):
     })
 
 
+@group_required('Trainer')
 def organization_form(request, pk=None):
     if pk:
         item = get_object_or_404(Organization, pk=pk)
@@ -225,77 +232,91 @@ def organization_form(request, pk=None):
     })
 
 
+@group_required('Trainer')
 def list_trainings(request):
     items = Training.objects.all()
     return render(request, 'list_trainings.html', {'objects': items})
 
 
+@group_required('Trainer')
 def list_participants(request):
     items = Participant.objects.all()
     return render(request, 'list_participants.html', {'objects': items})
 
 
+@group_required('Trainer')
 def list_organizations(request):
     items = Organization.objects.all()
     return render(request, 'list_organizations.html', {'objects': items})
 
 
+@group_required('Trainer')
 def list_resource_persons(request):
     items = ResourcePerson.objects.all()
     return render(request, 'list_resource_persons.html', {'objects': items})
 
 
+@group_required('Trainer')
 def list_target_groups(request):
     items = TargetGroup.objects.all()
     return render(request, 'list_target_groups.html', {'objects': items})
 
 
+@group_required('Trainer')
 def list_categories(request):
     items = Category.objects.all()
     return render(request, 'list_categories.html', {'objects': items})
 
 
+@group_required('Trainer')
 def list_files(request):
     items = File.objects.all()
     return render(request, 'list_files.html', {'objects': items})
 
 
+@group_required('Trainer')
 def delete_training(request, pk):
     obj = get_object_or_404(Training, pk=pk)
     obj.delete()
     return redirect(reverse('list_trainings'))
 
 
+@group_required('Trainer')
 def delete_participant(request, pk):
     obj = get_object_or_404(Participant, pk=pk)
     obj.delete()
     return redirect(reverse('list_participants'))
 
 
+@group_required('Trainer')
 def delete_organization(request, pk):
     obj = get_object_or_404(Organization, pk=pk)
     obj.delete()
     return redirect(reverse('list_organizations'))
 
 
+@group_required('Trainer')
 def delete_category(request, pk):
     obj = get_object_or_404(Category, pk=pk)
     obj.delete()
     return redirect(reverse('list_categories'))
 
 
+@group_required('Trainer')
 def delete_target_group(request, pk):
     obj = get_object_or_404(TargetGroup, pk=pk)
     obj.delete()
     return redirect(reverse('list_target_groups'))
 
 
+@group_required('Trainer')
 def delete_resource_person(request, pk):
     obj = get_object_or_404(ResourcePerson, pk=pk)
     obj.delete()
     return redirect(reverse('list_resource_persons'))
 
 
+@group_required('Trainer')
 def training_report(request):
     items = Training.objects.all()
     if request.GET.get('from'):
