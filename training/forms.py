@@ -17,7 +17,7 @@ class CategoryForm(forms.ModelForm):
 
 class ResourcePersonForm(forms.ModelForm):
     organization = forms.ModelChoiceField(Organization.objects.all(), widget=forms.Select(
-        attrs={'class': 'selectize', 'data-url': reverse_lazy('add_organization')}))
+        attrs={'class': 'selectize', 'data-url': reverse_lazy('add_organization')}), required=False)
 
     class Meta:
         model = ResourcePerson
@@ -30,7 +30,7 @@ class TargetGroupForm(forms.ModelForm):
 
 class ParticipantForm(forms.ModelForm):
     organization = forms.ModelChoiceField(Organization.objects.all(), widget=forms.Select(
-        attrs={'class': 'selectize', 'data-url': reverse_lazy('add_organization')}))
+        attrs={'class': 'selectize', 'data-url': reverse_lazy('add_organization')}), required=False)
 
     class Meta:
         model = Participant

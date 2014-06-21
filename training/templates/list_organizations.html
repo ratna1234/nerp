@@ -1,5 +1,6 @@
 {% extends "training_base.html" %}
 {% load i18n %}
+{% load filters %}
 
 {% block title %}{% trans 'Organizations' %}{% endblock %}
 
@@ -32,7 +33,7 @@
                 <td>{{ item.address }}</td>
                 <td>{{ item.phone }}</td>
                 <td>{{ item.fax }}</td>
-                <td>{{ item.email }}</td>
+                <td>{{ item.email|mailto }}</td>
                 <td>{{ item.website }}</td>
             </tr>
         {% endfor %}

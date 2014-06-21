@@ -1,5 +1,6 @@
 {% extends "training_base.html" %}
 {% load i18n %}
+{% load filters %}
 
 {% block title %}{% trans 'Resource Persons' %}{% endblock %}
 
@@ -28,10 +29,10 @@
         <tbody>
         {% for item in paginated_objects %}
             <tr>
-                <td><a href="{% url 'update_participant' item.id %}">{{ item.name }}</a></td>
+                <td><a href="{% url 'update_resource_person' item.id %}">{{ item.name }}</a></td>
                 <td>{{ item.address }}</td>
                 <td>{{ item.phone }}</td>
-                <td>{{ item.email }}</td>
+                <td>{{ item.email|mailto }}</td>
                 <td>
                     {% if item.organization %}
                         <a href="{% url 'update_organization' item.organization.id %}">{{ item.organization.name }}</a>

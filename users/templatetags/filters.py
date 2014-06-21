@@ -250,3 +250,10 @@ def debug(value):
     import pdb
 
     pdb.set_trace()
+
+@register.filter
+def mailto(email, linktext=None):
+    if not email:
+        return ''
+    if linktext is None: linktext = email
+    return mark_safe('<a href="mailto:%s">%s</a>' % (email, linktext))
