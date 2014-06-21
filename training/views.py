@@ -1,4 +1,5 @@
 from django.core.urlresolvers import reverse
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm, OrganizationForm
@@ -293,3 +294,23 @@ def delete_resource_person(request, pk):
     obj = get_object_or_404(ResourcePerson, pk=pk)
     obj.delete()
     return redirect(reverse('list_resource_persons'))
+
+
+def training_report(request):
+    items = Training.objects.all().annotate(Count('resource_persons'))
+    resource_persons = []
+    total_resource_person_employments = 0
+    total_resource_persons = 0
+    for item in items:
+        total_resource_person_employments += item.resource_persons__count
+        for resource_person in item.resource_persons.all():
+            if not resource_person in resource_persons:
+                resource_persons.append(resource_person)
+                total_resource_persons += 1
+    context = {
+        'objects': items,
+        'total_resource_person_employments': total_resource_person_employments,
+        'total_resource_persons': total_resource_persons,
+
+    }
+    return render(request, 'training_report.html', context)

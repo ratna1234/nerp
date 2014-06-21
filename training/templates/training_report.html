@@ -1,0 +1,32 @@
+{% extends "training_base.html" %}
+{% load i18n %}
+
+{% block title %}Training Report{% endblock %}
+
+{% block breadcrumbs %}
+    {{ block.super }}
+    <a href="{% url "training_report" %}">{% trans 'Training Report' %}</a>
+{% endblock %}
+
+{% block content %}
+
+
+
+    <table class="table-bordered">
+        <tr>
+            <td>Total Trainings</td>
+            <td>{{ objects.count }}</td>
+        </tr>
+        <tr>
+            <td>Total Resource Person Employments</td>
+            <td>{{ total_resource_person_employments }}</td>
+        </tr>
+        <tr>
+            <td>Total Resource Persons</td>
+            <td>{{ total_resource_persons }}</td>
+        </tr>
+    </table>
+
+
+
+{% endblock %}

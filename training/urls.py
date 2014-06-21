@@ -35,6 +35,7 @@ urlpatterns = patterns('',
                        url(r'^organization/(?P<pk>[0-9]+)/delete/$', views.delete_organization,
                            name='delete_organization'),
                        url(r'^files/$', views.list_files, name='list_files'),
+                       url(r'^report/$', views.training_report, name='training_report'),
                        # url(r'^author/(?P<slug>[a-zA-Z0-9_.-]+)/$', views.view_author, name='view_author'),
                        # url(r'^search/(?P<keyword>.*)$', views.search, name='search'),
 )
