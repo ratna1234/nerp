@@ -5,9 +5,9 @@ from models import Training, Category, TargetGroup, ResourcePerson, Participant,
 
 class TrainingForm(forms.ModelForm):
     #category = TreeNodeChoiceField(queryset=Category.objects.all(), required=False)
-    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}))
-    starts = forms.CharField(widget=forms.TextInput(attrs={'data-date-format': 'yyyy-mm-dd'}))
-    ends = forms.CharField(widget=forms.TextInput(attrs={'data-date-format': 'yyyy-mm-dd'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}), required=False)
+    starts = forms.CharField(widget=forms.TextInput(attrs={'data-date-format': 'yyyy-mm-dd'}), required=False)
+    ends = forms.CharField(widget=forms.TextInput(attrs={'data-date-format': 'yyyy-mm-dd'}), required=False)
 
     class Meta:
         model = Training
