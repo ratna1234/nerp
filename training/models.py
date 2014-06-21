@@ -76,6 +76,19 @@ class Training(models.Model):
     resource_persons = models.ManyToManyField(ResourcePerson, related_name='trainings', blank=True, null=True)
     participants = models.ManyToManyField(Participant, related_name='trainings', blank=True, null=True)
 
+    @property
+    def days(self):
+        delta = self.ends - self.starts
+        return delta.days + 1
+
+    @property
+    def resource_persons_count(self):
+        return self.resource_persons.count()
+
+    @property
+    def participants_count(self):
+        return self.resource_persons.count()
+
     def __str__(self):
         return self.title
 
