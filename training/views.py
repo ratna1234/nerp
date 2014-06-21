@@ -79,7 +79,7 @@ def training_form(request, pk=None):
             the_file.delete()
             # except File.DoesNotExist:
             #     pass
-
+        return redirect(reverse('update_training', kwargs={'pk': item.id}))
 
     else:
         form = TrainingForm(instance=item)
