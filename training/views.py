@@ -297,20 +297,33 @@ def delete_resource_person(request, pk):
 
 
 def training_report(request):
-    items = Training.objects.all().annotate(Count('resource_persons'))
+    items = Training.objects.all()
+    if request.GET.get('from'):
+        items = items.filter(starts__gte=request.GET.get('from'))
+    if request.GET.get('to'):
+        items = items.filter(starts__lte=request.GET.get('to'))
     resource_persons = []
+    participants = []
+    participations = 0
+    days = 0
     total_resource_person_employments = 0
-    total_resource_persons = 0
     for item in items:
-        total_resource_person_employments += item.resource_persons__count
+        if item.starts and item.ends:
+            days += item.days
+        for participant in item.participants.all():
+            participations += 1
+            if not participant in participants:
+                participants.append(participant)
         for resource_person in item.resource_persons.all():
+            total_resource_person_employments += 1
             if not resource_person in resource_persons:
                 resource_persons.append(resource_person)
-                total_resource_persons += 1
     context = {
         'objects': items,
         'total_resource_person_employments': total_resource_person_employments,
-        'total_resource_persons': total_resource_persons,
-
+        'total_resource_persons': len(resource_persons),
+        'participants': len(participants),
+        'participations': participations,
+        'days': days,
     }
     return render(request, 'training_report.html', context)

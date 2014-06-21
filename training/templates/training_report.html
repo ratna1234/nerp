@@ -1,5 +1,7 @@
 {% extends "training_base.html" %}
 {% load i18n %}
+{% load sorting_tags %}
+
 
 {% block title %}Training Report{% endblock %}
 
@@ -10,7 +12,7 @@
 
 {% block content %}
 
-
+    <h1>Training Report</h1>
 
     <table class="table-bordered">
         <tr>
@@ -25,8 +27,47 @@
             <td>Total Resource Persons</td>
             <td>{{ total_resource_persons }}</td>
         </tr>
+        <tr>
+            <td>Total Participations</td>
+            <td>{{ participations }}</td>
+        </tr>
+        <tr>
+            <td>Total Unique Participants</td>
+            <td>{{ participants }}</td>
+        </tr>
+        <tr>
+            <td>Total Training Days</td>
+            <td>{{ days }}</td>
+        </tr>
     </table>
 
+    <h3>Trainings</h3>
+
+    <table class="table-bordered">
+        <thead>
+        <th>{% anchor title _('Title') %}</th>
+        <th>{% anchor starts _('Starts') %}</th>
+        <th>{% anchor ends _('Ends') %}</th>
+        <th>{% anchor days _('Days') %}</th>
+        <th>{% anchor resource_persons_count _('Resource Persons') %}</th>
+        <th>{% anchor participants_count _('Participants') %}</th>
+        </thead>
+        <tbody>
+
+        {% autosort objects as sorted_objects %}
+
+        {% for item in sorted_objects %}
+            <tr>
+                <td><a href="{% url 'update_training' item.id %}">{{ item.title }}</a></td>
+                <td>{{ item.starts|date:"D d M Y" }}</td>
+                <td>{{ item.ends|date:"D d M Y" }}</td>
+                <td>{{ item.days }}</td>
+                <td>{{ item.resource_persons_count }}</td>
+                <td>{{ item.participants_count }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 
 {% endblock %}

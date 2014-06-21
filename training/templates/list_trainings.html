@@ -21,13 +21,22 @@
         <th>{% anchor title _('Title') %}</th>
         <th>{% anchor starts _('Starts') %}</th>
         <th>{% anchor ends _('Ends') %}</th>
+        <th>{% anchor days _('Days') %}</th>
+        <th>{% anchor resource_persons_count _('Resource Persons') %}</th>
+        <th>{% anchor participants_count _('Participants') %}</th>
         </thead>
         <tbody>
-        {% for item in paginated_objects %}
+
+        {% autosort objects as sorted_objects %}
+
+        {% for item in sorted_objects %}
             <tr>
                 <td><a href="{% url 'update_training' item.id %}">{{ item.title }}</a></td>
                 <td>{{ item.starts|date:"D d M Y" }}</td>
-                <td>{{ item.ends }}</td>
+                <td>{{ item.ends|date:"D d M Y" }}</td>
+                <td>{{ item.days }}</td>
+                <td>{{ item.resource_persons_count }}</td>
+                <td>{{ item.participants_count }}</td>
             </tr>
         {% endfor %}
         </tbody>
