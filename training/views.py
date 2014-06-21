@@ -9,7 +9,7 @@ from training.serializers import ParticipantSerializer, OrganizationSerializer, 
 
 
 def index(request):
-    pass
+    return render(request, 'training_index.html')
 
 
 def participants_as_json(request):
