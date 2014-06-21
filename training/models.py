@@ -61,8 +61,10 @@ class ResourcePerson(models.Model):
 class Training(models.Model):
     title = models.CharField(max_length=254)
     description = models.TextField(blank=True, null=True)
-    starts = models.DateTimeField(blank=True, null=True)
-    ends = models.DateTimeField(blank=True, null=True)
+    # starts = models.DateTimeField(blank=True, null=True)
+    # ends = models.DateTimeField(blank=True, null=True)
+    starts = models.DateField(blank=True, null=True)
+    ends = models.DateField(blank=True, null=True)
     categories = models.ManyToManyField(Category, related_name='trainings', blank=True, null=True)
     target_groups = models.ManyToManyField(TargetGroup, related_name='trainings', blank=True, null=True)
     criteria_for_selection = models.TextField(blank=True, null=True)

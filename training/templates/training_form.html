@@ -55,15 +55,17 @@
                 {{ form.title }}
 
                 <label for="id_description">Description:</label>
-                <textarea rows="3" name="description" id="id_description" cols="40"></textarea>
+                {{ form.description }}
 
                 <label for="id_starts">Starts:</label>
-                <input type="text" name="starts" id="id_starts" data-date-format="yyyy-mm-dd">
+                {#                <input type="text" name="starts" id="id_starts" data-date-format="yyyy-mm-dd">#}
+                {{ form.starts }}
 
                 <span id="duration"></span>
 
                 <label for="id_ends">Ends:</label>
-                <input type="text" name="ends" id="id_ends" data-date-format="yyyy-mm-dd">
+                {#                <input type="text" name="ends" id="id_ends" data-date-format="yyyy-mm-dd">#}
+                {{ form.ends }}
 
                 <label for="id_categories">Categories:</label>
                 {{ form.categories }}
@@ -147,25 +149,6 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {#                    {% for file in training_files %}#}
-                    {#                        <tr>#}
-                    {##}
-                    {##}
-                    {#                            <td>#}
-                    {#                                <input type="hidden" name="id[]" value="{{ file.id }}">#}
-                    {#                                <a target="_blank" href="{{ MEDIA_URL }}{{ file.file }}">{{ file.description }}</a>#}
-                    {#                                <input type="checkbox" name="clear[]">#}
-                    {##}
-                    {##}
-                    {#                            </td>#}
-                    {#                            <td>#}
-                    {##}
-                    {#                                <input type="text" name="description[]">#}
-                    {#                            </td>#}
-                    {#                        <td></td>#}
-                    {##}
-                    {#                        </tr>#}
-                    {#                    {% endfor %}#}
                     <!-- ko foreach: files -->
                     <tr>
                         <td>
@@ -197,9 +180,7 @@
 
         <div>
 
-
         </div>
-
 
     </form>
 
