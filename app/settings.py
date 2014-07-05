@@ -113,6 +113,7 @@ INSTALLED_APPS = (
     # If you're using Django 1.6.x or earlier
     'debug_toolbar',
 
+
     'users',
     'inventory',
     'account',

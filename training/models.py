@@ -1,6 +1,7 @@
 import os
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+from froala_editor.fields import FroalaField
 
 
 class Category(MPTTModel):
@@ -67,12 +68,12 @@ class Training(models.Model):
     ends = models.DateField(blank=True, null=True)
     categories = models.ManyToManyField(Category, related_name='trainings', blank=True, null=True)
     target_groups = models.ManyToManyField(TargetGroup, related_name='trainings', blank=True, null=True)
-    criteria_for_selection = models.TextField(blank=True, null=True)
-    objective = models.TextField(blank=True, null=True)
-    output = models.TextField(blank=True, null=True)
-    conclusion = models.TextField(blank=True, null=True)
-    feedback = models.TextField(blank=True, null=True)
-    curriculum = models.TextField(blank=True, null=True)
+    criteria_for_selection = FroalaField(blank=True, null=True)
+    objective = FroalaField(blank=True, null=True)
+    output = FroalaField(blank=True, null=True)
+    conclusion = FroalaField(blank=True, null=True)
+    feedback = FroalaField(blank=True, null=True)
+    curriculum = FroalaField(blank=True, null=True)
     resource_persons = models.ManyToManyField(ResourcePerson, related_name='trainings', blank=True, null=True)
     participants = models.ManyToManyField(Participant, related_name='trainings', blank=True, null=True)
 
