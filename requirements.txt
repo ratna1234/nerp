@@ -12,3 +12,4 @@ djangorestframework
 Pillow
 django-haystack
 pyelasticsearch
+django-froala-editor

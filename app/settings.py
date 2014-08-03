@@ -112,7 +112,7 @@ INSTALLED_APPS = (
     'rest_framework',
     # If you're using Django 1.6.x or earlier
     'debug_toolbar',
-
+    'froala_editor',
 
     'users',
     'inventory',
