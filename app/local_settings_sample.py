@@ -1,3 +1,5 @@
+DEBUG = True
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'zf*%dae-+$i^=+l05sbiibgnaxjd97rf!+d=o7i+-eo9+)i92g'
 
@@ -37,3 +39,36 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+# INSTALLED_APPS = (
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.sites',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+
+#     'south',
+#     'mptt',
+#     'linaro_django_pagination',
+#     # 'django_sorting',
+#     'webstack_django_sorting',
+#     'rest_framework',
+#     # If you're using Django 1.6.x or earlier
+#     'debug_toolbar',
+#     'froala_editor',
+
+#     'users',
+#     'inventory',
+#     'account',
+#     'core',
+#     'ils',
+#     'training',
+
+#     'haystack',
+
+
+#     'django.contrib.admin',
+# )
+
+

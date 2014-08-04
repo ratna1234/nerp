@@ -5,7 +5,7 @@ import os
 # used as starting points for various other paths
 APP_ROOT = os.path.dirname(os.path.realpath(__file__))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -159,7 +159,7 @@ LOGGING = {
 }
 
 try:
-    from settings_secret import *
+    from local_settings import *
 except ImportError:
     pass
 
