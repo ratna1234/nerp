@@ -58,6 +58,7 @@
 
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}" class="secondary small button">{% trans 'Log out' %}</a></li>
+
                 {% else %}
                     <li><a href="{% url 'login' %}" class="secondary small button">{% trans 'Log in' %}</a></li>
                 {% endif %}
