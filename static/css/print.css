@@ -1,0 +1,79 @@
+.header, footer, .left-sidebar, .breadcrumbs, .breadcrumb, a.button, input[type="submit"], #alert_placeholder {
+    display: none !important;
+}
+
+.main-content {
+    border: none;
+}
+
+th.only-on-print, td.only-on-print {
+    display: table-cell !important;
+}
+
+input {
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    display: inline !important;
+}
+
+select {
+    border: none;
+    background: none;
+    -webkit-appearance: none;
+}
+
+a[href]:after {
+    content: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+table {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+table.table-bordered {
+    border-color: #000000;
+}
+
+.table-bordered th, .table-bordered td {
+    border-color: #000000;
+}
+
+.selectize-input {
+    border: none;
+}
+
+.selectize-control.single .selectize-input:after {
+    border: none !important;
+}
+
+.selectize-input {
+    display: none;
+    padding: 0;
+}
+
+.selectize-input.has-items {
+    display: inline-block;
+}
+
+.selectize-input input {
+    display: none !important;
+}
+
+.inline-fields div {
+    padding: 0 !important;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
