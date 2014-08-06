@@ -311,3 +311,7 @@ select {
 .inline-add .selectize-control {
     display: inline;
 }
+
+.accordion dd {
+    clear: both;
+}

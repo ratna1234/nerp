@@ -13,7 +13,7 @@
 {% block content %}
 
     <div class="dashboard">
-        {% ifusergroup 'Librarian' %}
+        {% ifusergroup 'Trainer' %}
 
             <div>
                 <a href="{% url 'list_trainings' %}">
