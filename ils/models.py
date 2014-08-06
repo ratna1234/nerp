@@ -160,13 +160,16 @@ class BookFile(models.Model):
     record = models.ForeignKey(Record, related_name='files')
 
     def format(self):
-        filename = self.file.file.name
-        ext = os.path.splitext(filename)[1]
-        if ext[0] == '.':
-            ext = ext[1:]
-        if ext == 'txt':
-            return 'text'
-        return ext
+        try:
+            filename = self.file.file.name
+            ext = os.path.splitext(filename)[1]
+            if ext[0] == '.':
+                ext = ext[1:]
+            if ext == 'txt':
+                return 'text'
+            return ext
+        except:
+            return 'File does not exist'
 
     format = property(format)
 

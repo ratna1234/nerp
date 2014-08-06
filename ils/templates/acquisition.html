@@ -19,8 +19,6 @@
 
 {% block content %}
 
-    {{ data|jsonify }}
-
     <form class="acquisition-form">
         {% csrf_token %}
         <label for="isbn">ISBN</label>
