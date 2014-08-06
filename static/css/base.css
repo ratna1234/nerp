@@ -312,6 +312,6 @@ select {
     display: inline;
 }
 
-.accordion dd {
+.accordion dd, .accordion form {
     clear: both;
 }
