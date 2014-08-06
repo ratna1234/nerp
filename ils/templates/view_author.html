@@ -32,8 +32,13 @@
             <li>
                 <div class="row">
                     <div class="column large-1 medium-1 small-1">
-                        <a href="{{ record.get_absolute_url }}">
-                            <img src="{{ MEDIA_URL }}{{ record.small_cover }}"></a>
+                        {% if record.small_cover %}
+                            <a href="{{ record.get_absolute_url }}">
+                                <img src="{{ MEDIA_URL }}{{ record.small_cover }}"></a>
+                        {% else %}
+                            <a href="{{ record.get_absolute_url }}">
+                                <img src="{{ STATIC_URL }}img/no_cover-40x60.png"></a>
+                        {% endif %}
                     </div>
                     <div class="column large-7 medium-7 small-7">
                         <h3><a href="{{ record.get_absolute_url }}">{{ record }}</a></h3>
