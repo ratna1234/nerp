@@ -169,13 +169,14 @@
                             <th>Available</th>
                             <td>{{ record.quantity|subtract:record.in_circulation.count }}</td>
                         </tr>
-                        {% if record.quantity|subtract:record.in_circulation.count > 0 %}
-                            <tr>
-                                <th colspan="2">
-
-                                    <a href="{% url 'outgoing' pk=record.id %}">Checkout</a>
-                                </th>
-                            </tr>
+                        {% if record.type == 'Circulative' %}
+                            {% if record.quantity|subtract:record.in_circulation.count > 0 %}
+                                <tr>
+                                    <th colspan="2">
+                                        <a href="{% url 'outgoing' pk=record.id %}">Checkout</a>
+                                    </th>
+                                </tr>
+                            {% endif %}
                         {% endif %}
                     </table>
                 </div>
