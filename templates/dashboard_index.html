@@ -168,18 +168,22 @@
                         </div>
                     {% endifusergroup %}
 
+                    <form action="{% url 'isbn_to_record' %}" method="post">
+                        {% csrf_token %}
+                        <input type="text" placeholder="ISBN" name="isbn">
+                    </form>
 
-                        <form class="dashboard-search" method="get" action="{% url 'search' %}">
+                    <form method="get" action="{% url 'search' %}">
 
-                            <input type="text" name="q" id="id_q" placeholder="Search">
+                        <input type="text" name="q" id="id_q" placeholder="Search">
 
-                            {{ form.models }}
+                        {{ form.models }}
 
-                            {#            {{ form.as_p }}#}
+                        {#            {{ form.as_p }}#}
 
-                            <input type="submit" value="Search!" class="tiny button">
+                        <input type="submit" value="Search!" class="tiny button">
 
-                        </form>
+                    </form>
 
                 </div>
 
