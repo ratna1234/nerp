@@ -29,11 +29,57 @@
     {% if request.GET %}
         {{ form.search.count }} results
         <br>
-        {% for item in form.search %}
-            {{ item.object|linkify }}
-            <br/>
-        {% endfor %}
+        <ol class="records">
+            {% for item in form.search %}
+
+                {% if item.model_name == 'record' %}
+                    <li>
+                        {% with item.object as  record %}
+                            <div class="row">
+                                <div class="column large-1 medium-1 small-1">
+                                    {% if record.small_cover %}
+                                        <a href="{{ record.get_absolute_url }}">
+                                            <img src="{{ MEDIA_URL }}{{ record.small_cover }}"></a>
+                                    {% else %}
+                                        <a href="{{ record.get_absolute_url }}">
+                                            <img src="{{ STATIC_URL }}img/no_cover-40x60.png"></a>
+                                    {% endif %}
+                                </div>
+                                <div class="column large-7 medium-7 small-7">
+                                    <a href="{{ record.get_absolute_url }}"><h3>{{ record }}</h3></a>
+                                    <h5>
+                                        {% if record.authors.all %}
+                                            by {% for author in record.authors.all %}
+                                            {{ author|linkify }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        {% endif %}
+                                        {% if record.publisher or record.published_date %}
+                                            Published
+                                            {% if record.published_date %}
+                                                {{ record.published_date }}
+                                            {% endif %}
+                                            {% if record.publisher %}
+                                                by {{ record.publisher|linkify }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </h5>
+                                </div>
+                                <div class="column large-4 medium-4 small-4">
+                                </div>
+                            </div>
+                        {% endwith %}
+                    </li>
+                {% else %}
+                    <li>
+                        {{ item.object|linkify }}
+                    </li>
+                {% endif %}
+
+                <br/>
+            {% endfor %}
+        </ol>
     {% endif %}
+
 
 
 

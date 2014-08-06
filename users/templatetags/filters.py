@@ -257,3 +257,8 @@ def mailto(email, linktext=None):
         return ''
     if linktext is None: linktext = email
     return mark_safe('<a href="mailto:%s">%s</a>' % (email, linktext))
+
+
+@register.filter
+def to_class_name(value):
+    return value.__class__.__name__
