@@ -143,6 +143,8 @@ class Record(models.Model):
             return ebooks
 
     def published_date(self):
+        if not self.date_of_publication:
+            return None
         if self.publication_has_day:
             return self.date_of_publication
         elif self.publication_has_month:
