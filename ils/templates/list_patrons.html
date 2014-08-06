@@ -18,6 +18,10 @@
 {% endblock %}
 
 {% block content %}
+
+
+    <a class="small secondary button" href="{% url 'add_patron' %}">+ Add New Patron</a>
+
     {% autosort patrons as sorted_objects %}
     {% autopaginate sorted_objects 20 as paginated_objects %}
 
