@@ -311,3 +311,7 @@ ul.messages li {
 .accordion dd, .accordion form {
     clear: both;
 }
+
+.library-search ul *{
+    display: inline;
+}

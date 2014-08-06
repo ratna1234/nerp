@@ -13,7 +13,7 @@
 {% block content %}
     {{ form.errors }}
 
-    <form method="get" action="{% url 'search' %}">
+    <form class="library-search" method="get" action="{% url 'search' %}">
         {#        {% csrf_token %}#}
         {#        <p>#}
         {#            <label for="id_q">Search:</label> <input id="id_q" name="q" value="asd" type="text">#}
