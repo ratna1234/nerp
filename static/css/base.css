@@ -304,10 +304,6 @@ ul.messages li {
     width: auto;
 }
 
-select {
-    background-image: none;
-}
-
 .inline-add .selectize-control {
     display: inline;
 }
