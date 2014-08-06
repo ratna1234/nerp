@@ -37,6 +37,12 @@
                 Publishers</a>
         </div>
 
+        <div>
+            <a href="{% url 'list_ebooks' %}">
+                <img src="{{ STATIC_URL }}img/icons/ebook.png">
+                Ebooks</a>
+        </div>
+
         {% ifusergroup 'Librarian' %}
             <div>
                 <a href="{% url 'list_transactions' %}">
