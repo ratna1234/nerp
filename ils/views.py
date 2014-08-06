@@ -55,6 +55,7 @@ def books_as_json(request):
 def acquisition(request):
     record_data = {}
     record = None
+
     if request.GET.get('isbn'):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
@@ -63,15 +64,14 @@ def acquisition(request):
             response = urllib2.urlopen(url)
             # response = urllib2.urlopen('http://127.0.0.1/json/3.json')
             data = json.load(response)
-            # import pdb
-            #
-            # pdb.set_trace()
+            if isbnpy.isI10(isbn):
+                isbn = isbnpy.convert(isbn)
             if data == {}:
+                record_data['isbn13'] = isbn
                 record_form = RecordForm(instance=record)
                 return render(request, 'acquisition.html', {'data': record_data, 'form': record_form})
             data = data.itervalues().next()['records'].itervalues().next()
-            if isbnpy.isI10(isbn):
-                isbn = isbnpy.convert(isbn)
+
             try:
                 record = Record.objects.get(isbn13=isbn)
                 new_record = False
@@ -83,6 +83,7 @@ def acquisition(request):
                 book = record.book
             else:
                 book = Book()
+
             book.title = data['data']['title']
             if data['details']['details'].has_key('subtitle'):
                 book.subtitle = data['details']['details']['subtitle']
@@ -120,9 +121,14 @@ def acquisition(request):
                     record.publication_has_month = False
                     record.publication_has_day = False
                 except ValueError:
-                    record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %Y').date()
-                    record.publication_has_day = False
-                    record.publication_has_month = True
+                    try:
+                        record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%B %Y').date()
+                        record.publication_has_day = False
+                        record.publication_has_month = True
+                    except ValueError:
+                        record.date_of_publication = datetime.strptime(data['data']['publish_date'], '%m/%d/%Y').date()
+                        record.publication_has_day = True
+                        record.publication_has_month = True
 
             if data['data'].has_key('identifiers'):
                 if data['data']['identifiers'].has_key('openlibrary'):
@@ -179,15 +185,26 @@ def acquisition(request):
                     record.published_places.add(published_place)
 
             record.authors.clear()
-            for author in data['details']['details']['authors']:
-                author_key = author['key'].replace('/authors/', '')
-                try:
-                    book_author = Author.objects.get(identifier=author_key)
-                except Author.DoesNotExist:
-                    book_author = Author(identifier=author_key)
-                book_author.name = author['name']
-                book_author.save()
-                record.authors.add(book_author)
+            if data['details']['details'].has_key('authors'):
+                for author in data['details']['details']['authors']:
+                    author_key = author['key'].replace('/authors/', '')
+                    try:
+                        book_author = Author.objects.get(identifier=author_key)
+                    except Author.DoesNotExist:
+                        book_author = Author(identifier=author_key)
+                    book_author.name = author['name']
+                    book_author.save()
+                    record.authors.add(book_author)
+            elif data['data'].has_key('authors'):
+                for author in data['data']['authors']:
+                    author_key = author['url'].replace('http://openlibrary.org/authors/', '')
+                    try:
+                        book_author = Author.objects.get(identifier=author_key)
+                    except Author.DoesNotExist:
+                        book_author = Author(identifier=author_key)
+                    book_author.name = author['name']
+                    book_author.save()
+                    record.authors.add(book_author)
 
             if data['data'].has_key('ebooks'):
                 if data['data']['ebooks'][0].has_key('formats'):
