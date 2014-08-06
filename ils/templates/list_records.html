@@ -33,19 +33,29 @@
                         {% if record.small_cover %}
                             <a href="{{ record.get_absolute_url }}">
                                 <img src="{{ MEDIA_URL }}{{ record.small_cover }}"></a>
-                            {% else %}
+                        {% else %}
                             <a href="{{ record.get_absolute_url }}">
                                 <img src="{{ STATIC_URL }}img/no_cover-40x60.png"></a>
                         {% endif %}
                     </div>
                     <div class="column large-7 medium-7 small-7">
                         <a href="{{ record.get_absolute_url }}"><h3>{{ record }}</h3></a>
-                        {% if record.authors.all %}
-                            <h5>by {% for author in record.authors.all %}
+                        <h5>
+                            {% if record.authors.all %}
+                                by {% for author in record.authors.all %}
                                 {{ author|linkify }}{% if not forloop.last %}, {% endif %}
                             {% endfor %}
-                            </h5>
-                        {% endif %}
+                            {% endif %}
+                            {% if record.publisher or record.published_date %}
+                                Published
+                                {% if record.published_date %}
+                                    {{ record.published_date }}
+                                {% endif %}
+                                {% if record.publisher %}
+                                    by {{ record.publisher|linkify }}
+                                {% endif %}
+                            {% endif %}
+                        </h5>
                     </div>
                     <div class="column large-4 medium-4 small-4">
                     </div>
