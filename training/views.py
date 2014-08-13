@@ -203,7 +203,7 @@ def participant_form(request, pk=None):
     })
 
 
-@group_required('Trainer')
+# @group_required('Trainer')
 def organization_form(request, pk=None):
     if pk:
         item = get_object_or_404(Organization, pk=pk)
