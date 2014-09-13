@@ -9,6 +9,7 @@ from haystack.forms import SearchForm, ModelSearchForm
 class RecordForm(forms.ModelForm):
     class Meta:
         model = Record
+        exclude = ()
 
 
 class OutgoingForm(forms.ModelForm):
@@ -36,6 +37,7 @@ class IncomingForm(KOModelForm):
 
     class Meta:
         model = Transaction
+        exclude = ()
 
 
 class PatronForm(forms.ModelForm):

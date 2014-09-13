@@ -46,6 +46,7 @@ class ItemForm(KOModelForm):
 class CategoryForm(KOModelForm):
     class Meta:
         model = Category
+        exclude = ()
 
         # def clean(self):
         #     """ This is the form's clean method, not a particular field's clean method """
@@ -65,18 +66,22 @@ class DemandForm(KOModelForm):
 
     class Meta:
         model = Demand
+        exclude = ()
 
 
 class PurchaseOrderForm(KOModelForm):
     class Meta:
         model = PurchaseOrder
+        exclude = ()
 
 
 class HandoverForm(KOModelForm):
     class Meta:
         model = Handover
+        exclude = ()
 
 
 class EntryReportForm(KOModelForm):
     class Meta:
         model = EntryReport
+        exclude = ()
