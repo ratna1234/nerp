@@ -1,9 +1,7 @@
 django
 gunicorn
 psycopg2
-south
 django-debug-toolbar
-bpython
 django-mptt
 linaro-django-pagination
 django-filter

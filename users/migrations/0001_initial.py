@@ -1,48 +1,44 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import django.utils.timezone
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'User'
-        db.create_table(u'users_user', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
-            ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('username', self.gf('django.db.models.fields.CharField')(unique=True, max_length=50)),
-            ('full_name', self.gf('django.db.models.fields.CharField')(max_length=245)),
-            ('email', self.gf('django.db.models.fields.EmailField')(unique=True, max_length=254, db_index=True)),
-            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('is_staff', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('is_admin', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('identifier', self.gf('django.db.models.fields.CharField')(max_length=245, null=True)),
-        ))
-        db.send_create_signal(u'users', ['User'])
+    dependencies = [
+        ('auth', '0001_initial'),
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'User'
-        db.delete_table(u'users_user')
-
-
-    models = {
-        u'users.user': {
-            'Meta': {'object_name': 'User', 'db_table': "u'user'"},
-            'email': ('django.db.models.fields.EmailField', [], {'unique': 'True', 'max_length': '254', 'db_index': 'True'}),
-            'full_name': ('django.db.models.fields.CharField', [], {'max_length': '245'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'identifier': ('django.db.models.fields.CharField', [], {'max_length': '245', 'null': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_admin': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '50'})
-        }
-    }
-
-    complete_apps = ['users']
+    operations = [
+        migrations.CreateModel(
+            name='User',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('password', models.CharField(max_length=128, verbose_name='password')),
+                ('last_login', models.DateTimeField(default=django.utils.timezone.now, verbose_name='last login')),
+                ('username', models.CharField(unique=True, max_length=50)),
+                ('full_name', models.CharField(max_length=245)),
+                ('email', models.EmailField(unique=True, max_length=254, verbose_name=b'email address', db_index=True)),
+                ('is_active', models.BooleanField(default=True)),
+                ('is_staff', models.BooleanField(default=False)),
+                ('is_superuser', models.BooleanField(default=False)),
+                ('groups', models.ManyToManyField(related_name=b'users', to='auth.Group')),
+            ],
+            options={
+                'abstract': False,
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='GroupProxy',
+            fields=[
+            ],
+            options={
+                'verbose_name': 'Group',
+                'proxy': True,
+            },
+            bases=('auth.group',),
+        ),
+    ]
