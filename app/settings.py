@@ -103,8 +103,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'south',
     'mptt',
     'linaro_django_pagination',
     # 'django_sorting',
