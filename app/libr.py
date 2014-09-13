@@ -321,7 +321,7 @@ class MultilingualManager(models.Manager):
         self.selected_language = lang
         return self
 
-    def get_query_set(self):
+    def get_queryset(self):
         qs = MultilingualQuerySet(self.model, using=self._db)
         return qs.select_language(self.selected_language)
 

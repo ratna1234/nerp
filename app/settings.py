@@ -96,6 +96,8 @@ TEMPLATE_DIRS = (
     os.path.join(APP_ROOT, '..', 'templates'),
 )
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -103,8 +105,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'south',
     'mptt',
     'linaro_django_pagination',
     # 'django_sorting',
@@ -216,3 +216,4 @@ HAYSTACK_CONNECTIONS = {
 }
 
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+

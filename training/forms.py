@@ -11,11 +11,13 @@ class TrainingForm(forms.ModelForm):
 
     class Meta:
         model = Training
+        exclude = ()
 
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
+        exclude = ()
 
 
 class ResourcePersonForm(forms.ModelForm):
@@ -24,11 +26,13 @@ class ResourcePersonForm(forms.ModelForm):
 
     class Meta:
         model = ResourcePerson
+        exclude = ()
 
 
 class TargetGroupForm(forms.ModelForm):
     class Meta:
         model = TargetGroup
+        exclude = ()
 
 
 class ParticipantForm(forms.ModelForm):
@@ -37,8 +41,10 @@ class ParticipantForm(forms.ModelForm):
 
     class Meta:
         model = Participant
+        exclude = ()
 
 
 class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
+        exclude = ()
