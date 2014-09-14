@@ -1,7 +1,10 @@
 from django.conf.urls import patterns, include, url
+from app.admin import admin_site
 from django.contrib import admin
+# from app.admin import admin_site
 from users import views as users_views
 
+# admin.site = admin_site
 admin.autodiscover()
 
 urlpatterns = patterns('',
