@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from account.serializers import AccountSerializer
 from app.libr import form_view
@@ -56,7 +56,7 @@ def delete_party(request, id):
 def parties_as_json(request):
     objects = Party.objects.all()
     objects_data = PartySerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)
 
 
 @group_required('Store Keeper', 'Chief', 'Accountant')
@@ -88,40 +88,40 @@ def delete_employee(request, id):
 def employees_as_json(request):
     objects = Employee.objects.all()
     objects_data = EmployeeSerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)
 
 
 def budget_heads_as_json(request):
     objects = BudgetHead.objects.all()
     objects_data = BudgetSerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)
 
 
 def donors_as_json(request):
     objects = Donor.objects.all()
     objects_data = DonorSerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)
 
 
 def activities_as_json(request):
     objects = Activity.objects.all()
     objects_data = ActivitySerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)
 
 
 def accounts_as_json(request):
     objects = Account.objects.all()
     objects_data = AccountSerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)
 
 
 def tax_schemes_as_json(request):
     objects = TaxScheme.objects.all()
     objects_data = TaxSchemeSerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)
 
 
 def languages_as_json(request):
     objects = Language.objects.all()
     objects_data = LanguageSerializer(objects).data
-    return HttpResponse(json.dumps(objects_data), mimetype="application/json")
+    return JsonResponse(objects_data, safe=False)

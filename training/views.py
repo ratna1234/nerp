@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from training.forms import TrainingForm, CategoryForm, TargetGroupForm, ResourcePersonForm, ParticipantForm, OrganizationForm
 from training.models import Training, Category, ResourcePerson, TargetGroup, Participant, Organization, File
@@ -16,7 +16,7 @@ def index(request):
 def participants_as_json(request):
     items = Participant.objects.all()
     items_data = ParticipantSerializer(items).data
-    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+    return JsonResponse(items_data, safe=False)
 
 
 @group_required('Trainer')
@@ -121,7 +121,7 @@ def category_form(request, pk=None):
         if form.is_valid():
             item = form.save()
             if request.is_ajax():
-                return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
+                return JsonResponse({'id': item.id, 'name': item.name})
             return redirect(reverse('list_categories'))
     else:
         form = CategoryForm(instance=item)
@@ -145,7 +145,7 @@ def resource_person_form(request, pk=None):
         if form.is_valid():
             item = form.save()
             if request.is_ajax():
-                return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
+                return JsonResponse({'id': item.id, 'name': item.name})
             return redirect(reverse('list_resource_persons'))
     else:
         form = ResourcePersonForm(instance=item)
@@ -169,7 +169,7 @@ def target_group_form(request, pk=None):
         if form.is_valid():
             item = form.save()
             if request.is_ajax():
-                return HttpResponse(json.dumps({'id': item.id, 'name': item.name}), mimetype="application/json")
+                return JsonResponse({'id': item.id, 'name': item.name})
             return redirect(reverse('list_target_groups'))
     else:
         form = TargetGroupForm(instance=item)
@@ -192,7 +192,7 @@ def participant_form(request, pk=None):
         if form.is_valid():
             item = form.save()
             if request.is_ajax():
-                return HttpResponse(json.dumps(ParticipantSerializer(item).data), mimetype="application/json")
+                return JsonResponse(ParticipantSerializer(item).data, safe=False)
             return redirect(reverse('training_index'))
     else:
         form = ParticipantForm(instance=item)
@@ -216,7 +216,7 @@ def organization_form(request, pk=None):
         if form.is_valid():
             item = form.save()
             if request.is_ajax():
-                # return HttpResponse(json.dumps(OrganizationSerializer(item).data), mimetype="application/json")
+                # return JsonResponse(OrganizationSerializer(item).data, safe=False)
                 return render(request, 'callback.html', {'obj': OrganizationSerializer(item).data})
             return redirect(reverse('list_organizations'))
     else:

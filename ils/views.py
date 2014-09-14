@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from app.libr import title_case
 from core.models import Language
@@ -9,7 +9,7 @@ from ils.serializers import RecordSerializer, AuthorSerializer, PublisherSeriali
 import isbn as isbnpy
 import urllib2, urllib
 import json
-import pprint
+
 from models import Record, Author, Publisher, Book, Subject, Place, BookFile, Transaction
 import os
 from django.core.files import File
@@ -20,35 +20,33 @@ from users.models import User, group_required
 from haystack.query import SearchQuerySet
 from ils.forms import LibrarySearchForm
 
-pp = pprint.PrettyPrinter(indent=4).pprint
-
 
 @group_required('Librarian')
 def authors_as_json(request):
     items = Author.objects.all()
     items_data = AuthorSerializer(items).data
-    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+    return JsonResponse(items_data, safe=False)
 
 
 @group_required('Librarian')
 def publishers_as_json(request):
     items = Publisher.objects.all()
     items_data = PublisherSerializer(items).data
-    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+    return JsonResponse(items_data, safe=False)
 
 
 @group_required('Librarian')
 def subjects_as_json(request):
     items = Subject.objects.all()
     items_data = SubjectSerializer(items).data
-    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+    return JsonResponse(items_data, safe=False)
 
 
 @group_required('Librarian')
 def books_as_json(request):
     items = Book.objects.all()
     items_data = BookSerializer(items).data
-    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+    return JsonResponse(items_data, safe=False)
 
 
 @group_required('Librarian')
@@ -60,7 +58,6 @@ def acquisition(request):
         isbn = request.GET.get('isbn')
         if isbnpy.isValid(isbn):
             url = 'http://openlibrary.org/api/volumes/brief/json/isbn:' + isbn
-            # print url
             response = urllib2.urlopen(url)
             # response = urllib2.urlopen('http://127.0.0.1/json/3.json')
             data = json.load(response)
@@ -296,6 +293,7 @@ def acquisition(request):
 
     return render(request, 'acquisition.html', {'data': record_data, 'form': record_form})
 
+
 @group_required('Librarian')
 def save_acquisition(request):
     if request.POST.get('book').isnumeric():
@@ -419,6 +417,7 @@ def save_acquisition(request):
 
     return redirect(reverse_lazy('view_record', kwargs={'pk': record.id}))
 
+
 @group_required('Librarian')
 def outgoing(request, pk=None):
     transaction = Transaction.new()
@@ -426,6 +425,7 @@ def outgoing(request, pk=None):
         transaction.record = Record.objects.get(id=pk)
     form = OutgoingForm(instance=transaction)
     return render(request, 'outgoing.html', {'form': form})
+
 
 @group_required('Librarian')
 def save_outgoing(request):
@@ -452,6 +452,7 @@ def save_outgoing(request):
     messages.success(request, 'Checked Out!')
     return redirect(reverse_lazy('view_record', kwargs={'pk': transaction.record_id}))
 
+
 @group_required('Librarian')
 def incoming(request, transaction_pk):
     transaction = Transaction.objects.get(id=transaction_pk)
@@ -475,6 +476,7 @@ def view_record(request, pk=None):
     transactions = Transaction.objects.filter(record=record)
     return render(request, 'view_record.html', {'record': record, 'transactions': transactions})
 
+
 @group_required('Librarian')
 def list_patrons(request):
     patrons = User.objects.by_group('Patron')
@@ -486,6 +488,7 @@ def view_patron(request, pk):
     patron = get_object_or_404(User, pk=pk)
     transactions = Transaction.objects.filter(user=patron)
     return render(request, 'view_patron.html', {'patron': patron, 'transactions': transactions})
+
 
 @group_required('Librarian')
 def list_transactions(request):
@@ -543,6 +546,7 @@ def list_ebooks(request):
     records = Record.objects.filter(files__isnull=False).distinct()
     return render(request, 'list_records.html', {'records': records})
 
+
 @group_required('Librarian')
 def patron_form(request, pk=None):
     if pk:
@@ -579,7 +583,6 @@ def patron_form(request, pk=None):
 def search(request, keyword=None):
     # if keyword:
     #     results = SearchQuerySet().filter(content=keyword)
-    # print results
     if request.GET:
         form = LibrarySearchForm(data=request.GET)
         import pdb

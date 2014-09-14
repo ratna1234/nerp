@@ -2,7 +2,7 @@ import json
 from datetime import date
 
 from django.utils.translation import ugettext as _
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -82,7 +82,7 @@ def delete_demand(request, id):
 def items_as_json(request):
     items = Item.objects.all()
     items_data = ItemSerializer(items).data
-    return HttpResponse(json.dumps(items_data), mimetype="application/json")
+    return JsonResponse(items_data, safe=False)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -181,7 +181,6 @@ def save_demand(request):
     for index, row in enumerate(params.get('table_view').get('rows')):
         if invalid(row, ['item_id', 'quantity', 'unit']):
             continue
-            # print row
         # if row.get('release_quantity') == '':
         #     row['release_quantity'] = 1
 
@@ -199,7 +198,7 @@ def save_demand(request):
             submodel = save_model(submodel, values)
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -257,7 +256,7 @@ def save_purchase_order(request):
             submodel = save_model(submodel, values)
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -364,7 +363,7 @@ def save_handover(request):
             submodel = save_model(submodel, values)
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -487,7 +486,7 @@ def save_entry_report(request):
                          ['dr', submodel.item.account, submodel.quantity],
         )
     delete_rows(params.get('table_view').get('deleted_rows'), model)
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -523,7 +522,7 @@ def approve_demand(request):
         row = DemandRow.objects.get(id=params.get('id'))
     else:
         dct['error_message'] = 'Row needs to be saved before being approved!'
-        return HttpResponse(json.dumps(dct), mimetype="application/json")
+        return JsonResponse(dct)
     if not invalid(params, ['item_id', 'quantity', 'unit', 'release_quantity']):
         values = {'item_id': params.get('item_id'),
                   'specification': params.get('specification'),
@@ -532,7 +531,7 @@ def approve_demand(request):
         row = save_model(row, values)
     row.status = 'Approved'
     row.save()
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -543,10 +542,10 @@ def disapprove_demand(request):
         row = DemandRow.objects.get(id=params.get('id'))
     else:
         dct['error_message'] = 'Voucher needs to be saved before being disapproved!'
-        return HttpResponse(json.dumps(dct), mimetype="application/json")
+        return JsonResponse(dct)
     row.status = 'Requested'
     row.save()
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -557,16 +556,16 @@ def fulfill_demand(request):
         row = DemandRow.objects.get(id=params.get('id'))
     else:
         dct['error_message'] = 'Row needs to be saved before being fulfilled!'
-        return HttpResponse(json.dumps(dct), mimetype="application/json")
+        return JsonResponse(dct)
     if params['status'] == 'Requested':
         dct['error_message'] = 'Row needs to be approved before being fulfilled!'
-        return HttpResponse(json.dumps(dct), mimetype="application/json")
+        return JsonResponse(dct)
     set_transactions(row, row.demand.date,
                      ['cr', row.item.account, row.release_quantity],
     )
     row.status = 'Fulfilled'
     row.save()
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -577,15 +576,15 @@ def unfulfill_demand(request):
         row = DemandRow.objects.get(id=params.get('id'))
     else:
         dct['error_message'] = 'Row needs to be saved before being unfulfilled!'
-        return HttpResponse(json.dumps(dct), mimetype="application/json")
+        return JsonResponse(dct)
     if params['status'] != 'Fulfilled':
         dct['error_message'] = 'Row needs to be fulfilled before being unfulfilled!'
-        return HttpResponse(json.dumps(dct), mimetype="application/json")
+        return JsonResponse(dct)
     journal_entry = JournalEntry.get_for(row)
     journal_entry.delete()
     row.status = 'Approved'
     row.save()
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 
 @group_required('Store Keeper', 'Chief')
@@ -607,7 +606,7 @@ def save_account(request):
                   'expense_total_cost_price': row.get('expense_total_cost_price'),
                   'remaining_total_cost_price': row.get('remaining_total_cost_price')}
         account_row = save_model(account_row, values)
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)
 
 def index(request):
     return render(request, 'inventory_index.html')
