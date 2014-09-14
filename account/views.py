@@ -1,7 +1,7 @@
 from datetime import date
 import json
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from account.models import Receipt, ReceiptRow
 from account.serializers import ReceiptSerializer
@@ -59,4 +59,4 @@ def save_receipt(request):
             submodel = save_model(submodel, values)
         dct['rows'][index] = submodel.id
     delete_rows(params.get('table_view').get('deleted_rows'), model)
-    return HttpResponse(json.dumps(dct), mimetype="application/json")
+    return JsonResponse(dct)

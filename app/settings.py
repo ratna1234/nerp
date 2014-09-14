@@ -99,6 +99,7 @@ TEMPLATE_DIRS = (
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 INSTALLED_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -107,12 +108,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'mptt',
     'linaro_django_pagination',
-    # 'django_sorting',
     'webstack_django_sorting',
     'rest_framework',
-    # If you're using Django 1.6.x or earlier
     'debug_toolbar',
     'froala_editor',
+    'haystack',
 
     'users',
     'inventory',
@@ -120,11 +120,6 @@ INSTALLED_APPS = (
     'core',
     'ils',
     'training',
-
-    'haystack',
-
-
-    'django.contrib.admin',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
