@@ -140,7 +140,10 @@ class GroupCheckNode(template.Node):
 
 @register.filter
 def setting(key):
-    setting = AppSetting.objects.get()
+    try:
+        setting = AppSetting.objects.get()
+    except AppSetting.DoesNotExist:
+        return None
     return getattr(setting, key)
 
 
