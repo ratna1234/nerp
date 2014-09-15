@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from app.admin import admin_site
+from django.conf import settings
 from django.contrib import admin
 # from app.admin import admin_site
 from users import views as users_views
@@ -27,3 +28,12 @@ urlpatterns = patterns('',
 
 
 )
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+                            url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+                                {'document_root': settings.MEDIA_ROOT, }))
+    urlpatterns += patterns('',
+                            url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+                                {'document_root': settings.STATIC_ROOT, }))
+
