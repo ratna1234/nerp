@@ -12,3 +12,4 @@ django-haystack
 pyelasticsearch
 django-froala-editor
 pyinotify
+flake8

@@ -120,6 +120,7 @@ INSTALLED_APPS = (
     'core',
     'ils',
     'training',
+    'hr',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

@@ -13,6 +13,7 @@ urlpatterns = patterns('',
                        # Examples:
                        url(r'^$', users_views.index, name='home'),
                        (r'^user/', include('users.urls')),
+                       (r'^hr/', include('hr.urls')),
                        # url(r'^app/', include('app.foo.urls')),
 
                        (r'^account/', include('account.urls')),
